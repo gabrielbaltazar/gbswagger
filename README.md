@@ -79,13 +79,12 @@ end.
 ![picture](img/SwaggerHorseSimple.png)
 
 ## Register
-You don't need to write the same response for many paths, just use a Register interface. 
+You don't need to write the same error response for many paths, just use a Register interface. 
 
 ```delphi
   Swagger
       .Register
-        .Response(400).Description('Bad Request').Schema(TAPIError).&End
-        .Response(500).Description('Internal Server Error').Schema(TAPIError).&End
+        .SchemaOnError(TAPIError)        
       .&End
       .BasePath('v1')
       .Path('user')
