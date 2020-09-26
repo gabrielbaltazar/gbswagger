@@ -1,0 +1,72 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{454FAC48-C874-41B6-9BAA-875C38FF82BB}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="console\Console.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="apache\Apache.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="isapi\ISAPI.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="vcl\VCL.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Console">
+        <MSBuild Projects="console\Console.dproj"/>
+    </Target>
+    <Target Name="Console:Clean">
+        <MSBuild Projects="console\Console.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Console:Make">
+        <MSBuild Projects="console\Console.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Apache">
+        <MSBuild Projects="apache\Apache.dproj"/>
+    </Target>
+    <Target Name="Apache:Clean">
+        <MSBuild Projects="apache\Apache.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Apache:Make">
+        <MSBuild Projects="apache\Apache.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ISAPI">
+        <MSBuild Projects="isapi\ISAPI.dproj"/>
+    </Target>
+    <Target Name="ISAPI:Clean">
+        <MSBuild Projects="isapi\ISAPI.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ISAPI:Make">
+        <MSBuild Projects="isapi\ISAPI.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="VCL">
+        <MSBuild Projects="vcl\VCL.dproj"/>
+    </Target>
+    <Target Name="VCL:Clean">
+        <MSBuild Projects="vcl\VCL.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="VCL:Make">
+        <MSBuild Projects="vcl\VCL.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Console;Apache;ISAPI;VCL"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Console:Clean;Apache:Clean;ISAPI:Clean;VCL:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Console:Make;Apache:Make;ISAPI:Make;VCL:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
