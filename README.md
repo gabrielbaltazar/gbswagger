@@ -1,6 +1,8 @@
 # GBSwagger
 Middleware for generate Swagger Document based in your classes using RTTI.
 
+[![picture](img/SwaggerHorseSimple.png)] (https://pag.ae/7WreVnPYG)
+
 How to use with Horse
 ```delphi
 
