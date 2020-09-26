@@ -21,6 +21,7 @@ uses
 
 type
   SwagApp                = GBSwagger.Path.Attributes.SwagApp;
+  SwagContact            = GBSwagger.Path.Attributes.SwagContact;
   SwagBasePath           = GBSwagger.Path.Attributes.SwagBasePath;
   SwagAppDescription     = GBSwagger.Path.Attributes.SwagAppDescription;
   SwagSecurityBearer     = GBSwagger.Path.Attributes.SwagSecurityBearer;
@@ -46,6 +47,8 @@ type
     procedure actionResponseJSON(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
 
     procedure initialize;
+    procedure initializeApp;
+    procedure initializeContact;
     procedure initializeAuth;
     procedure initializeBasePath;
     procedure initializeRegisterResponse;
@@ -124,6 +127,15 @@ begin
 end;
 
 procedure TDatasnapGBSwagger.initialize;
+begin
+  initializeApp;
+  initializeContact;
+  initializeAuth;
+  initializeBasePath;
+  initializeRegisterResponse;
+end;
+
+procedure TDatasnapGBSwagger.initializeApp;
 var
   app: SwagApp;
   appDescription: SwagAppDescription;
@@ -145,12 +157,7 @@ begin
     appTitle := IfThen(not appTitle.IsEmpty, appTitle, ChangeFileExt(ExtractFileName(GetModuleName(HInstance)), ''));
 
     Swagger.Info.Title(appTitle);
-    Swagger.Info.Description('API datasnap lista de Usuario');
   end;
-
-  initializeAuth;
-  initializeBasePath;
-  initializeRegisterResponse;
 
   appDescription := TGBSwaggerRTTI.GetInstance.GetType(FWebModule.ClassType)
           .GetAttribute<SwagAppDescription>;
@@ -186,6 +193,23 @@ begin
 
   if Assigned(basePath) then
     Swagger.BasePath(basePath.value);
+end;
+
+procedure TDatasnapGBSwagger.initializeContact;
+var
+  contact: SwagContact;
+begin
+  contact := TGBSwaggerRTTI.GetInstance.GetType(FWebModule.ClassType)
+                .GetAttribute<SwagContact>;
+
+  if Assigned(contact) then
+  begin
+    Swagger.Info
+      .Contact
+        .Name(contact.name)
+        .Email(contact.email)
+        .URL(contact.site);
+  end;
 end;
 
 procedure TDatasnapGBSwagger.initializeRegisterResponse;

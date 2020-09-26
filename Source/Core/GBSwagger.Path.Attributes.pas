@@ -22,6 +22,20 @@ type
     constructor create(ATitle: String); overload;
   end;
 
+  SwagContact = class(TCustomAttribute)
+  private
+    Fname: String;
+    Femail: String;
+    Fsite: String;
+
+  public
+    property name: String read Fname;
+    property email: String read Femail;
+    property site: String read Fsite;
+
+    constructor create(AName: string; AEmail: String = ''; ASite: string = '');
+  end;
+
   SwagBasePath = class(TCustomAttribute)
   private
     FValue: string;
@@ -418,6 +432,15 @@ begin
 
   if bIsNumber then
     FSchema := SWAG_INTEGER;
+end;
+
+{ SwagContact }
+
+constructor SwagContact.create(AName, AEmail, ASite: string);
+begin
+  Fname := AName;
+  Femail:= AEmail;
+  Fsite := ASite;
 end;
 
 end.

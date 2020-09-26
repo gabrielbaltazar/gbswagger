@@ -12,10 +12,10 @@ uses
 
 type
 {$METHODINFO ON}
-  [SwagPath('Usuarios', 'TServerMethods1/usuario')]
+  [SwagPath('TServerMethods1/usuario', 'Usuarios')]
   TServerMethods1 = class(TDataModule)
   public
-    [SwagGET('Consulta Usuario', '{id}')]
+    [SwagGET('{id}', 'Consulta Usuario')]
     [SwagParamPath('id', 'id do Usuario')]
     [SwagResponse(200, TUser, 'Dados do Usuario')]
     [SwagResponse(400)]
@@ -34,17 +34,17 @@ type
     [SwagResponse(500)]
     function updateUsuario: TJSONValue;
 
-    [SwagPUT('Altera Usuario', '{id}')]
+    [SwagPUT('{id}', 'Altera Usuario')]
     [SwagParamPath('id', 'id do usuario')]
     [SwagParamBody('usuario', TUser, '')]
-    [SwagResponse(204, '', 'Sem Conteudo')]
+    [SwagResponse(204)]
     [SwagResponse(400)]
     [SwagResponse(500)]
     function acceptUsuario(IdUsuario: Integer): TJSONValue;
 
-    [SwagDELETE('Excluir Usuario', '{id}')]
+    [SwagDELETE('{id}', 'Excluir Usuario')]
     [SwagParamPath('id', 'id do usuario')]
-    [SwagResponse(204, '', 'Sem Conteudo')]
+    [SwagResponse(204)]
     [SwagResponse(400)]
     [SwagResponse(500)]
     function cancelUsuario: TJSONValue;

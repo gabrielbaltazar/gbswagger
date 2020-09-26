@@ -13,8 +13,9 @@ uses
   Datasnap.GBSwagger, Datasnap.Classes;
 
 type
-  [SwagApp('API User', '1.0.1', 'localhost:8081')]
+  [SwagApp('API User', '1.0.1')]
   [SwagAppDescription('API Integracao com usuario')]
+  [SwagContact('ContactName', 'contact@email.com', 'http://www.mypage.com')]
   [SwagSecurityBearer]
   [SwagBasePath('datasnap/rest')]
   [SwagResponse(400, TAPIError, 'Bad Request')]
