@@ -5,6 +5,7 @@ interface
 uses
   Horse,
   Horse.GBSwagger.Register,
+  Horse.GBSwagger.Controller,
   GBSwagger.Model.Interfaces,
   GBSwagger.Model.JSON.Interfaces,
   GBSwagger.Model.Types,
@@ -24,6 +25,7 @@ type
   TGBSwaggerProtocol      = GBSwagger.Model.Types.TGBSwaggerProtocol;
   TGBSwaggerParamType     = GBSwagger.Model.Types.TGBSwaggerParamType;
   THorseGBSwaggerRegister = Horse.GBSwagger.Register.THorseGBSwaggerRegister;
+  THorseGBSwagger         = Horse.GBSwagger.Controller.THorseGBSwagger;
 
 function HorseSwagger: THorseCallback; overload;
 function HorseSwagger(APathHtml: String; APathJSON: string = ''): THorseCallback; overload;
