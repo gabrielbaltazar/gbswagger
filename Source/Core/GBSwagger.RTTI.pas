@@ -53,6 +53,7 @@ type
       function IsFloat    : Boolean;
       function IsDateTime : Boolean;
       function IsBoolean  : Boolean;
+	  function IsReadOnly : Boolean;
 
       // Vários ORMs trabalham com tipo Nullable
       // Colaboração do Giorgio para essa compatibilidade
@@ -349,6 +350,14 @@ begin
   result := (not IsList) and (Self.PropertyType.TypeKind = tkClass);
 end;
 
+function TGBSwaggerRTTIPropertyHelper.IsReadOnly: Boolean;
+var
+  swaggerProp: SwagProp;
+begin
+  swaggerProp := GetAttribute<SwagProp>;
+  result := (Assigned(swaggerProp)) and (swaggerProp.readOnly);
+end;
+
 function TGBSwaggerRTTIPropertyHelper.IsString: Boolean;
 begin
   if Self.IsNullable then
@@ -642,7 +651,7 @@ begin
     end;
 
     swaggerProp := rProp.GetAttribute<SwagProp>;
-    if (Assigned(swaggerProp)) then
+    if (Assigned(swaggerProp)) and (swaggerProp.required) then
     begin
       SetLength(result, Length(result) + 1);
       result[Length(result) - 1] := rProp.SwagName;

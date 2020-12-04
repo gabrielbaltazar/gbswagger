@@ -74,6 +74,9 @@ begin
               .AddPair('minLength', TJSONNumber.Create(AProperty.SwagMinLength))
               .AddPair('maxLength', TJSONNumber.Create(AProperty.SwagMaxLength));
 
+  if AProperty.IsReadOnly then
+    Result.AddPair('readOnly', TJSONBool.Create(True));
+
   if (AProperty.IsInteger) or (AProperty.IsFloat) then
   begin
     attSwagNumber := AProperty.GetSwagNumber;
