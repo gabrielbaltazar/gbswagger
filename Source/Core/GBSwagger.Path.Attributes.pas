@@ -169,6 +169,9 @@ type
   SwagDELETE = class(SwagEndPoint)
   end;
 
+  SwagPATCH = class(SwagEndPoint)
+  end;
+
   SwagResponse = class(TCustomAttribute)
   private
     FhttpCode: Integer;

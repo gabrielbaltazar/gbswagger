@@ -58,7 +58,8 @@ var
 begin
   pathAttr := AClass.GetSwagPath;
   endpoint := AMethod.GetSwagEndPoint;
-  pathName := IfThen(pathAttr.name.IsEmpty, AClass.ClassName, pathAttr.name);
+//  pathName := IfThen(pathAttr.name.IsEmpty, AClass.ClassName, pathAttr.name);
+  pathName := pathAttr.name;
   path     := (pathName + '/' + endpoint.path).Replace('//', '/');
 
   if path.EndsWith('/') then
@@ -76,6 +77,9 @@ begin
   else
   if endpoint is SwagDELETE then
     Result := swaggerPath.DELETE
+  else
+  if endpoint is SwagPATCH then
+    Result := swaggerPath.PATCH
   else
     raise ENotImplemented.CreateFmt('Verbo http não implementado.', []);
 

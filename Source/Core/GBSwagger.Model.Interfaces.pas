@@ -155,6 +155,7 @@ type
     function POST   (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
     function PUT    (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
     function DELETE (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
+    function PATCH  (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
 
     function Methods: TArray<IGBSwaggerPathMethod>;
 

@@ -45,6 +45,16 @@ type
                        ADescription: string = '';
                        bRequired: Boolean = False;
                        bReadOnly: Boolean = False); overload;
+
+    constructor create(ADescription: string;
+                       bRequired: Boolean;
+                       bReadOnly: Boolean = False;
+                       AName: string = ''); overload;
+
+    constructor create(bRequired: Boolean;
+                       bReadOnly: Boolean = False;
+                       ADescription: String = '';
+                       AName: String = ''); overload;
   end;
 
   SwagString = class(TCustomAttribute)
@@ -114,6 +124,22 @@ end;
 { SwagProp }
 
 constructor SwagProp.create(AName, ADescription: string; bRequired, bReadOnly: Boolean);
+begin
+  FName        := AName;
+  FDescription := ADescription;
+  FRequired    := bRequired;
+  FReadOnly    := bReadOnly;
+end;
+
+constructor SwagProp.create(bRequired, bReadOnly: Boolean; ADescription, AName: String);
+begin
+  FName        := AName;
+  FDescription := ADescription;
+  FRequired    := bRequired;
+  FReadOnly    := bReadOnly;
+end;
+
+constructor SwagProp.create(ADescription: string; bRequired,  bReadOnly: Boolean; AName: string);
 begin
   FName        := AName;
   FDescription := ADescription;

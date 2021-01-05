@@ -53,7 +53,6 @@ type
       function IsFloat    : Boolean;
       function IsDateTime : Boolean;
       function IsBoolean  : Boolean;
-	  function IsReadOnly : Boolean;
 
       // Vários ORMs trabalham com tipo Nullable
       // Colaboração do Giorgio para essa compatibilidade
@@ -66,6 +65,7 @@ type
 
       function IsSwaggerArray: Boolean;
       function IsSwaggerIgnore(AClass: TClass): Boolean;
+      function IsSwaggerReadOnly: Boolean;
 
       function ArrayType: string;
       function ListType : string;
@@ -350,14 +350,6 @@ begin
   result := (not IsList) and (Self.PropertyType.TypeKind = tkClass);
 end;
 
-function TGBSwaggerRTTIPropertyHelper.IsReadOnly: Boolean;
-var
-  swaggerProp: SwagProp;
-begin
-  swaggerProp := GetAttribute<SwagProp>;
-  result := (Assigned(swaggerProp)) and (swaggerProp.readOnly);
-end;
-
 function TGBSwaggerRTTIPropertyHelper.IsString: Boolean;
 begin
   if Self.IsNullable then
@@ -394,6 +386,16 @@ begin
     if AClass.InheritsFrom(TInterfacedObject) then
       result := Self.Name.ToLower.Equals('refcount');
   end;
+end;
+
+function TGBSwaggerRTTIPropertyHelper.IsSwaggerReadOnly: Boolean;
+var
+  swaggerProp: SwagProp;
+begin
+  result := False;
+  swaggerProp := GetAttribute<SwagProp>;
+  if (Assigned(swaggerProp)) and (swaggerProp.readOnly) then
+    result := True;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.ListType: string;

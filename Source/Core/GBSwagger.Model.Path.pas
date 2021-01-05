@@ -30,6 +30,7 @@ type TGBSwaggerModelPath = class(TInterfacedObject, IGBSwaggerPath)
     function POST   (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
     function PUT    (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
     function DELETE (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
+    function PATCH  (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
 
     function Methods: TArray<IGBSwaggerPathMethod>;
 
@@ -104,6 +105,12 @@ end;
 class function TGBSwaggerModelPath.New(Parent: IGBSwagger): IGBSwaggerPath;
 begin
   result := Self.create(Parent);
+end;
+
+function TGBSwaggerModelPath.PATCH(Summary, Description: string): IGBSwaggerPathMethod;
+begin
+  result := AddMethod(Summary, Description)
+              .MethodType(mtPatch);
 end;
 
 function TGBSwaggerModelPath.POST(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
