@@ -56,8 +56,10 @@ type
     function Host     : String; overload;
     function BasePath : String; overload;
 
-    function AddConsumes (Value: TGBSwaggerContentType): IGBSwagger;
-    function AddProduces (Value: TGBSwaggerContentType): IGBSwagger;
+    function AddConsumes (Value: String): IGBSwagger; overload;
+    function AddConsumes (Value: TGBSwaggerContentType): IGBSwagger; overload;
+    function AddProduces (Value: String): IGBSwagger; overload;
+    function AddProduces (Value: TGBSwaggerContentType): IGBSwagger; overload;
     function AddProtocol (Value: TGBSwaggerProtocol)   : IGBSwagger;
 
     function AddSecurity(Description: String): IGBSwaggerSecurity;
@@ -66,8 +68,8 @@ type
 
     function Path(Name: String): IGBSwaggerPath;
 
-    function Consumes  : TArray<TGBSwaggerContentType>;
-    function Produces  : TArray<TGBSwaggerContentType>;
+    function Consumes  : TArray<String>;
+    function Produces  : TArray<String>;
     function Protocols : TArray<TGBSwaggerProtocol>;
     function Schemas   : TArray<IGBSwaggerSchema>;
     function Paths     : TArray<IGBSwaggerPath>;
@@ -155,6 +157,7 @@ type
     function POST   (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
     function PUT    (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
     function DELETE (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
+    function PATCH  (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
 
     function Methods: TArray<IGBSwaggerPathMethod>;
 
@@ -167,7 +170,9 @@ type
     function Summary     (Value: String): IGBSwaggerPathMethod; overload;
     function Description (Value: string): IGBSwaggerPathMethod; overload;
     function OperationId (Value: string): IGBSwaggerPathMethod; overload;
+    function AddConsumes (Value: String): IGBSwaggerPathMethod; overload;
     function AddConsumes (Value: TGBSwaggerContentType): IGBSwaggerPathMethod; overload;
+    function AddProduces (Value: String): IGBSwaggerPathMethod; overload;
     function AddProduces (Value: TGBSwaggerContentType): IGBSwaggerPathMethod; overload;
     function AddTag      (Value: String): IGBSwaggerPathMethod; overload;
 
@@ -189,8 +194,8 @@ type
     function IsPublic(Value: Boolean): IGBSwaggerPathMethod; overload;
     function IsPublic: Boolean; overload;
 
-    function Consumes  : TArray<TGBSwaggerContentType>;
-    function Produces  : TArray<TGBSwaggerContentType>;
+    function Consumes  : TArray<String>;
+    function Produces  : TArray<String>;
     function Parameters: TArray<IGBSwaggerParameter>;
     function Responses : TArray<IGBSwaggerPathResponse>;
     function Tags      : TArray<String>;

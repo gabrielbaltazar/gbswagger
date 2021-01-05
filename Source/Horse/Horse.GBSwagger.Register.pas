@@ -92,7 +92,8 @@ var
 begin
   pathAttr := AClass.GetSwagPath;
   endpoint := AMethod.GetSwagEndPoint;
-  pathName := IfThen(pathAttr.name.IsEmpty, AClass.ClassName, pathAttr.name);
+//  pathName := IfThen(pathAttr.name.IsEmpty, AClass.ClassName, pathAttr.name);
+  pathName := pathAttr.name;
   basePath := Swagger.BasePath.Replace(Swagger.Config.ModuleName, EmptyStr);
   if (not basePath.IsEmpty) and (not basePath.EndsWith('/')) then
     basePath := basePath + '/';
@@ -113,6 +114,9 @@ begin
   else
   if endpoint is SwagDELETE then
     THorse.GetInstance.Delete(path, HorseCallback(AClass, AMethod))
+  else
+  if endpoint is SwagPATCH then
+    THorse.GetInstance.Patch(path, HorseCallback(AClass, AMethod))
   else
     raise ENotImplemented.CreateFmt('Verbo http não implementado.', []);
 end;

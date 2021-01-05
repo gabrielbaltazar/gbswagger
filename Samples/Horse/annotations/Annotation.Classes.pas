@@ -14,10 +14,10 @@ type
     FbirthdayDate: TDateTime;
     FlastUpdate: TDateTime;
   public
-    [SwagProp('id', 'user id', True)]
+    [SwagProp('user id', True)]
     property id: Double read Fid write Fid;
 
-    [SwagRequired]
+    [SwagProp('User Description', True)]
     property name: String read Fname write Fname;
 
     [SwagString(100)]

@@ -27,8 +27,8 @@ type TGBSwaggerModel = class(TInterfacedObject, IGBSwagger)
     FInfo      : IGBSwaggerInfo;
     FConfig    : IGBSwaggerConfig;
     FTags      : TList<IGBSwaggerTag>;
-    FConsumes  : TList<TGBSwaggerContentType>;
-    FProduces  : TList<TGBSwaggerContentType>;
+    FConsumes  : TList<String>;
+    FProduces  : TList<String>;
     FProtocols : TList<TGBSwaggerProtocol>;
     FSchemas   : TDictionary<String,IGBSwaggerSchema>;
     FPaths     : TDictionary<String,IGBSwaggerPath>;
@@ -66,8 +66,8 @@ type TGBSwaggerModel = class(TInterfacedObject, IGBSwagger)
 
     function Path(Name: String): IGBSwaggerPath;
 
-    function Consumes: TArray<TGBSwaggerContentType>;
-    function Produces: TArray<TGBSwaggerContentType>;
+    function Consumes: TArray<String>;
+    function Produces: TArray<String>;
     function Protocols: TArray<TGBSwaggerProtocol>;
     function Schemas: TArray<IGBSwaggerSchema>;
     function Paths: TArray<IGBSwaggerPath>;
@@ -76,8 +76,10 @@ type TGBSwaggerModel = class(TInterfacedObject, IGBSwagger)
     function Info   : IGBSwaggerInfo;
     function Config : IGBSwaggerConfig;
 
-    function AddConsumes (Value: TGBSwaggerContentType): IGBSwagger;
-    function AddProduces (Value: TGBSwaggerContentType): IGBSwagger;
+    function AddConsumes (Value: TGBSwaggerContentType): IGBSwagger; overload;
+    function AddConsumes (Value: String): IGBSwagger; overload;
+    function AddProduces (Value: String): IGBSwagger; overload;
+    function AddProduces (Value: TGBSwaggerContentType): IGBSwagger; overload;
     function AddProtocol (Value: TGBSwaggerProtocol)   : IGBSwagger;
 
     function AddSecurity(Description: String): IGBSwaggerSecurity;
@@ -135,14 +137,26 @@ begin
               .&In(gbHeader)
 end;
 
-function TGBSwaggerModel.AddConsumes(Value: TGBSwaggerContentType): IGBSwagger;
+function TGBSwaggerModel.AddConsumes(Value: String): IGBSwagger;
 begin
   result := Self;
   if not FConsumes.Contains(Value) then
     FConsumes.Add(Value);
 end;
 
+function TGBSwaggerModel.AddConsumes(Value: TGBSwaggerContentType): IGBSwagger;
+begin
+  result := Self;
+  AddConsumes(Value.toString);
+end;
+
 function TGBSwaggerModel.AddProduces(Value: TGBSwaggerContentType): IGBSwagger;
+begin
+  result := Self;
+  AddProduces(Value.toString);
+end;
+
+function TGBSwaggerModel.AddProduces(Value: String): IGBSwagger;
 begin
   result := Self;
   if not FProduces.Contains(Value) then
@@ -220,7 +234,7 @@ begin
   result := FConfig;
 end;
 
-function TGBSwaggerModel.Consumes: TArray<TGBSwaggerContentType>;
+function TGBSwaggerModel.Consumes: TArray<String>;
 begin
   result := FConsumes.ToArray;
 end;
@@ -249,8 +263,8 @@ end;
 
 procedure TGBSwaggerModel.createConsumes;
 begin
-  FConsumes := TList<TGBSwaggerContentType>.Create;
-  FConsumes.Add(gbAppJSON);
+  FConsumes := TList<String>.Create;
+  FConsumes.Add(gbAppJSON.toString);
 end;
 
 procedure TGBSwaggerModel.createPaths;
@@ -276,8 +290,8 @@ end;
 
 procedure TGBSwaggerModel.createProduces;
 begin
-  FProduces := TList<TGBSwaggerContentType>.Create;
-  FProduces.Add(gbAppJSON);
+  FProduces := TList<String>.Create;
+  FProduces.Add(gbAppJSON.toString);
 end;
 
 procedure TGBSwaggerModel.createProtocols;
@@ -367,7 +381,7 @@ begin
 
 end;
 
-function TGBSwaggerModel.Produces: TArray<TGBSwaggerContentType>;
+function TGBSwaggerModel.Produces: TArray<String>;
 begin
   Result := FProduces.ToArray;
 end;

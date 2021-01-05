@@ -65,6 +65,7 @@ type
 
       function IsSwaggerArray: Boolean;
       function IsSwaggerIgnore(AClass: TClass): Boolean;
+      function IsSwaggerReadOnly: Boolean;
 
       function ArrayType: string;
       function ListType : string;
@@ -88,6 +89,7 @@ type
       function GetSwagEndPoint    : SwagEndPoint;
       function GetSwagParamPath   : TArray<SwagParamPath>;
       function GetSwagParamHeader : TArray<SwagParamHeader>;
+      function GetSwagContentType : TArray<String>;
       function GetSwagParamQuery  : TArray<SwagParamQuery>;
       function GetSwagParamBody   : SwagParamBody;
       function GetSwagResponse    : TArray<SwagResponse>;
@@ -387,6 +389,16 @@ begin
   end;
 end;
 
+function TGBSwaggerRTTIPropertyHelper.IsSwaggerReadOnly: Boolean;
+var
+  swaggerProp: SwagProp;
+begin
+  result := False;
+  swaggerProp := GetAttribute<SwagProp>;
+  if (Assigned(swaggerProp)) and (swaggerProp.readOnly) then
+    result := True;
+end;
+
 function TGBSwaggerRTTIPropertyHelper.ListType: string;
 begin
   result := EmptyStr;
@@ -642,7 +654,7 @@ begin
     end;
 
     swaggerProp := rProp.GetAttribute<SwagProp>;
-    if (Assigned(swaggerProp)) then
+    if (Assigned(swaggerProp)) and (swaggerProp.required) then
     begin
       SetLength(result, Length(result) + 1);
       result[Length(result) - 1] := rProp.SwagName;
@@ -652,6 +664,23 @@ begin
 end;
 
 { TGBSwaggerMethodHelper }
+
+function TGBSwaggerMethodHelper.GetSwagContentType: TArray<String>;
+var
+  swaggerContentType: SwagContentType;
+  i : Integer;
+begin
+  result := [];
+  for i := 0 to Pred(Length(GetAttributes)) do
+  begin
+    if GetAttributes[i].ClassNameIs(SwagContentType.ClassName) then
+    begin
+      swaggerContentType := SwagContentType(GetAttributes[i]);
+      SetLength(Result, Length(result) + 1);
+      result[Length(result) - 1] := swaggerContentType.ContentType;
+    end;
+  end;
+end;
 
 function TGBSwaggerMethodHelper.GetSwagEndPoint: SwagEndPoint;
 var

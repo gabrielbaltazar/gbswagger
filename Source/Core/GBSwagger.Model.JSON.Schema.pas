@@ -74,6 +74,9 @@ begin
               .AddPair('minLength', TJSONNumber.Create(AProperty.SwagMinLength))
               .AddPair('maxLength', TJSONNumber.Create(AProperty.SwagMaxLength));
 
+  if AProperty.IsSwaggerReadOnly then
+    Result.AddPair('readOnly', TJSONBool.Create(True));
+
   if (AProperty.IsInteger) or (AProperty.IsFloat) then
   begin
     attSwagNumber := AProperty.GetSwagNumber;
@@ -156,11 +159,17 @@ function TGBSwaggerModelJSONSchema.JSONPropertyPairObject(AProperty: TRttiProper
 var
   classType: TClass;
   className: string;
+  jsonArray: TJSONArray;
 begin
   classType := AProperty.GetClassType;
   className := FSchema.&End.SchemaName(classType);
 
-  Result := TJSONPair.Create('$ref', '#/definitions/' + className);
+  jsonArray := TJSONArray.Create;
+  jsonArray.AddElement(TJsonObject.Create
+                          .AddPair('$ref', '#/definitions/' + className));
+
+  Result := TJSONPair.Create('allOf', jsonArray);
+//  Result := TJSONPair.Create('$ref', '#/definitions/' + className);
 end;
 
 function TGBSwaggerModelJSONSchema.JSONRequired: TJSONArray;

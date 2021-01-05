@@ -73,7 +73,7 @@ begin
       .POST('Add user', 'Add a new user')
         .AddParamBody('User data', 'User data')
           .Required(True)
-          .Schema(TUser)
+          .Schema('string')
         .&End
         .AddResponse(201, 'Created')
           .Schema(TUser)
