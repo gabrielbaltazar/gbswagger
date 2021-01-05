@@ -135,7 +135,19 @@ type
                        bRequired: Boolean = True); overload;
 
     constructor create(AName: string;
+                       ASchema: String;
+                       ADescription: string;
+                       bIsArray: Boolean = False;
+                       bRequired: Boolean = True); overload;
+
+    constructor create(AName: string;
                        AClassType: TClass;
+                       bIsArray: Boolean = False;
+                       ADescription: string = '';
+                       bRequired: Boolean = True); overload;
+
+    constructor create(AName: string;
+                       ASchema: String;
                        bIsArray: Boolean = False;
                        ADescription: string = '';
                        bRequired: Boolean = True); overload;
@@ -292,6 +304,24 @@ end;
 constructor SwagParamBody.create(AName: string; AClassType: TClass; ADescription: string; bIsArray, bRequired: Boolean);
 begin
   create(AName, AClassType, bIsArray, ADescription, bRequired);
+end;
+
+constructor SwagParamBody.create(AName, ASchema: String; bIsArray: Boolean; ADescription: string; bRequired: Boolean);
+begin
+  Fname        := AName;
+  FSchema      := ASchema;
+  FisArray     := bIsArray;
+  Fdescription := ADescription;
+  Frequired    := bRequired;
+end;
+
+constructor SwagParamBody.create(AName, ASchema, ADescription: string; bIsArray, bRequired: Boolean);
+begin
+  Fname        := AName;
+  FSchema      := ASchema;
+  FisArray     := bIsArray;
+  Fdescription := ADescription;
+  Frequired    := bRequired;
 end;
 
 { SwagResponse }

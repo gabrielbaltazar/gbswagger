@@ -108,8 +108,10 @@ begin
 
   LWebResponse := THorseHackResponse(AResponse).GetWebResponse;
   LWebResponse.ContentType := 'application/json';
+  LWebResponse.ContentStream := TStringStream.Create(JSONSwagger,TEncoding.UTF8);
+  LWebResponse.SendResponse;
 
-  AResponse.Send(JSONSwagger);
+//  AResponse.Send(JSONSwagger);
 end;
 
 initialization

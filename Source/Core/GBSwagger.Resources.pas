@@ -37,7 +37,7 @@ begin
     Result := dm.swagger_html.HTMLDoc.Text;
     result := Result.Replace('::SWAGGER_TITLE', Swagger.Info.Title)
                     .Replace('::SWAGGER_JSON', AJSONPath)
-                    .Replace('<%=jsonurl%>', 'http://127.0.0.1:9000/swagger/doc/json')
+                    .Replace('<%=jsonurl%>', AJSONPath)
                     .Replace('::SWAGGER_CSS', Swagger.Config.ResourcePath)
                     .Replace('::SWAGGER_UI_BUNDLE_JS', Swagger.Config.ResourcePath)
                     .Replace('::SWAGGER_UI_STANDALONE', Swagger.Config.ResourcePath);
