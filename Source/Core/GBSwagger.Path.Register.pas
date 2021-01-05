@@ -36,6 +36,7 @@ type
     class procedure RegisterMethodHeaders  (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
     class procedure RegisterMethodPaths    (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
     class procedure RegisterMethodQueries  (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
+    class procedure RegisterContentType    (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
     class procedure RegisterMethodBody     (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
     class procedure RegisterMethodResponse (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
 
@@ -89,6 +90,16 @@ begin
     .IsPublic(endpoint.isPublic);
 end;
 
+class procedure TGBSwaggerPathRegister.RegisterContentType(AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
+var
+  i : Integer;
+  contentType: TArray<String>;
+begin
+  contentType := AMethod.GetSwagContentType;
+  for i := 0 to Pred(Length(contentType)) do
+    APathMethod.AddConsumes(contentType[i]);
+end;
+
 class procedure TGBSwaggerPathRegister.RegisterMethod(AClass: TClass; AMethod: TRttiMethod);
 var
   pathMethod: IGBSwaggerPathMethod;
@@ -98,6 +109,7 @@ begin
   RegisterMethodHeaders  (AMethod, pathMethod);
   RegisterMethodPaths    (AMethod, pathMethod);
   RegisterMethodQueries  (AMethod, pathMethod);
+  RegisterContentType    (AMethod, pathMethod);
   RegisterMethodBody     (AMethod, pathMethod);
   RegisterMethodResponse (AMethod, pathMethod);
 end;

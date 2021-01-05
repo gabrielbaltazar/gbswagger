@@ -29,6 +29,7 @@ type
 
     [SwagPOST('Insert a new user')]
     [SwagParamBody('UserData', TUser)]
+    [SwagContentType('application/octet-stream')]
     [SwagResponse(201, TUser)]
     [SwagResponse(400)]
     procedure InsertUser;

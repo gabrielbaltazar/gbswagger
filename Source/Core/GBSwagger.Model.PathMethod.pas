@@ -23,8 +23,8 @@ type TGBSwaggerModelPathMethod = class(TInterfacedObject, IGBSwaggerPathMethod)
     FOperationId: string;
     FIsPublic   : Boolean;
 
-    FConsumes  : TList<TGBSwaggerContentType>;
-    FProduces  : TList<TGBSwaggerContentType>;
+    FConsumes  : TList<String>;
+    FProduces  : TList<String>;
     FParameters: TList<IGBSwaggerParameter>;
     FResponses : TList<IGBSwaggerPathResponse>;
     FSecurities: TList<String>;
@@ -35,7 +35,9 @@ type TGBSwaggerModelPathMethod = class(TInterfacedObject, IGBSwaggerPathMethod)
     function Summary     (Value: String): IGBSwaggerPathMethod; overload;
     function Description (Value: string): IGBSwaggerPathMethod; overload;
     function OperationId (Value: string): IGBSwaggerPathMethod; overload;
+    function AddConsumes (Value: String): IGBSwaggerPathMethod; overload;
     function AddConsumes (Value: TGBSwaggerContentType): IGBSwaggerPathMethod; overload;
+    function AddProduces (Value: String): IGBSwaggerPathMethod; overload;
     function AddProduces (Value: TGBSwaggerContentType): IGBSwaggerPathMethod; overload;
     function AddTag      (Value: String): IGBSwaggerPathMethod; overload;
 
@@ -57,8 +59,8 @@ type TGBSwaggerModelPathMethod = class(TInterfacedObject, IGBSwaggerPathMethod)
     function IsPublic(Value: Boolean): IGBSwaggerPathMethod; overload;
     function IsPublic: Boolean; overload;
 
-    function Consumes  : TArray<TGBSwaggerContentType>;
-    function Produces  : TArray<TGBSwaggerContentType>;
+    function Consumes  : TArray<String>;
+    function Produces  : TArray<String>;
     function Parameters: TArray<IGBSwaggerParameter>;
     function Responses : TArray<IGBSwaggerPathResponse>;
     function Tags      : TArray<String>;
@@ -80,8 +82,7 @@ implementation
 function TGBSwaggerModelPathMethod.AddConsumes(Value: TGBSwaggerContentType): IGBSwaggerPathMethod;
 begin
   result := Self;
-  if not FConsumes.Contains(Value) then
-    FConsumes.Add(Value);
+  AddConsumes(Value.toString);
 end;
 
 function TGBSwaggerModelPathMethod.AddParameter(Name, Description: String) : IGBSwaggerParameter;
@@ -91,6 +92,13 @@ begin
               .Description(Description);
 
   FParameters.Add(result);
+end;
+
+function TGBSwaggerModelPathMethod.AddConsumes(Value: String): IGBSwaggerPathMethod;
+begin
+  result := Self;
+  if not FConsumes.Contains(Value) then
+    FConsumes.Add(Value);
 end;
 
 function TGBSwaggerModelPathMethod.AddParamBody(Name, Description: String): IGBSwaggerParameter;
@@ -129,11 +137,17 @@ begin
                 .Schema(SWAG_STRING);
 end;
 
-function TGBSwaggerModelPathMethod.AddProduces(Value: TGBSwaggerContentType): IGBSwaggerPathMethod;
+function TGBSwaggerModelPathMethod.AddProduces(Value: String): IGBSwaggerPathMethod;
 begin
   result := Self;
   if not FProduces.Contains(Value) then
     FProduces.Add(Value);
+end;
+
+function TGBSwaggerModelPathMethod.AddProduces(Value: TGBSwaggerContentType): IGBSwaggerPathMethod;
+begin
+  result := Self;
+  AddProduces(Value.toString);
 end;
 
 function TGBSwaggerModelPathMethod.AddResponse(HttpCode: Integer; Description: String = '')  : IGBSwaggerPathResponse;
@@ -172,7 +186,7 @@ begin
   FTags.Add(Value);
 end;
 
-function TGBSwaggerModelPathMethod.Consumes: TArray<TGBSwaggerContentType>;
+function TGBSwaggerModelPathMethod.Consumes: TArray<String>;
 begin
   result := FConsumes.ToArray;
 
@@ -184,8 +198,8 @@ constructor TGBSwaggerModelPathMethod.create(Parent: IGBSwaggerPath);
 begin
   FIsPublic   := False;
   FParent     := Parent;
-  FConsumes   := TList<TGBSwaggerContentType>.Create;
-  FProduces   := TList<TGBSwaggerContentType>.Create;
+  FConsumes   := TList<String>.Create;
+  FProduces   := TList<String>.Create;
   FParameters := TList<IGBSwaggerParameter>.create;
   FResponses  := TList<IGBSwaggerPathResponse>.create;
   FTags       := TList<String>.create;
@@ -262,7 +276,7 @@ begin
   result := FParameters.ToArray;
 end;
 
-function TGBSwaggerModelPathMethod.Produces: TArray<TGBSwaggerContentType>;
+function TGBSwaggerModelPathMethod.Produces: TArray<String>;
 begin
   result := FProduces.ToArray;
 

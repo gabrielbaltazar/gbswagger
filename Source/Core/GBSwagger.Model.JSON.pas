@@ -29,7 +29,7 @@ type TGBSwaggerModelJSON = class(TGBSwaggerModel, IGBSwaggerModelJSON)
     function JSONPath: TJSONObject;
     function JSONSchemes: TJSONArray;
     function JSONDefinitions: TJSONObject;
-    function JSONContentTypes(Value: TArray<TGBSwaggerContentType>): TJSONArray;
+    function JSONContentTypes(Value: TArray<String>): TJSONArray;
   public
     constructor create(Swagger: IGBSwagger);
     destructor Destroy; override;
@@ -54,13 +54,13 @@ begin
   inherited;
 end;
 
-function TGBSwaggerModelJSON.JSONContentTypes(Value: TArray<TGBSwaggerContentType>): TJSONArray;
+function TGBSwaggerModelJSON.JSONContentTypes(Value: TArray<String>): TJSONArray;
 var
   i: Integer;
 begin
   result := TJSONArray.Create;
   for i := 0 to Pred(Length(Value)) do
-    Result.Add(Value[i].toString);
+    Result.Add(Value[i]);
 end;
 
 function TGBSwaggerModelJSON.JSONDefinitions: TJSONObject;

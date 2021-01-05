@@ -10,8 +10,11 @@ uses
   GBSwagger.Model.JSON.Interfaces,
   GBSwagger.Model.Types,
   GBSwagger.Web.HTML,
+  System.JSON,
+  System.Classes,
   System.StrUtils,
-  System.SysUtils;
+  System.SysUtils,
+  Web.HTTPApp;
 
 const
   SWAG_STRING  = GBSwagger.Model.Types.SWAG_STRING;
@@ -32,6 +35,9 @@ function HorseSwagger(APathHtml: String; APathJSON: string = ''): THorseCallback
 
 procedure SwaggerHTML(ARequest: THorseRequest; AResponse: THorseResponse; ANext: TProc);
 procedure SwaggerJSON(ARequest: THorseRequest; AResponse: THorseResponse; ANext: TProc);
+
+//function RequestHost(ARequest: THorseRequest): string;
+//procedure UpdateSwaggerHost(ARequest: THorseRequest);
 
 var
   HTMLSwagger: string;
@@ -94,9 +100,14 @@ begin
 end;
 
 procedure SwaggerJSON(ARequest: THorseRequest; AResponse: THorseResponse; ANext: TProc);
+var
+  LWebResponse : TWebResponse;
 begin
   if JSONSwagger.IsEmpty then
     JSONSwagger := SwaggerJSONString(Swagger);
+
+  LWebResponse := THorseHackResponse(AResponse).GetWebResponse;
+  LWebResponse.ContentType := 'application/json';
 
   AResponse.Send(JSONSwagger);
 end;

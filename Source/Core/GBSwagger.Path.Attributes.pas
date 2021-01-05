@@ -157,6 +157,16 @@ type
     constructor create(APath: String; ASummary: String; APublic: Boolean = False; ADescription: String = ''); overload;
   end;
 
+  SwagContentType = class(TCustomAttribute)
+  private
+    FContentType: String;
+  public
+    constructor create(Value: TGBSwaggerContentType); overload;
+    constructor create(Value: String); overload;
+
+    property ContentType: String read FContentType;
+  end;
+
   SwagGET = class(SwagEndPoint)
   end;
 
@@ -444,6 +454,18 @@ begin
   Fname := AName;
   Femail:= AEmail;
   Fsite := ASite;
+end;
+
+{ SwagContentType }
+
+constructor SwagContentType.create(Value: String);
+begin
+  FContentType := Value;
+end;
+
+constructor SwagContentType.create(Value: TGBSwaggerContentType);
+begin
+  FContentType := Value.toString;
 end;
 
 end.

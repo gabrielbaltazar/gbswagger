@@ -6,6 +6,7 @@ program Console;
 
 uses
   Horse,
+  Horse.CORS,
   Horse.GBSwagger,
   System.SysUtils,
   Annotation.Classes in '..\Annotation.Classes.pas',
@@ -32,7 +33,9 @@ end;
 begin
   ReportMemoryLeaksOnShutdown := True;
 
-  THorse.GetInstance.Use(HorseSwagger);
+  THorse
+    .Use(CORS)
+    .Use(HorseSwagger);
 
   SwaggerConfig;
   THorseGBSwaggerRegister.RegisterPath(TUserController);

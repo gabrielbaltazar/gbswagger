@@ -89,6 +89,7 @@ type
       function GetSwagEndPoint    : SwagEndPoint;
       function GetSwagParamPath   : TArray<SwagParamPath>;
       function GetSwagParamHeader : TArray<SwagParamHeader>;
+      function GetSwagContentType : TArray<String>;
       function GetSwagParamQuery  : TArray<SwagParamQuery>;
       function GetSwagParamBody   : SwagParamBody;
       function GetSwagResponse    : TArray<SwagResponse>;
@@ -663,6 +664,23 @@ begin
 end;
 
 { TGBSwaggerMethodHelper }
+
+function TGBSwaggerMethodHelper.GetSwagContentType: TArray<String>;
+var
+  swaggerContentType: SwagContentType;
+  i : Integer;
+begin
+  result := [];
+  for i := 0 to Pred(Length(GetAttributes)) do
+  begin
+    if GetAttributes[i].ClassNameIs(SwagContentType.ClassName) then
+    begin
+      swaggerContentType := SwagContentType(GetAttributes[i]);
+      SetLength(Result, Length(result) + 1);
+      result[Length(result) - 1] := swaggerContentType.ContentType;
+    end;
+  end;
+end;
 
 function TGBSwaggerMethodHelper.GetSwagEndPoint: SwagEndPoint;
 var

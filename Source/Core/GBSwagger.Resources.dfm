@@ -69,7 +69,7 @@ object GBSwaggerResources: TGBSwaggerResources
       '  </script>'
       '  </body>'
       '</html>')
-    Left = 80
-    Top = 128
+    Left = 24
+    Top = 24
   end
 end
