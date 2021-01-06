@@ -60,7 +60,8 @@ begin
   for rttiProperty in FSchema.ClassType.GetProperties do
   begin
     if not rttiProperty.IsSwaggerIgnore(FSchema.ClassType) then
-      Result.AddPair(rttiProperty.SwagName, JSONProperty(rttiProperty))
+      if Result.Get(rttiProperty.SwagName) = nil then
+        Result.AddPair(rttiProperty.SwagName, JSONProperty(rttiProperty))
   end;
 end;
 

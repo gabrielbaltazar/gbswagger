@@ -96,7 +96,12 @@ begin
     if FSwaggerParameter.IsEnum then
       ParamEnum(jsonObject)
     else
-      jsonObject.AddPair('type', schemaName);
+    begin
+      if FSwaggerParameter.ParamType = gbBody then
+        jsonObject.AddPair('schema', TJSONObject.Create.AddPair('type', schemaName))
+      else
+        jsonObject.AddPair('type', schemaName);
+    end;
 
   result := jsonObject;
 end;
