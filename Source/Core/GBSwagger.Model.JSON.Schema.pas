@@ -55,6 +55,7 @@ end;
 function TGBSwaggerModelJSONSchema.JSONProperties: TJSONObject;
 var
   rttiProperty: TRttiProperty;
+  pair: TJSONPair;
 begin
   result := TJSONObject.Create;
   for rttiProperty in FSchema.ClassType.GetProperties do
@@ -63,6 +64,14 @@ begin
       if Result.Get(rttiProperty.SwagName) = nil then
         Result.AddPair(rttiProperty.SwagName, JSONProperty(rttiProperty))
   end;
+
+  // Excluir Swagger Ignore em caso de herança
+  for rttiProperty in FSchema.ClassType.GetProperties do
+    if rttiProperty.IsSwaggerIgnore(FSchema.ClassType) then
+    begin
+      pair := Result.RemovePair(rttiProperty.SwagName);
+      pair.Free;
+    end;
 end;
 
 function TGBSwaggerModelJSONSchema.JSONProperty(AProperty: TRttiProperty): TJSONObject;
