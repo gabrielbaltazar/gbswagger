@@ -169,7 +169,7 @@ type
     constructor create(APath: String; ASummary: String; APublic: Boolean = False; ADescription: String = ''); overload;
   end;
 
-  SwagContentType = class(TCustomAttribute)
+  SwagConsumes = class(TCustomAttribute)
   private
     FContentType: String;
   public
@@ -177,6 +177,16 @@ type
     constructor create(Value: String); overload;
 
     property ContentType: String read FContentType;
+  end;
+
+  SwagProduces = class(TCustomAttribute)
+  private
+    FAccept: String;
+  public
+    constructor create(Value: TGBSwaggerContentType); overload;
+    constructor create(Value: String); overload;
+
+    property Accept: String read FAccept;
   end;
 
   SwagGET = class(SwagEndPoint)
@@ -488,14 +498,26 @@ end;
 
 { SwagContentType }
 
-constructor SwagContentType.create(Value: String);
+constructor SwagConsumes.create(Value: String);
 begin
   FContentType := Value;
 end;
 
-constructor SwagContentType.create(Value: TGBSwaggerContentType);
+constructor SwagConsumes.create(Value: TGBSwaggerContentType);
 begin
   FContentType := Value.toString;
+end;
+
+{ SwagAccept }
+
+constructor SwagProduces.create(Value: String);
+begin
+  FAccept := Value;
+end;
+
+constructor SwagProduces.create(Value: TGBSwaggerContentType);
+begin
+  FAccept := Value.toString;
 end;
 
 end.

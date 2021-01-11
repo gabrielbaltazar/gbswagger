@@ -29,7 +29,9 @@ type
 
     [SwagPOST('Insert a new user')]
     [SwagParamBody('UserData', 'string', 'Enviar Arquivo binário correspondente')]
-    [SwagContentType('application/octet-stream')]
+    [SwagConsumes('application/octet-stream')]
+    [SwagConsumes('application/json')]
+    [SwagProduces('application/pdf')]
     [SwagResponse(201, TUser)]
     [SwagResponse(400)]
     procedure InsertUser;

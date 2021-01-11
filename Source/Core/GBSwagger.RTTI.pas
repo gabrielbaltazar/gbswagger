@@ -89,7 +89,8 @@ type
       function GetSwagEndPoint    : SwagEndPoint;
       function GetSwagParamPath   : TArray<SwagParamPath>;
       function GetSwagParamHeader : TArray<SwagParamHeader>;
-      function GetSwagContentType : TArray<String>;
+      function GetSwagConsumes    : TArray<String>;
+      function GetSwagProduces    : TArray<String>;
       function GetSwagParamQuery  : TArray<SwagParamQuery>;
       function GetSwagParamBody   : SwagParamBody;
       function GetSwagResponse    : TArray<SwagResponse>;
@@ -665,19 +666,36 @@ end;
 
 { TGBSwaggerMethodHelper }
 
-function TGBSwaggerMethodHelper.GetSwagContentType: TArray<String>;
+function TGBSwaggerMethodHelper.GetSwagProduces: TArray<String>;
 var
-  swaggerContentType: SwagContentType;
+  swaggerProduces: SwagProduces;
   i : Integer;
 begin
   result := [];
   for i := 0 to Pred(Length(GetAttributes)) do
   begin
-    if GetAttributes[i].ClassNameIs(SwagContentType.ClassName) then
+    if GetAttributes[i].ClassNameIs(SwagProduces.ClassName) then
     begin
-      swaggerContentType := SwagContentType(GetAttributes[i]);
+      swaggerProduces := SwagProduces(GetAttributes[i]);
       SetLength(Result, Length(result) + 1);
-      result[Length(result) - 1] := swaggerContentType.ContentType;
+      result[Length(result) - 1] := swaggerProduces.Accept;
+    end;
+  end;
+end;
+
+function TGBSwaggerMethodHelper.GetSwagConsumes: TArray<String>;
+var
+  swaggerConsumes: SwagConsumes;
+  i : Integer;
+begin
+  result := [];
+  for i := 0 to Pred(Length(GetAttributes)) do
+  begin
+    if GetAttributes[i].ClassNameIs(SwagConsumes.ClassName) then
+    begin
+      swaggerConsumes := SwagConsumes(GetAttributes[i]);
+      SetLength(Result, Length(result) + 1);
+      result[Length(result) - 1] := swaggerConsumes.ContentType;
     end;
   end;
 end;
