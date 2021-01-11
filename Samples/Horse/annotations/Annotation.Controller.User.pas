@@ -28,10 +28,7 @@ type
     procedure FindUser;
 
     [SwagPOST('Insert a new user')]
-    [SwagParamBody('UserData', 'string', 'Enviar Arquivo binário correspondente')]
-    [SwagConsumes('application/octet-stream')]
-    [SwagConsumes('application/json')]
-    [SwagProduces('application/pdf')]
+    [SwagParamBody('UserData', TUser)]
     [SwagResponse(201, TUser)]
     [SwagResponse(400)]
     procedure InsertUser;
