@@ -89,7 +89,8 @@ type
       function GetSwagEndPoint    : SwagEndPoint;
       function GetSwagParamPath   : TArray<SwagParamPath>;
       function GetSwagParamHeader : TArray<SwagParamHeader>;
-      function GetSwagContentType : TArray<String>;
+      function GetSwagConsumes    : TArray<String>;
+      function GetSwagProduces    : TArray<String>;
       function GetSwagParamQuery  : TArray<SwagParamQuery>;
       function GetSwagParamBody   : SwagParamBody;
       function GetSwagResponse    : TArray<SwagResponse>;
@@ -337,6 +338,15 @@ begin
 
   if Self.PropertyType.ToString.ToLower.StartsWith('tlist<') then
     Exit(True);
+
+  if Assigned(Self.PropertyType.BaseType) then
+  begin
+    if Self.PropertyType.BaseType.Name.ToLower.StartsWith('tobjectlist<') then
+      Exit(True);
+
+    if Self.PropertyType.BaseType.Name.ToLower.StartsWith('tlist<') then
+      Exit(True);
+  end;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsNullable: Boolean;
@@ -400,13 +410,21 @@ begin
 end;
 
 function TGBSwaggerRTTIPropertyHelper.ListType: string;
+var
+  baseType: string;
 begin
   result := EmptyStr;
   if IsList then
   begin
+    if Assigned(PropertyType.BaseType) then
+    begin
+      baseType := PropertyType.Name;
+      baseType := Copy(baseType, 1, Pos('<', baseType));
+    end;
     Result := PropertyType.ToString
                 .Replace('TObjectList<', EmptyStr)
                 .Replace('TList<', EmptyStr)
+                .Replace(baseType, EmptyStr)
                 .Replace('>', EmptyStr);
   end;
 end;
@@ -665,19 +683,36 @@ end;
 
 { TGBSwaggerMethodHelper }
 
-function TGBSwaggerMethodHelper.GetSwagContentType: TArray<String>;
+function TGBSwaggerMethodHelper.GetSwagProduces: TArray<String>;
 var
-  swaggerContentType: SwagContentType;
+  swaggerProduces: SwagProduces;
   i : Integer;
 begin
   result := [];
   for i := 0 to Pred(Length(GetAttributes)) do
   begin
-    if GetAttributes[i].ClassNameIs(SwagContentType.ClassName) then
+    if GetAttributes[i].ClassNameIs(SwagProduces.ClassName) then
     begin
-      swaggerContentType := SwagContentType(GetAttributes[i]);
+      swaggerProduces := SwagProduces(GetAttributes[i]);
       SetLength(Result, Length(result) + 1);
-      result[Length(result) - 1] := swaggerContentType.ContentType;
+      result[Length(result) - 1] := swaggerProduces.Accept;
+    end;
+  end;
+end;
+
+function TGBSwaggerMethodHelper.GetSwagConsumes: TArray<String>;
+var
+  swaggerConsumes: SwagConsumes;
+  i : Integer;
+begin
+  result := [];
+  for i := 0 to Pred(Length(GetAttributes)) do
+  begin
+    if GetAttributes[i].ClassNameIs(SwagConsumes.ClassName) then
+    begin
+      swaggerConsumes := SwagConsumes(GetAttributes[i]);
+      SetLength(Result, Length(result) + 1);
+      result[Length(result) - 1] := swaggerConsumes.ContentType;
     end;
   end;
 end;
