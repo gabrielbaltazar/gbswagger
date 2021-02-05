@@ -36,7 +36,8 @@ type
     class procedure RegisterMethodHeaders  (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
     class procedure RegisterMethodPaths    (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
     class procedure RegisterMethodQueries  (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
-    class procedure RegisterContentType    (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
+    class procedure RegisterConsumes       (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
+    class procedure RegisterProduces       (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
     class procedure RegisterMethodBody     (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
     class procedure RegisterMethodResponse (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
 
@@ -90,12 +91,22 @@ begin
     .IsPublic(endpoint.isPublic);
 end;
 
-class procedure TGBSwaggerPathRegister.RegisterContentType(AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
+class procedure TGBSwaggerPathRegister.RegisterProduces(AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
+var
+  i : Integer;
+  accept: TArray<String>;
+begin
+  accept := AMethod.GetSwagProduces;
+  for i := 0 to Pred(Length(accept)) do
+    APathMethod.AddProduces(accept[i]);
+end;
+
+class procedure TGBSwaggerPathRegister.RegisterConsumes(AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
 var
   i : Integer;
   contentType: TArray<String>;
 begin
-  contentType := AMethod.GetSwagContentType;
+  contentType := AMethod.GetSwagConsumes;
   for i := 0 to Pred(Length(contentType)) do
     APathMethod.AddConsumes(contentType[i]);
 end;
@@ -109,7 +120,8 @@ begin
   RegisterMethodHeaders  (AMethod, pathMethod);
   RegisterMethodPaths    (AMethod, pathMethod);
   RegisterMethodQueries  (AMethod, pathMethod);
-  RegisterContentType    (AMethod, pathMethod);
+  RegisterConsumes       (AMethod, pathMethod);
+  RegisterProduces       (AMethod, pathMethod);
   RegisterMethodBody     (AMethod, pathMethod);
   RegisterMethodResponse (AMethod, pathMethod);
 end;
