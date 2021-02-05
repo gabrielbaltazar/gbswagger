@@ -337,6 +337,15 @@ begin
 
   if Self.PropertyType.ToString.ToLower.StartsWith('tlist<') then
     Exit(True);
+
+  if Assigned(Self.PropertyType.BaseType) then
+  begin
+    if Self.PropertyType.BaseType.Name.ToLower.StartsWith('tobjectlist<') then
+      Exit(True);
+
+    if Self.PropertyType.BaseType.Name.ToLower.StartsWith('tlist<') then
+      Exit(True);
+  end;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsNullable: Boolean;
@@ -400,13 +409,21 @@ begin
 end;
 
 function TGBSwaggerRTTIPropertyHelper.ListType: string;
+var
+  baseType: string;
 begin
   result := EmptyStr;
   if IsList then
   begin
+    if Assigned(PropertyType.BaseType) then
+    begin
+      baseType := PropertyType.Name;
+      baseType := Copy(baseType, 1, Pos('<', baseType));
+    end;
     Result := PropertyType.ToString
                 .Replace('TObjectList<', EmptyStr)
                 .Replace('TList<', EmptyStr)
+                .Replace(baseType, EmptyStr)
                 .Replace('>', EmptyStr);
   end;
 end;
