@@ -15,6 +15,9 @@
         <Projects Include="vcl\VCL.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="jwt\Console_jwt.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -59,14 +62,23 @@
     <Target Name="VCL:Make">
         <MSBuild Projects="vcl\VCL.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Console_jwt">
+        <MSBuild Projects="jwt\Console_jwt.dproj"/>
+    </Target>
+    <Target Name="Console_jwt:Clean">
+        <MSBuild Projects="jwt\Console_jwt.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Console_jwt:Make">
+        <MSBuild Projects="jwt\Console_jwt.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="Console;Apache;ISAPI;VCL"/>
+        <CallTarget Targets="Console;Apache;ISAPI;VCL;Console_jwt"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Console:Clean;Apache:Clean;ISAPI:Clean;VCL:Clean"/>
+        <CallTarget Targets="Console:Clean;Apache:Clean;ISAPI:Clean;VCL:Clean;Console_jwt:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Console:Make;Apache:Make;ISAPI:Make;VCL:Make"/>
+        <CallTarget Targets="Console:Make;Apache:Make;ISAPI:Make;VCL:Make;Console_jwt:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

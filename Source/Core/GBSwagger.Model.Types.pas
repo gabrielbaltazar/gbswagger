@@ -3,6 +3,9 @@ unit GBSwagger.Model.Types;
 interface
 
 uses
+  {$IFNDEF DSNAP}
+  Horse,
+  {$ENDIF}
   System.SysUtils,
   Web.HTTPApp;
 
@@ -11,6 +14,8 @@ const
   SWAG_INTEGER = 'integer';
 
 type
+  TRouteCallback = {$IFNDEF HORSE} Horse.THorseCallback {$ELSE} TObject {$ENDIF};
+
   TGBSwaggerContentType = (gbAppJSON, gbAppXML, gbTextHtml, gbPlainText, gbMultiPartFormData, gbAppOctetStream);
   TGBSwaggerProtocol    = (gbHttp, gbHttps);
   TGBSwaggerParamType   = (gbHeader, gbBody, gbQuery, gbPath, gbFormData);

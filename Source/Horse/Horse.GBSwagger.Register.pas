@@ -5,6 +5,7 @@ interface
 uses
   Horse,
   GBSwagger.Model.Interfaces,
+  GBSwagger.Model.Types,
   GBSwagger.Path.Attributes,
   GBSwagger.Path.Register,
   GBSwagger.RTTI,
@@ -16,6 +17,8 @@ uses
 type THorseGBSwaggerRegister = class(TGBSwaggerPathRegister)
 
   private
+    class function GetPathMethod(AClass: TClass; AEndPoint: SwagEndPoint): string;
+
     class procedure RegisterMethods(AClass: TClass; APath: SwagPath);
     class procedure RegisterMethod (AClass: TClass; AMethod: TRttiMethod);
 
@@ -82,41 +85,57 @@ end;
 
 { THorseGBSwaggerRegister }
 
-class procedure THorseGBSwaggerRegister.RegisterMethod(AClass: TClass; AMethod: TRttiMethod);
+class function THorseGBSwaggerRegister.GetPathMethod(AClass: TClass; AEndPoint: SwagEndPoint): string;
 var
-  pathAttr   : SwagPath;
-  endpoint   : SwagEndPoint;
-  path       : string;
-  pathName   : string;
-  basePath   : string;
+  pathAttr : SwagPath;
+  pathName : string;
+  basePath : string;
 begin
   pathAttr := AClass.GetSwagPath;
-  endpoint := AMethod.GetSwagEndPoint;
 //  pathName := IfThen(pathAttr.name.IsEmpty, AClass.ClassName, pathAttr.name);
   pathName := pathAttr.name;
   basePath := Swagger.BasePath.Replace(Swagger.Config.ModuleName, EmptyStr);
   if (not basePath.IsEmpty) and (not basePath.EndsWith('/')) then
     basePath := basePath + '/';
 
-  path := (basePath + pathName + '/' + endpoint.path);
-  path := path.Replace('//', '/');
-  path := path.Replace('{', ':');
-  path := path.Replace('}', '');
+  result := (basePath + pathName + '/' + AEndPoint.path);
+  result := result.Replace('//', '/');
+  result := result.Replace('{', ':');
+  result := result.Replace('}', '');
+end;
+
+class procedure THorseGBSwaggerRegister.RegisterMethod(AClass: TClass; AMethod: TRttiMethod);
+var
+  endpoint : SwagEndPoint;
+  path : string;
+  authCallbacks: array of TRouteCallback;
+  i : Integer;
+begin
+  endpoint := AMethod.GetSwagEndPoint;
+  path := GetPathMethod(AClass, endpoint);
+  SetLength(authCallbacks, 0);
+  if not endpoint.isPublic then
+  begin
+    SetLength(authCallbacks, Length(Swagger.Securities));
+    for i := 0 to Pred(Length(Swagger.Securities)) do
+      authCallbacks[i] := Swagger.Securities[i].Callback;
+  end;
+
 
   if endpoint is SwagGET then
-    THorse.GetInstance.Get(path, HorseCallback(AClass, AMethod))
+    THorse.GetInstance.Get(path, authCallbacks, HorseCallback(AClass, AMethod))
   else
   if endpoint is SwagPOST then
-    THorse.GetInstance.Post(path, HorseCallback(AClass, AMethod))
+    THorse.GetInstance.Post(path, authCallbacks, HorseCallback(AClass, AMethod))
   else
   if endpoint is SwagPUT then
-    THorse.GetInstance.Put(path, HorseCallback(AClass, AMethod))
+    THorse.GetInstance.Put(path, authCallbacks, HorseCallback(AClass, AMethod))
   else
   if endpoint is SwagDELETE then
-    THorse.GetInstance.Delete(path, HorseCallback(AClass, AMethod))
+    THorse.GetInstance.Delete(path, authCallbacks, HorseCallback(AClass, AMethod))
   else
   if endpoint is SwagPATCH then
-    THorse.GetInstance.Patch(path, HorseCallback(AClass, AMethod))
+    THorse.GetInstance.Patch(path, authCallbacks, HorseCallback(AClass, AMethod))
   else
     raise ENotImplemented.CreateFmt('Verbo http não implementado.', []);
 end;

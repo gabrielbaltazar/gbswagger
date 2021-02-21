@@ -106,7 +106,7 @@ begin
   if JSONSwagger.IsEmpty then
     JSONSwagger := SwaggerJSONString(Swagger);
 
-  LWebResponse := THorseHackResponse(AResponse).GetWebResponse;
+  LWebResponse := AResponse.RawWebResponse;
   LWebResponse.ContentType := 'application/json';
   LWebResponse.ContentStream := TStringStream.Create(JSONSwagger,TEncoding.UTF8);
   LWebResponse.SendResponse;

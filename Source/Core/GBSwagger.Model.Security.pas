@@ -3,7 +3,8 @@ unit GBSwagger.Model.Security;
 interface
 
 uses
-  GBSwagger.Model.Interfaces;
+  GBSwagger.Model.Interfaces,
+  GBSwagger.Model.Types;
 
 type TGBSwaggerModelSecurity = class(TInterfacedObject, IGBSwaggerSecurity)
 
@@ -12,6 +13,7 @@ type TGBSwaggerModelSecurity = class(TInterfacedObject, IGBSwaggerSecurity)
     FParent: IGBSwagger;
 
     FType             : TGBSwaggerSecurityType;
+    FCallback         : TRouteCallback;
     FDescription      : String;
     FName             : String;
     FIn               : TGBSwaggerParamType;
@@ -27,6 +29,7 @@ type TGBSwaggerModelSecurity = class(TInterfacedObject, IGBSwaggerSecurity)
     function &In         (Value: TGBSwaggerParamType): IGBSwaggerSecurity; overload;
     function AuthorizationURL(Value: String): IGBSwaggerSecurity; overload;
     function TokenURL (Value: String): IGBSwaggerSecurity; overload;
+    function Callback (Value: TRouteCallback): IGBSwaggerSecurity; overload;
 
     function &Type            : TGBSwaggerSecurityType; overload;
     function Description      : String; overload;
@@ -35,6 +38,7 @@ type TGBSwaggerModelSecurity = class(TInterfacedObject, IGBSwaggerSecurity)
     function Flow             : TGBSwaggerSecurityFlow; overload;
     function AuthorizationURL : String; overload;
     function TokenURL         : String; overload;
+    function Callback         : TRouteCallback; overload;
 
     function &End: IGBSwagger;
 
@@ -51,6 +55,17 @@ implementation
 function TGBSwaggerModelSecurity.AuthorizationURL: String;
 begin
   result := FAuthorizationURL;
+end;
+
+function TGBSwaggerModelSecurity.Callback: TRouteCallback;
+begin
+  Result := FCallback;
+end;
+
+function TGBSwaggerModelSecurity.Callback(Value: TRouteCallback): IGBSwaggerSecurity;
+begin
+  result := Self;
+  FCallback := Value;
 end;
 
 function TGBSwaggerModelSecurity.AuthorizationURL(Value: String): IGBSwaggerSecurity;
