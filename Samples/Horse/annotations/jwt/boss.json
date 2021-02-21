@@ -1,0 +1,12 @@
+{
+	"name": "jwt",
+	"description": "",
+	"version": "1.0.0",
+	"homepage": "",
+	"mainsrc": "./",
+	"projects": [],
+	"dependencies": {
+		"github.com/hashload/horse": "^2.0.12",
+		"github.com/hashload/horse-jwt": "^2.0.3"
+	}
+}

@@ -277,6 +277,7 @@ type
     function &In         (Value: TGBSwaggerParamType): IGBSwaggerSecurity; overload;
     function AuthorizationURL(Value: String): IGBSwaggerSecurity; overload;
     function TokenURL (Value: String): IGBSwaggerSecurity; overload;
+    function Callback (Value: TRouteCallback): IGBSwaggerSecurity; overload;
 
     function &Type            : TGBSwaggerSecurityType; overload;
     function Description      : String; overload;
@@ -285,6 +286,7 @@ type
     function Flow             : TGBSwaggerSecurityFlow; overload;
     function AuthorizationURL : String; overload;
     function TokenURL         : String; overload;
+    function Callback         : TRouteCallback; overload;
 
     function &End: IGBSwagger;
   end;
