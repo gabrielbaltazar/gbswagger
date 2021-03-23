@@ -97,6 +97,9 @@ type
   end;
 
   TGBSwaggerObjectHelper = class helper for TObject
+    private
+      class function GetAttributes: TArray<TCustomAttribute>; overload;
+      class function GetAttributes<T: TCustomAttribute>: TArray<T>; overload;
     public
       function invokeMethod(const MethodName: string; const Parameters: array of TValue): TValue;
 
@@ -108,6 +111,10 @@ type
       class function GetAttribute<T: TCustomAttribute>: T;
       class function GetSwagClass: SwagClass;
       class function GetSwagPath : SwagPath;
+
+      class function GetSwagParamPaths: TArray<SwagParamPath>;
+      class function GetSwagParamHeaders: TArray<SwagParamHeader>;
+      class function GetSwagParamQueries: TArray<SwagParamQuery>;
 
       class function SwagDescription(ASwagger: IGBSwagger): string;
       class function SwaggerRequiredFields: TArray<String>;
@@ -545,6 +552,31 @@ begin
       Exit(T( rType.GetAttributes[i]));
 end;
 
+class function TGBSwaggerObjectHelper.GetAttributes: TArray<TCustomAttribute>;
+var
+  rType: TRttiType;
+begin
+  result := nil;
+  rType  := TGBSwaggerRTTI.GetInstance.GetType(Self);
+  result := rType.GetAttributes;
+end;
+
+class function TGBSwaggerObjectHelper.GetAttributes<T>: TArray<T>;
+var
+  i : Integer;
+  attr: TArray<TCustomAttribute>;
+begin
+  attr := Self.GetAttributes;
+  for i := 0 to Pred(Length(attr)) do
+  begin
+    if attr[i].ClassNameIs(T.className) then
+    begin
+      SetLength(Result, Length(result) + 1);
+      result[Length(result) - 1] := T( attr[i] );
+    end;
+  end;
+end;
+
 class function TGBSwaggerObjectHelper.GetMethods: TArray<TRttiMethod>;
 begin
   result := TGBSwaggerRTTI.GetInstance.GetType(Self).GetMethods;
@@ -596,6 +628,21 @@ end;
 class function TGBSwaggerObjectHelper.GetSwagClass: SwagClass;
 begin
   Result := GetAttribute<SwagClass>;
+end;
+
+class function TGBSwaggerObjectHelper.GetSwagParamHeaders: TArray<SwagParamHeader>;
+begin
+  result := Self.GetAttributes<SwagParamHeader>;
+end;
+
+class function TGBSwaggerObjectHelper.GetSwagParamPaths: TArray<SwagParamPath>;
+begin
+  result := Self.GetAttributes<SwagParamPath>;
+end;
+
+class function TGBSwaggerObjectHelper.GetSwagParamQueries: TArray<SwagParamQuery>;
+begin
+  result := Self.GetAttributes<SwagParamQuery>;
 end;
 
 class function TGBSwaggerObjectHelper.GetSwagPath: SwagPath;
