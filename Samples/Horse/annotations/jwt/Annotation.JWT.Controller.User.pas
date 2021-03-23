@@ -9,7 +9,10 @@ uses
   System.JSON;
 
 type
-  [SwagPath('user', 'Users')]
+  [SwagPath('company/{companyId}/user', 'Users')]
+  [SwagParamPath('companyId', 'Company Id')]
+  [SwagParamHeader('TestHeader', 'Header Default')]
+  [SwagParamQuery('TestQuery', 'Query Default')]
   TUserController = class
   private
     FRequest: THorseRequest;
