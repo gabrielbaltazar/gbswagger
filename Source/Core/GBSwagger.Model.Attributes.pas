@@ -89,6 +89,14 @@ type
     property dateFormat: string read FdateFormat;
   end;
 
+  SwagEnumNames = class(TCustomAttribute)
+  private
+    FNames: TArray<string>;
+  public
+    constructor Create(const ANames: string);
+    property Names: TArray<string> read FNames write FNames;
+  end;
+
 implementation
 
 { SwagClass }
@@ -157,6 +165,13 @@ end;
 constructor SwagIgnore.create;
 begin
 
+end;
+
+{ SwagEnumNames }
+
+constructor SwagEnumNames.Create(const ANames: string);
+begin
+  FNames := ANames.Split([',']);
 end;
 
 end.
