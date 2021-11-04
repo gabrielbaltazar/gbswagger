@@ -40,6 +40,8 @@ type
       function GetSwagClass: SwagClass;
       function IsList: Boolean;
       function TypeName: string;
+
+      function GetEnumNames: SwagEnumNames;
   end;
 
   TGBSwaggerRTTIPropertyHelper = class helper for TRttiProperty
@@ -194,6 +196,11 @@ begin
   result := GetAttribute<SwagClass>;
 end;
 
+function TGBSwaggerRTTITypeHelper.GetEnumNames: SwagEnumNames;
+begin
+  result := GetAttribute<SwagEnumNames>;
+end;
+
 { TGBSwaggerRTTIPropertyHelper }
 
 function TGBSwaggerRTTIPropertyHelper.ArrayType: string;
@@ -226,8 +233,13 @@ var
   unitName: string;
   enumName: string;
   enumNamesAtt: SwagEnumNames;
+  cx: TRttiContext;
+  lstrparent: string;
 begin
   enumNamesAtt := GetAttribute<SwagEnumNames>;
+  if not Assigned(enumNamesAtt) then
+    enumNamesAtt := Self.PropertyType.GetEnumNames;
+
   if Assigned(enumNamesAtt) then
     Result := enumNamesAtt.Names
   else
