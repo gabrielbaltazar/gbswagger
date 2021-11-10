@@ -233,8 +233,6 @@ var
   unitName: string;
   enumName: string;
   enumNamesAtt: SwagEnumNames;
-  cx: TRttiContext;
-  lstrparent: string;
 begin
   enumNamesAtt := GetAttribute<SwagEnumNames>;
   if not Assigned(enumNamesAtt) then
