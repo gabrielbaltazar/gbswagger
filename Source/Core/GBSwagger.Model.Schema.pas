@@ -10,22 +10,22 @@ type TGBSwaggerModelSchema = class(TInterfacedObject, IGBSwaggerSchema)
   private
     [Weak]
     FParent: IGBSwagger;
-
-    FName     : String;
+    FName: String;
     FClassType: TClass;
-  protected
-    function Name      (Value: String): IGBSwaggerSchema; overload;
-    function ClassType (Value: TClass): IGBSwaggerSchema; overload;
 
-    function Name     : String; overload;
+  protected
+    function Name(Value: String): IGBSwaggerSchema; overload;
+    function ClassType(Value: TClass): IGBSwaggerSchema; overload;
+
+    function Name: String; overload;
     function ClassType: TClass; overload;
 
     function &End: IGBSwagger;
+
   public
     constructor create(Parent: IGBSwagger);
     class function New(Parent: IGBSwagger): IGBSwaggerSchema;
-    destructor  Destroy; override;
-
+    destructor Destroy; override;
 end;
 
 implementation

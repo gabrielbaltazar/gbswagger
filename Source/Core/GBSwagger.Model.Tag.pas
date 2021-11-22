@@ -10,29 +10,28 @@ type TGBSwaggerModelTag = class(TInterfacedObject, IGBSwaggerTag)
   private
     [Weak]
     FParent: IGBSwagger;
-
-    FName          : String;
-    FDescription   : String;
+    FName: String;
+    FDescription: String;
     FDocDescription: String;
-    FDocURL        : String;
+    FDocURL: String;
 
   protected
-    function Name           (Value: String): IGBSwaggerTag; overload;
-    function Description    (Value: String): IGBSwaggerTag; overload;
-    function DocDescription (Value: String): IGBSwaggerTag; overload;
-    function DocURL         (Value: String): IGBSwaggerTag; overload;
+    function Name(Value: String): IGBSwaggerTag; overload;
+    function Description(Value: String): IGBSwaggerTag; overload;
+    function DocDescription(Value: String): IGBSwaggerTag; overload;
+    function DocURL(Value: String): IGBSwaggerTag; overload;
 
-    function Name          : String; overload;
-    function Description   : String; overload;
+    function Name: String; overload;
+    function Description: String; overload;
     function DocDescription: String; overload;
-    function DocURL        : String; overload;
+    function DocURL: String; overload;
 
     function &End: IGBSwagger;
 
   public
     constructor create(Parent: IGBSwagger);
     class function New(Parent: IGBSwagger): IGBSwaggerTag;
-    destructor  Destroy; override;
+    destructor Destroy; override;
 end;
 
 implementation

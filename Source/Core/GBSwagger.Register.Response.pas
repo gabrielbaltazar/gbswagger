@@ -16,20 +16,18 @@ type TGBSwaggerRegisterResponse = class(TInterfacedObject, IGBSwaggerRegisterRes
     [Weak]
     FParent: IGBSwaggerRegister;
     FStatusCode: Integer;
-
     FResponses: TDictionary<Integer, IGBSwaggerPathResponse>;
 
     function ActiveResponse: IGBSwaggerPathResponse;
     function Response(StatusCode: Integer): IGBSwaggerPathResponse;
 
   protected
-    function &Register   (StatusCode: Integer): IGBSwaggerRegisterResponse;
-    function HttpCode    (Value: Integer): IGBSwaggerRegisterResponse; overload;
-    function Description (Value: String): IGBSwaggerRegisterResponse; overload;
-    function Schema      (Value: String): IGBSwaggerRegisterResponse; overload;
-    function Schema      (Value: TClass): IGBSwaggerRegisterResponse; overload;
-    function IsArray     (Value: Boolean): IGBSwaggerRegisterResponse; overload;
-
+    function &Register(StatusCode: Integer): IGBSwaggerRegisterResponse;
+    function HttpCode(Value: Integer): IGBSwaggerRegisterResponse;
+    function Description(Value: String): IGBSwaggerRegisterResponse;
+    function Schema(Value: String): IGBSwaggerRegisterResponse; overload;
+    function Schema(Value: TClass): IGBSwaggerRegisterResponse; overload;
+    function IsArray(Value: Boolean): IGBSwaggerRegisterResponse;
     function PathResponse: IGBSwaggerPathResponse;
 
     function &End: IGBSwaggerRegister;
@@ -37,7 +35,7 @@ type TGBSwaggerRegisterResponse = class(TInterfacedObject, IGBSwaggerRegisterRes
   public
     constructor create(Parent: IGBSwaggerRegister);
     class function New(Parent: IGBSwaggerRegister): IGBSwaggerRegisterResponse;
-    destructor  Destroy; override;
+    destructor Destroy; override;
 end;
 
 implementation

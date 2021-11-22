@@ -11,29 +11,28 @@ type TGBSwaggerModelHeader = class(TInterfacedObject, IGBSwaggerHeader)
   private
     [Weak]
     FParent: IGBSwaggerPathResponse;
-
-    FName        : string;
-    FDescription : string;
-    FType        : string;
-    FFormat      : string;
+    FName: string;
+    FDescription: string;
+    FType: string;
+    FFormat: string;
 
   protected
-    function Name        : String; overload;
-    function Description : String; overload;
-    function &Type       : String; overload;
-    function Format      : string; overload;
+    function Name: String; overload;
+    function Description: String; overload;
+    function &Type: String; overload;
+    function Format: string; overload;
 
-    function Name        (Value: String): IGBSwaggerHeader; overload;
-    function Description (Value: String): IGBSwaggerHeader; overload;
-    function &Type       (Value: String): IGBSwaggerHeader; overload;
-    function Format      (Value: String): IGBSwaggerHeader; overload;
+    function Name(Value: String): IGBSwaggerHeader; overload;
+    function Description(Value: String): IGBSwaggerHeader; overload;
+    function &Type(Value: String): IGBSwaggerHeader; overload;
+    function Format(Value: String): IGBSwaggerHeader; overload;
 
     function &End: IGBSwaggerPathResponse;
 
   public
     constructor create(Parent: IGBSwaggerPathResponse);
     class function New(Parent: IGBSwaggerPathResponse): IGBSwaggerHeader;
-    destructor  Destroy; override;
+    destructor Destroy; override;
 
 end;
 
