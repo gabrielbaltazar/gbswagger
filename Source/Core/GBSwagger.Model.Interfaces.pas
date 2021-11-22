@@ -52,37 +52,34 @@ type
     function Host(Value: String): IGBSwagger; overload;
     function BasePath(Value: String): IGBSwagger; overload;
 
-    function Version  : string; overload;
-    function Host     : String; overload;
-    function BasePath : String; overload;
+    function Version: string; overload;
+    function Host: String; overload;
+    function BasePath: String; overload;
 
-    function AddConsumes (Value: String): IGBSwagger; overload;
-    function AddConsumes (Value: TGBSwaggerContentType): IGBSwagger; overload;
-    function AddProduces (Value: String): IGBSwagger; overload;
-    function AddProduces (Value: TGBSwaggerContentType): IGBSwagger; overload;
-    function AddProtocol (Value: TGBSwaggerProtocol)   : IGBSwagger;
+    function AddConsumes(Value: String): IGBSwagger; overload;
+    function AddConsumes(Value: TGBSwaggerContentType): IGBSwagger; overload;
+    function AddProduces(Value: String): IGBSwagger; overload;
+    function AddProduces(Value: TGBSwaggerContentType): IGBSwagger; overload;
+    function AddProtocol(Value: TGBSwaggerProtocol)   : IGBSwagger;
 
     function AddSecurity(Description: String): IGBSwaggerSecurity;
     function AddBearerSecurity: IGBSwaggerSecurity;
-    function AddBasicSecurity : IGBSwaggerSecurity;
+    function AddBasicSecurity: IGBSwaggerSecurity;
 
     function Path(Name: String): IGBSwaggerPath;
 
-    function Consumes  : TArray<String>;
-    function Produces  : TArray<String>;
-    function Protocols : TArray<TGBSwaggerProtocol>;
-    function Schemas   : TArray<IGBSwaggerSchema>;
-    function Paths     : TArray<IGBSwaggerPath>;
+    function Consumes: TArray<String>;
+    function Produces: TArray<String>;
+    function Protocols: TArray<TGBSwaggerProtocol>;
+    function Schemas: TArray<IGBSwaggerSchema>;
+    function Paths: TArray<IGBSwaggerPath>;
     function Securities: TArray<IGBSwaggerSecurity>;
 
-    function Info   : IGBSwaggerInfo;
-    function Config : IGBSwaggerConfig;
-    function AddTag : IGBSwaggerTag;
-
+    function Info: IGBSwaggerInfo;
+    function Config: IGBSwaggerConfig;
+    function AddTag: IGBSwaggerTag;
     function &Register: IGBSwaggerRegister;
-
     function AddModel(ClassType: TClass): IGBSwagger; overload;
-
     function SchemaName(ClassType: TClass): string;
 
     function &End: IGBSwagger;
@@ -270,23 +267,23 @@ type
   ////////////////////////////////////////////////////////////////////////////////
   IGBSwaggerSecurity = interface
     ['{9FC3A862-C12E-4B89-A834-91FCBA4E4E15}']
-    function &Type       (Value: TGBSwaggerSecurityType): IGBSwaggerSecurity; overload;
-    function Description (Value: String): IGBSwaggerSecurity; overload;
-    function Name        (Value: String): IGBSwaggerSecurity; overload;
-    function Flow        (Value: TGBSwaggerSecurityFlow): IGBSwaggerSecurity; overload;
-    function &In         (Value: TGBSwaggerParamType): IGBSwaggerSecurity; overload;
+    function &Type(Value: TGBSwaggerSecurityType): IGBSwaggerSecurity; overload;
+    function Description(Value: String): IGBSwaggerSecurity; overload;
+    function Name(Value: String): IGBSwaggerSecurity; overload;
+    function Flow(Value: TGBSwaggerSecurityFlow): IGBSwaggerSecurity; overload;
+    function &In(Value: TGBSwaggerParamType): IGBSwaggerSecurity; overload;
     function AuthorizationURL(Value: String): IGBSwaggerSecurity; overload;
-    function TokenURL (Value: String): IGBSwaggerSecurity; overload;
-    function Callback (Value: TRouteCallback): IGBSwaggerSecurity; overload;
+    function TokenURL(Value: String): IGBSwaggerSecurity; overload;
+    function Callback(Value: TRouteCallback): IGBSwaggerSecurity; overload;
 
-    function &Type            : TGBSwaggerSecurityType; overload;
-    function Description      : String; overload;
-    function Name             : String; overload;
-    function &In              : TGBSwaggerParamType; overload;
-    function Flow             : TGBSwaggerSecurityFlow; overload;
-    function AuthorizationURL : String; overload;
-    function TokenURL         : String; overload;
-    function Callback         : TRouteCallback; overload;
+    function &Type: TGBSwaggerSecurityType; overload;
+    function Description: String; overload;
+    function Name: String; overload;
+    function &In: TGBSwaggerParamType; overload;
+    function Flow: TGBSwaggerSecurityFlow; overload;
+    function AuthorizationURL: String; overload;
+    function TokenURL: String; overload;
+    function Callback: TRouteCallback; overload;
 
     function &End: IGBSwagger;
   end;
