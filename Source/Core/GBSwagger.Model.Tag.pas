@@ -8,7 +8,7 @@ uses
 type TGBSwaggerModelTag = class(TInterfacedObject, IGBSwaggerTag)
 
   private
-    [Weak]
+    {$IF NOT DEFINED(FPC)} [Weak] {$ENDIF}
     FParent: IGBSwagger;
     FName: String;
     FDescription: String;

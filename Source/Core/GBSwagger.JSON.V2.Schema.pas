@@ -3,6 +3,9 @@ unit GBSwagger.JSON.V2.Schema;
 interface
 
 uses
+{$IF NOT DEFINED(FPC)}
+  GBSwagger.Model.Attributes,
+{$ENDIF}
   GBSwagger.Model.Interfaces,
   GBSwagger.JSON.Interfaces,
   GBSwagger.RTTI,
@@ -10,8 +13,7 @@ uses
   System.JSON,
   System.SysUtils,
   System.TypInfo,
-  System.StrUtils,
-  GBSwagger.Model.Attributes;
+  System.StrUtils;
 
 type TGBSwaggerJSONV2Schema = class(TInterfacedObject, IGBSwaggerModelJSON)
 
@@ -75,8 +77,10 @@ begin
 end;
 
 function TGBSwaggerJSONV2Schema.JSONProperty(AProperty: TRttiProperty): TJSONObject;
+{$IF NOT DEFINED(FPC)}
 var
   attSwagNumber: SwagNumber;
+{$ENDIF}
 begin
   result := TJSONObject.Create
               .AddPair('type', AProperty.SwagType)
@@ -89,12 +93,14 @@ begin
 
   if (AProperty.IsInteger) or (AProperty.IsFloat) then
   begin
+    {$IF NOT DEFINED(FPC)}
     attSwagNumber := AProperty.GetSwagNumber;
     if Assigned(attSwagNumber) then
     begin
       Result.AddPair('minimum', TJSONNumber.Create(attSwagNumber.minimum))
             .AddPair('maximum', TJSONNumber.Create(attSwagNumber.maximum));
     end;
+    {$ENDIF}
   end;
 
   if AProperty.IsDateTime then
@@ -212,14 +218,18 @@ begin
 end;
 
 function TGBSwaggerJSONV2Schema.PropertyDateTimeFormat(AProperty: TRttiProperty): string;
+{$IF NOT DEFINED(FPC)}
 var
   swDate: SwagDate;
+{$ENDIF}
 begin
   result := EmptyStr;
 
+  {$IF NOT DEFINED(FPC)}
   swDate := AProperty.GetAttribute<SwagDate>;
   if Assigned(swDate) then
     result := swDate.dateFormat;
+  {$ENDIF}
 
   if result.IsEmpty then
     result := FSchema.&End.Config.DateFormat;

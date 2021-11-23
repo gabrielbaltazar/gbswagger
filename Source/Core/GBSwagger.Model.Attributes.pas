@@ -3,16 +3,21 @@ unit GBSwagger.Model.Attributes;
 interface
 
 uses
+{$IF DEFINED(FPC)}
+  SysUtils, typinfo, Classes;
+{$ELSE}
   System.SysUtils;
+{$ENDIF}
 
 type
   SwagClass = class(TCustomAttribute)
   private
     Fdescription: String;
-    public
-      constructor create(ADescription: String); overload;
 
-      property description: String read Fdescription;
+  public
+    constructor create(ADescription: String); overload;
+
+    property description: String read Fdescription;
   end;
 
   SwagRequired = class(TCustomAttribute)

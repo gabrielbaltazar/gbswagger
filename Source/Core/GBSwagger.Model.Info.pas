@@ -9,7 +9,7 @@ uses
 type TGBSwaggerModelInfo = class(TInterfacedObject, IGBSwaggerInfo)
 
   private
-    [Weak]
+    {$IF NOT DEFINED(FPC)} [Weak] {$ENDIF}
     FParent: IGBSwagger;
     FContact: IGBSwaggerContact;
     FLicense: IGBSwaggerContact;

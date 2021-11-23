@@ -8,7 +8,7 @@ uses
 type TGBSwaggerModelContact = class(TInterfacedObject, IGBSwaggerContact)
 
   private
-    [Weak]
+    {$IF NOT DEFINED(FPC)} [Weak] {$ENDIF}
     FParent: IGBSwaggerInfo;
     FName: String;
     FEmail: string;

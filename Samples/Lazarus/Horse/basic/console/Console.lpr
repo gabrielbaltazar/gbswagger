@@ -1,13 +1,10 @@
 program Console;
 
-{$MODE DELPHI}{$H+}
+{$mode delphi}
 
 uses
-  {$IFDEF UNIX}{$IFDEF UseCThreads}
-  cthreads,
-  {$ENDIF}{$ENDIF}
-  Horse.GBSwagger,
-  Horse, SysUtils;
+  Horse, SysUtils, TypInfo, Rtti, Classes,
+  Horse.GBSwagger;
 
 procedure GetPing(Req: THorseRequest; Res: THorseResponse; Next: TNextProc);
 begin

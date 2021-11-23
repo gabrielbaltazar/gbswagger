@@ -69,3 +69,4 @@ __recovery/
 modules/
 Samples/Lazarus/Horse/basic/console/lib/
 Samples/Lazarus/Horse/basic/console/backup/
+Source/Core/backup/

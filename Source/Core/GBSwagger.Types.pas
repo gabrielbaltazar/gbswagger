@@ -1,5 +1,9 @@
 unit GBSwagger.Types;
 
+{$IF DEFINED(FPC)}
+  {$MODESWITCH TYPEHELPERS}
+{$ENDIF}
+
 interface
 
 uses
@@ -9,9 +13,8 @@ uses
 {$IF DEFINED(FPC)}
   fpHTTP, HTTPDefs;
 {$ELSE}
-  Web.HTTPApp,
+  Web.HTTPApp;
 {$ENDIF}
-  System.SysUtils;
 
 
 const
@@ -100,37 +103,37 @@ type
     gbNetworkAuthenticationRequired,
     gbNetworkConnectTimeoutError);
 
-  TGBSwaggerContentTypeHelper = record helper for TGBSwaggerContentType
+  TGBSwaggerContentTypeHelper = {$IF DEFINED(FPC)} type {$ELSE} record {$ENDIF} helper for TGBSwaggerContentType
     public
       function toString: string;
   end;
 
-  TGBSwaggerProtocolHelper = record helper for TGBSwaggerProtocol
+  TGBSwaggerProtocolHelper = {$IF DEFINED(FPC)} type {$ELSE} record {$ENDIF} helper for TGBSwaggerProtocol
     public
       function toString: string;
   end;
 
-  TGBSwaggerParamTypeHelper = record helper for TGBSwaggerParamType
+  TGBSwaggerParamTypeHelper = {$IF DEFINED(FPC)} type {$ELSE} record {$ENDIF} helper for TGBSwaggerParamType
     public
       function toString: string;
   end;
 
-  TMethodTypeHelper = record helper for TMethodType
+  TMethodTypeHelper = {$IF DEFINED(FPC)} type {$ELSE} record {$ENDIF} helper for TMethodType
     public
       function toString: string;
   end;
 
-  TGBSwaggerSecurityTypeHelper = record helper for TGBSwaggerSecurityType
+  TGBSwaggerSecurityTypeHelper = {$IF DEFINED(FPC)} type {$ELSE} record {$ENDIF} helper for TGBSwaggerSecurityType
     public
       function toString: string;
   end;
 
-  TGBSwaggerSecurityFlowHelper = record helper for TGBSwaggerSecurityFlow
+  TGBSwaggerSecurityFlowHelper = {$IF DEFINED(FPC)} type {$ELSE} record {$ENDIF} helper for TGBSwaggerSecurityFlow
     public
       function toString: string;
   end;
 
-  TGBSwaggerHTTPStatusHelper = record helper for TGBSwaggerHTTPStatus
+  TGBSwaggerHTTPStatusHelper = {$IF DEFINED(FPC)} type {$ELSE} record {$ENDIF} helper for TGBSwaggerHTTPStatus
   public
     function httpCode: Integer;
     function description: string;

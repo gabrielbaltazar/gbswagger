@@ -1,9 +1,12 @@
 unit GBSwagger.Model.Interfaces;
 
+{$IF DEFINED(FPC)}
+  {$MODE DELPHI}{$H+}
+{$ENDIF}
+
 interface
 
 uses
-  Web.HTTPApp,
   GBSwagger.Types;
 
 const

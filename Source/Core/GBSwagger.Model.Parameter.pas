@@ -3,9 +3,11 @@ unit GBSwagger.Model.Parameter;
 interface
 
 uses
-  System.SysUtils,
-  System.StrUtils,
-  System.Rtti,
+{$IF DEFINED(FPC)}
+  SysUtils, StrUtils, Rtti,
+{$ELSE}
+  System.SysUtils, System.StrUtils, System.Rtti,
+{$ENDIF}
   GBSwagger.Model.Interfaces,
   GBSwagger.RTTI,
   GBSwagger.Types;
@@ -13,7 +15,7 @@ uses
 type TGBSwaggerModelParameter = class(TInterfacedObject, IGBSwaggerParameter)
 
   private
-    [Weak]
+    {$IF NOT DEFINED(FPC)} [Weak] {$ENDIF}
     FParent: IGBSwaggerPathMethod;
     FParamType: TGBSwaggerParamType;
     FName: string;

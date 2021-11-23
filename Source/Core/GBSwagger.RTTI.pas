@@ -1,20 +1,28 @@
 unit GBSwagger.RTTI;
 
+{$IF DEFINED(FPC)}
+  {$MODE DELPHI}{$H+}
+{$ENDIF}
+
 interface
 
 uses
-  System.Rtti,
-  System.SysUtils,
-  System.TypInfo,
-  GBSwagger.Model.Interfaces,
+{$IF DEFINED(FPC)}
+  SysUtils, StrUtils, TypInfo, Rtti,
+{$ELSE}
+  System.SysUtils, System.StrUtils, System.TypInfo, System.Rtti,
   GBSwagger.Model.Attributes,
-  GBSwagger.Path.Attributes;
+  GBSwagger.Path.Attributes,
+{$ENDIF}
+  GBSwagger.Model.Interfaces;
 
 type
   IGBSwaggerRTTI = interface
     ['{B432A34C-5601-4254-A951-0DE059E73CCE}']
     function GetType(AClass: TClass): TRttiType;
+    {$IF NOT DEFINED(FPC)}
     function FindType(ATypeName: string): TRttiType;
+    {$ENDIF}
   end;
 
   TGBSwaggerRTTI = class(TInterfacedObject, IGBSwaggerRTTI)
@@ -36,8 +44,10 @@ type
 
   TGBSwaggerRTTITypeHelper = class helper for TRttiType
     public
+      {$IF NOT DEFINED(FPC)}
       function GetAttribute<T: TCustomAttribute>: T;
       function GetSwagClass: SwagClass;
+      {$ENDIF}
       function IsList: Boolean;
       function TypeName: string;
   end;
@@ -61,7 +71,10 @@ type
 
       function IsEmptyValue(AObject: TObject): Boolean;
 
+      {$IF NOT DEFINED(FPC)}
       function GetAttribute<T: TCustomAttribute>: T;
+      function GetSwagNumber: SwagNumber;
+      {$ENDIF}
 
       function IsSwaggerArray: Boolean;
       function IsSwaggerIgnore(AClass: TClass): Boolean;
@@ -70,8 +83,6 @@ type
       function ArrayType: string;
       function ListType : string;
       function ListTypeClass: TClass;
-
-      function GetSwagNumber: SwagNumber;
 
       function SwagName: string;
       function SwagType: string;
@@ -86,20 +97,24 @@ type
 
   TGBSwaggerMethodHelper = class helper for TRttiMethod
     public
-      function GetSwagEndPoint    : SwagEndPoint;
-      function GetSwagParamPath   : TArray<SwagParamPath>;
-      function GetSwagParamHeader : TArray<SwagParamHeader>;
-      function GetSwagConsumes    : TArray<String>;
-      function GetSwagProduces    : TArray<String>;
-      function GetSwagParamQuery  : TArray<SwagParamQuery>;
-      function GetSwagParamBody   : SwagParamBody;
-      function GetSwagResponse    : TArray<SwagResponse>;
+      {$IF NOT DEFINED(FPC)}
+      function GetSwagEndPoint: SwagEndPoint;
+      function GetSwagParamPath: TArray<SwagParamPath>;
+      function GetSwagParamHeader: TArray<SwagParamHeader>;
+      function GetSwagConsumes: TArray<String>;
+      function GetSwagProduces: TArray<String>;
+      function GetSwagParamQuery: TArray<SwagParamQuery>;
+      function GetSwagParamBody: SwagParamBody;
+      function GetSwagResponse: TArray<SwagResponse>;
+      {$ENDIF}
   end;
 
   TGBSwaggerObjectHelper = class helper for TObject
     private
+      {$IF NOT DEFINED(FPC)}
       class function GetAttributes: TArray<TCustomAttribute>; overload;
       class function GetAttributes<T: TCustomAttribute>: TArray<T>; overload;
+      {$ENDIF}
     public
       function invokeMethod(const MethodName: string; const Parameters: array of TValue): TValue;
 
@@ -108,13 +123,14 @@ type
       class function GetObjectProperties: TArray<TClass>;
       class function GetProperties: TArray<TRttiProperty>;
       class function GetMethods   : TArray<TRttiMethod>;
+      {$IF NOT DEFINED(FPC)}
       class function GetAttribute<T: TCustomAttribute>: T;
       class function GetSwagClass: SwagClass;
       class function GetSwagPath : SwagPath;
-
       class function GetSwagParamPaths: TArray<SwagParamPath>;
       class function GetSwagParamHeaders: TArray<SwagParamHeader>;
       class function GetSwagParamQueries: TArray<SwagParamQuery>;
+      {$ENDIF}
 
       class function SwagDescription(ASwagger: IGBSwagger): string;
       class function SwaggerRequiredFields: TArray<String>;
@@ -141,10 +157,12 @@ begin
   inherited;
 end;
 
+{$IF NOT DEFINED(FPC)}
 function TGBSwaggerRTTI.FindType(ATypeName: string): TRttiType;
 begin
   Result := FContext.FindType(ATypeName);
 end;
+{$ENDIF}
 
 class function TGBSwaggerRTTI.GetInstance: IGBSwaggerRTTI;
 begin
@@ -160,6 +178,7 @@ end;
 
 { TGBSwaggerRTTITypeHelper }
 
+{$IF NOT DEFINED(FPC)}
 function TGBSwaggerRTTITypeHelper.GetAttribute<T>: T;
 var
   i : Integer;
@@ -172,6 +191,7 @@ begin
       Exit(T( GetAttributes[i]));
   end;
 end;
+{$ENDIF}
 
 function TGBSwaggerRTTITypeHelper.IsList: Boolean;
 begin
@@ -189,10 +209,12 @@ begin
   result := Self.AsInstance.Name;
 end;
 
+{$IF NOT DEFINED(FPC)}
 function TGBSwaggerRTTITypeHelper.GetSwagClass: SwagClass;
 begin
   result := GetAttribute<SwagClass>;
 end;
+{$ENDIF}
 
 { TGBSwaggerRTTIPropertyHelper }
 
@@ -200,9 +222,14 @@ function TGBSwaggerRTTIPropertyHelper.ArrayType: string;
 begin
   result := EmptyStr;
   if (IsArray) then
+    {$IF NOT DEFINED(FPC)}
     result := TRttiDynamicArrayType(Self.PropertyType).ElementType.Name;
+    {$ELSE}
+    result := Self.PropertyType.Name;
+    {$ENDIF}
 end;
 
+{$IF NOT DEFINED(FPC)}
 function TGBSwaggerRTTIPropertyHelper.GetAttribute<T>: T;
 var
   i: Integer;
@@ -212,12 +239,17 @@ begin
     if Self.GetAttributes[i].ClassNameIs(T.className) then
       Exit(T( Self.GetAttributes[i]));
 end;
+{$ENDIF}
 
 function TGBSwaggerRTTIPropertyHelper.GetClassType: TClass;
 begin
+  {$IF NOT DEFINED(FPC)}
   result := TRttiInstanceType( TGBSwaggerRTTI.GetInstance.FindType(
     PropertyType.QualifiedName
   )).MetaclassType;
+  {$ELSE}
+  result := PropertyType.ClassType;
+  {$ENDIF}
 end;
 
 function TGBSwaggerRTTIPropertyHelper.GetEnumNames: TArray<String>;
@@ -242,8 +274,8 @@ end;
 
 function TGBSwaggerRTTIPropertyHelper.GetListType(AObject: TObject): TRttiType;
 var
-  ListType     : TRttiType;
-  ListTypeName : string;
+  ListType: TRttiType;
+  ListTypeName: string;
 begin
   ListType := TGBSwaggerRTTI.GetInstance.GetType(Self.GetValue(AObject).AsObject.ClassType);
   ListTypeName := ListType.ToString;
@@ -255,10 +287,12 @@ begin
   result := TGBSwaggerRTTI.GetInstance.FindType(ListTypeName);
 end;
 
+{$IF NOT DEFINED(FPC)}
 function TGBSwaggerRTTIPropertyHelper.GetSwagNumber: SwagNumber;
 begin
   result := GetAttribute<SwagNumber>;
 end;
+{$ENDIF}
 
 function TGBSwaggerRTTIPropertyHelper.IsArray: Boolean;
 begin
@@ -381,16 +415,19 @@ begin
                                              tkUString];
 end;
 
+{$IF NOT DEFINED(FPC)}
 function TGBSwaggerRTTIPropertyHelper.IsSwaggerArray: Boolean;
 begin
   result := (IsArray) or (IsList);
 end;
+{$ENDIF}
 
 function TGBSwaggerRTTIPropertyHelper.IsSwaggerIgnore(AClass: TClass): Boolean;
 var
   ignoreFields: TArray<String>;
   i: Integer;
 begin
+  result := False;
   ignoreFields := AClass.SwaggerIgnoreFields;
   for i := 0 to Pred(Length(ignoreFields)) do
   begin
@@ -398,22 +435,28 @@ begin
       Exit(True);
   end;
 
+  {$IF NOT DEFINED(FPC)}
   result := Self.GetAttribute<SwagIgnore> <> nil;
   if not Result then
   begin
     if AClass.InheritsFrom(TInterfacedObject) then
       result := Self.Name.ToLower.Equals('refcount');
   end;
+  {$ENDIF}
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsSwaggerReadOnly: Boolean;
+{$IF NOT DEFINED(FPC)}
 var
   swaggerProp: SwagProp;
+{$ENDIF}
 begin
   result := False;
+  {$IF NOT DEFINED(FPC)}
   swaggerProp := GetAttribute<SwagProp>;
   if (Assigned(swaggerProp)) and (swaggerProp.readOnly) then
     result := True;
+  {$ENDIF}
 end;
 
 function TGBSwaggerRTTIPropertyHelper.ListType: string;
@@ -460,43 +503,59 @@ begin
 end;
 
 function TGBSwaggerRTTIPropertyHelper.SwagDescription: string;
+{$IF NOT DEFINED(FPC)}
 var
   swaggerProp: SwagProp;
+{$ENDIF}
 begin
   result := EmptyStr;
+  {$IF NOT DEFINED(FPC)}
   swaggerProp := Self.GetAttribute<SwagProp>;
   if Assigned(swaggerProp) then
     result := swaggerProp.description;
+  {$ENDIF}
 end;
 
 function TGBSwaggerRTTIPropertyHelper.SwagMaxLength: Integer;
+{$IF NOT DEFINED(FPC)}
 var
   swaggerString: SwagString;
+{$ENDIF}
 begin
   result := 0;
+  {$IF NOT DEFINED(FPC)}
   swaggerString := Self.GetAttribute<SwagString>;
   if Assigned(swaggerString) then
     result := swaggerString.maxLength;
+  {$ENDIF}
 end;
 
 function TGBSwaggerRTTIPropertyHelper.SwagMinLength: Integer;
+{$IF NOT DEFINED(FPC)}
 var
   swaggerString: SwagString;
+{$ENDIF}
 begin
   result := 0;
+  {$IF NOT DEFINED(FPC)}
   swaggerString := Self.GetAttribute<SwagString>;
   if Assigned(swaggerString) then
     result := swaggerString.minLength;
+  {$ENDIF}
 end;
 
 function TGBSwaggerRTTIPropertyHelper.SwagName: string;
+{$IF NOT DEFINED(FPC)}
 var
   SwaggerProp: SwagProp;
+{$ENDIF}
 begin
   result := EmptyStr;
+  {$IF NOT DEFINED(FPC)}
   swaggerProp := Self.GetAttribute<SwagProp>;
   if Assigned(swaggerProp) then
     result := swaggerProp.name;
+  {$ENDIF}
 
   if result.Trim.IsEmpty then
     result := Name;
@@ -539,6 +598,7 @@ end;
 
 { TGBSwaggerObjectHelper }
 
+{$IF NOT DEFINED(FPC)}
 class function TGBSwaggerObjectHelper.GetAttribute<T>: T;
 var
   i: Integer;
@@ -551,7 +611,9 @@ begin
     if rType.GetAttributes[i].ClassNameIs(T.className) then
       Exit(T( rType.GetAttributes[i]));
 end;
+{$ENDIF}
 
+{$IF NOT DEFINED(FPC)}
 class function TGBSwaggerObjectHelper.GetAttributes: TArray<TCustomAttribute>;
 var
   rType: TRttiType;
@@ -560,7 +622,9 @@ begin
   rType  := TGBSwaggerRTTI.GetInstance.GetType(Self);
   result := rType.GetAttributes;
 end;
+{$ENDIF}
 
+{$IF NOT DEFINED(FPC)}
 class function TGBSwaggerObjectHelper.GetAttributes<T>: TArray<T>;
 var
   i : Integer;
@@ -576,6 +640,7 @@ begin
     end;
   end;
 end;
+{$ENDIF}
 
 class function TGBSwaggerObjectHelper.GetMethods: TArray<TRttiMethod>;
 begin
@@ -666,15 +731,19 @@ end;
 
 class function TGBSwaggerObjectHelper.SwagDescription(ASwagger: IGBSwagger): string;
 var
+{$IF NOT DEFINED(FPC)}
   swag: SwagClass;
-  i   : Integer;
+{$ENDIF}
+  i: Integer;
 begin
   result := EmptyStr;
-  swag   := GetSwagClass;
+  {$IF NOT DEFINED(FPC)}
+  swag := GetSwagClass;
 
   if swag <> nil then
     result := swag.description
   else
+  {$ENDIF}
   begin
     result := Self.ClassName;
 
@@ -690,24 +759,31 @@ begin
 end;
 
 class function TGBSwaggerObjectHelper.SwaggerIgnoreFields: TArray<String>;
+{$IF NOT DEFINED(FPC)}
 var
   swaggerIgnore: SwagIgnore;
+{$ENDIF}
 begin
   result := [];
+  {$IF NOT DEFINED(FPC)}
   swaggerIgnore := GetAttribute<SwagIgnore>;
 
   if Assigned(swaggerIgnore) then
     result := swaggerIgnore.IgnoreProperties;
+  {$ENDIF}
 end;
 
 class function TGBSwaggerObjectHelper.SwaggerRequiredFields: TArray<String>;
 var
+{$IF NOT DEFINED(FPC)}
   swaggerRequired: SwagRequired;
-  swaggerProp    : SwagProp;
+  swaggerProp: SwagProp;
   rProp: TRttiProperty;
+{$ENDIF}
 begin
   result := [];
 
+  {$IF NOT DEFINED(FPC)}
   for rProp in Self.GetProperties do
   begin
     swaggerRequired := rProp.GetAttribute<SwagRequired>;
@@ -726,10 +802,12 @@ begin
       Continue;
     end;
   end;
+  {$ENDIF}
 end;
 
 { TGBSwaggerMethodHelper }
 
+{$IF NOT DEFINED(FPC)}
 function TGBSwaggerMethodHelper.GetSwagProduces: TArray<String>;
 var
   swaggerProduces: SwagProduces;
@@ -847,6 +925,7 @@ begin
     end;
   end;
 end;
+{$ENDIF}
 
 end.
 
