@@ -1,15 +1,15 @@
-unit GBSwagger.Model.JSON.Header;
+unit GBSwagger.JSON.V2.Header;
 
 interface
 
 uses
-  GBSwagger.Model.JSON.Interfaces,
+  GBSwagger.JSON.Interfaces,
   GBSwagger.Model.Interfaces,
   System.SysUtils,
   System.StrUtils,
   System.JSON;
 
-type TGBSwaggerModelJSONHeader = class(TInterfacedObject, IGBSwaggerModelJSON)
+type TGBSwaggerJSONV2Header = class(TInterfacedObject, IGBSwaggerModelJSON)
 
   private
     FSwaggerHeader: IGBSwaggerHeader;
@@ -23,19 +23,19 @@ end;
 
 implementation
 
-{ TGBSwaggerModelJSONHeader }
+{ TGBSwaggerJSONV2Header }
 
-constructor TGBSwaggerModelJSONHeader.create(SwaggerHeader: IGBSwaggerHeader);
+constructor TGBSwaggerJSONV2Header.create(SwaggerHeader: IGBSwaggerHeader);
 begin
   FSwaggerHeader := SwaggerHeader;
 end;
 
-class function TGBSwaggerModelJSONHeader.New(SwaggerHeader: IGBSwaggerHeader): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2Header.New(SwaggerHeader: IGBSwaggerHeader): IGBSwaggerModelJSON;
 begin
   result := Self.create(SwaggerHeader);
 end;
 
-function TGBSwaggerModelJSONHeader.ToJSON: TJSONValue;
+function TGBSwaggerJSONV2Header.ToJSON: TJSONValue;
 begin
   result :=
     TJSONObject.Create

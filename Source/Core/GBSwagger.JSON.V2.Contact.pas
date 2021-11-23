@@ -1,14 +1,14 @@
-unit GBSwagger.Model.JSON.Contact;
+unit GBSwagger.JSON.V2.Contact;
 
 interface
 
 uses
-  GBSwagger.Model.JSON.Interfaces,
+  GBSwagger.JSON.Interfaces,
   GBSwagger.Model.Interfaces,
   GBSwagger.Model.Types,
   System.JSON;
 
-type TGBSwaggerModelJSONContact = class(TInterfacedObject, IGBSwaggerModelJSON)
+type TGBSwaggerJSONV2Contact = class(TInterfacedObject, IGBSwaggerModelJSON)
 
   private
     FSwaggerContact: IGBSwaggerContact;
@@ -22,19 +22,19 @@ end;
 
 implementation
 
-{ TGBSwaggerModelJSONContact }
+{ TGBSwaggerJSONV2Contact }
 
-constructor TGBSwaggerModelJSONContact.create(SwaggerContact: IGBSwaggerContact);
+constructor TGBSwaggerJSONV2Contact.create(SwaggerContact: IGBSwaggerContact);
 begin
   FSwaggerContact := SwaggerContact;
 end;
 
-class function TGBSwaggerModelJSONContact.New(SwaggerContact: IGBSwaggerContact): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2Contact.New(SwaggerContact: IGBSwaggerContact): IGBSwaggerModelJSON;
 begin
   result := Self.create(SwaggerContact);
 end;
 
-function TGBSwaggerModelJSONContact.ToJSON: TJSONValue;
+function TGBSwaggerJSONV2Contact.ToJSON: TJSONValue;
 begin
   Result := TJSONObject.Create
               .AddPair('name', FSwaggerContact.Name)

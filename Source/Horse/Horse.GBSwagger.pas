@@ -7,7 +7,7 @@ uses
   Horse.GBSwagger.Register,
   Horse.GBSwagger.Controller,
   GBSwagger.Model.Interfaces,
-  GBSwagger.Model.JSON.Interfaces,
+  GBSwagger.JSON.Interfaces,
   GBSwagger.Model.Types,
   GBSwagger.Web.HTML,
   System.JSON,

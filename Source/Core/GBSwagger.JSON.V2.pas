@@ -1,13 +1,13 @@
-unit GBSwagger.Model.JSON;
+unit GBSwagger.JSON.V2;
 
 interface
 
 uses
-  GBSwagger.Model.JSON.Interfaces,
-  GBSwagger.Model.JSON.Info,
-  GBSwagger.Model.JSON.Schema,
-  GBSwagger.Model.JSON.Path,
-  GBSwagger.Model.JSON.Security,
+  GBSwagger.JSON.Interfaces,
+  GBSwagger.JSON.V2.Info,
+  GBSwagger.JSON.V2.Schema,
+  GBSwagger.JSON.V2.Path,
+  GBSwagger.JSON.V2.Security,
   GBSwagger.Model.Interfaces,
   GBSwagger.Model.Types,
   GBSwagger.Model,
@@ -17,7 +17,7 @@ uses
   System.Generics.Defaults,
   System.JSON;
 
-type TGBSwaggerModelJSON = class(TGBSwaggerModel, IGBSwaggerModelJSON)
+type TGBSwaggerJSONV2 = class(TGBSwaggerModel, IGBSwaggerModelJSON)
 
   private
     [Weak]
@@ -41,20 +41,20 @@ end;
 
 implementation
 
-{ TGBSwaggerModelJSON }
+{ TGBSwaggerJSONV2 }
 
-constructor TGBSwaggerModelJSON.create(Swagger: IGBSwagger);
+constructor TGBSwaggerJSONV2.create(Swagger: IGBSwagger);
 begin
   FSwagger := Swagger;
 end;
 
-destructor TGBSwaggerModelJSON.Destroy;
+destructor TGBSwaggerJSONV2.Destroy;
 begin
 
   inherited;
 end;
 
-function TGBSwaggerModelJSON.JSONContentTypes(Value: TArray<String>): TJSONArray;
+function TGBSwaggerJSONV2.JSONContentTypes(Value: TArray<String>): TJSONArray;
 var
   i: Integer;
 begin
@@ -63,7 +63,7 @@ begin
     Result.Add(Value[i]);
 end;
 
-function TGBSwaggerModelJSON.JSONDefinitions: TJSONObject;
+function TGBSwaggerJSONV2.JSONDefinitions: TJSONObject;
 var
   i: Integer;
   swaggerSchema: TArray<IGBSwaggerSchema>;
@@ -82,12 +82,12 @@ begin
   begin
     result.AddPair(
       swaggerSchema[i].Name,
-      TGBSwaggerModelJSONSchema.New(swaggerSchema[i]).ToJSON
+      TGBSwaggerJSONV2Schema.New(swaggerSchema[i]).ToJSON
     );
   end;
 end;
 
-function TGBSwaggerModelJSON.JSONPath: TJSONObject;
+function TGBSwaggerJSONV2.JSONPath: TJSONObject;
 var
   i: Integer;
   path: string;
@@ -108,11 +108,11 @@ begin
     if not path.StartsWith('/') then
       path := '/' + path;
 
-    Result.AddPair(path, TGBSwaggerModelJSONPath.New(swaggerPaths[i]).ToJSON);
+    Result.AddPair(path, TGBSwaggerJSONV2Path.New(swaggerPaths[i]).ToJSON);
   end;
 end;
 
-function TGBSwaggerModelJSON.JSONSchemes: TJSONArray;
+function TGBSwaggerJSONV2.JSONSchemes: TJSONArray;
 var
   i        : Integer;
   protocols: TArray<TGBSwaggerProtocol>;
@@ -124,7 +124,7 @@ begin
     Result.Add(protocols[i].toString);
 end;
 
-function TGBSwaggerModelJSON.JSONSecurity: TJSONObject;
+function TGBSwaggerJSONV2.JSONSecurity: TJSONObject;
 var
   i: Integer;
   securities: TArray<IGBSwaggerSecurity>;
@@ -133,15 +133,15 @@ begin
   securities := FSwagger.Securities;
 
   for i := 0 to Pred(Length(securities)) do
-    Result.AddPair(securities[i].Description, TGBSwaggerModelJSONSecurity.New(securities[i]).ToJSON);
+    Result.AddPair(securities[i].Description, TGBSwaggerJSONV2Security.New(securities[i]).ToJSON);
 end;
 
-class function TGBSwaggerModelJSON.New(Swagger: IGBSwagger): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2.New(Swagger: IGBSwagger): IGBSwaggerModelJSON;
 begin
   result := SElf.create(Swagger);
 end;
 
-procedure TGBSwaggerModelJSON.ProcessOptions(AJsonObject: TJSOnObject);
+procedure TGBSwaggerJSONV2.ProcessOptions(AJsonObject: TJSOnObject);
 var
   LPair: TJSONPair;
   LItem: TObject;
@@ -186,11 +186,11 @@ begin
   end;
 end;
 
-function TGBSwaggerModelJSON.ToJSON: TJSONValue;
+function TGBSwaggerJSONV2.ToJSON: TJSONValue;
 begin
   result := TJSONObject.Create
               .AddPair('swagger', FSwagger.Version)
-              .AddPair('info', TGBSwaggerModelJSONInfo.New(FSwagger.Info).ToJSON)
+              .AddPair('info', TGBSwaggerJSONV2Info.New(FSwagger.Info).ToJSON)
               .AddPair('host', FSwagger.Host)
               .AddPair('basePath', FSwagger.BasePath)
               .AddPair('schemes', JSONSchemes)
