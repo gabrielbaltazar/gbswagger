@@ -28,7 +28,7 @@ uses
   GBSwagger.Register.Interfaces in '..\..\..\..\Source\Core\GBSwagger.Register.Interfaces.pas',
   GBSwagger.Register in '..\..\..\..\Source\Core\GBSwagger.Register.pas',
   GBSwagger.Register.Response in '..\..\..\..\Source\Core\GBSwagger.Register.Response.pas',
-  GBSwagger.Resources in '..\..\..\..\Source\Core\GBSwagger.Resources.pas' {GBSwaggerResources: TDataModule},
+  GBSwagger.Resources in '..\..\..\..\Source\Core\GBSwagger.Resources.pas',
   GBSwagger.RTTI in '..\..\..\..\Source\Core\GBSwagger.RTTI.pas',
   GBSwagger.Web.HTML in '..\..\..\..\Source\Core\GBSwagger.Web.HTML.pas',
   GBSwagger.JSON.Interfaces in '..\..\..\..\Source\Core\GBSwagger.JSON.Interfaces.pas',

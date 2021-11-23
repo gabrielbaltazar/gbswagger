@@ -3,6 +3,7 @@ unit GBSwagger.Web.HTML;
 interface
 
 uses
+  System.Classes,
   System.SysUtils,
   System.StrUtils,
   GBSwagger.Resources;
@@ -10,6 +11,8 @@ uses
 function SwaggerDocument(AResourcePath, AJsonPath: String): string; overload;
 
 implementation
+
+{$R GBSwagger20.RES}
 
 function SwaggerDocument(AResourcePath, AJsonPath: String): string;
 begin

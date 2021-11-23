@@ -3,46 +3,40 @@ unit GBSwagger.Resources;
 interface
 
 uses
-  System.SysUtils,
   System.Classes,
+  System.SysUtils,
   System.StrUtils,
-  Web.HTTPApp,
-  Web.HTTPProd,
-  GBSwagger.Model.Interfaces,
-  GBSwagger.Model.Types;
-
-type
-  TGBSwaggerResources = class(TDataModule)
-    swagger_html: TPageProducer;
-  private
-    { Private declarations }
-  public
-    { Public declarations }
-  end;
+  System.Types,
+  GBSwagger.Model.Interfaces;
 
 function GETSwagger_HTML(AJSONPath: string): string;
 
 implementation
 
-{%CLASSGROUP 'Vcl.Controls.TControl'}
-
-{$R *.dfm}
+{$R GBSwagger20.RES}
 
 function GETSwagger_HTML(AJSONPath: string): string;
 var
-  dm: TGBSwaggerResources;
+  LResource: TResourceStream;
+  LStringStream: TStringStream;
 begin
-  dm := TGBSwaggerResources.Create(nil);
+  LResource := TResourceStream.Create(HInstance, 'GBSwagger20html', RT_RCDATA);
   try
-    Result := dm.swagger_html.HTMLDoc.Text;
-    result := Result.Replace('::SWAGGER_TITLE', Swagger.Info.Title)
+    LStringStream := TStringStream.Create;
+    try
+      LStringStream.LoadFromStream(LResource);
+      result := LStringStream.DataString;
+      Result := result.Replace('::SWAGGER_TITLE', Swagger.Info.Title)
                     .Replace('::SWAGGER_JSON', AJSONPath)
                     .Replace('<%=jsonurl%>', AJSONPath)
                     .Replace('::SWAGGER_CSS', Swagger.Config.ResourcePath)
                     .Replace('::SWAGGER_UI_BUNDLE_JS', Swagger.Config.ResourcePath)
                     .Replace('::SWAGGER_UI_STANDALONE', Swagger.Config.ResourcePath);
+    finally
+      LStringStream.Free;
+    end;
   finally
-    dm.Free;
+    LResource.Free;
   end;
 end;
 
