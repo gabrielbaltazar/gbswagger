@@ -15,29 +15,34 @@ implementation
 
 {$R GBSwagger20.RES}
 
-function GETSwagger_HTML(AJSONPath: string): string;
+function LoadResource(AResource: String): String;
 var
   LResource: TResourceStream;
   LStringStream: TStringStream;
 begin
-  LResource := TResourceStream.Create(HInstance, 'GBSwagger20html', RT_RCDATA);
+  LResource := TResourceStream.Create(HInstance, AResource, RT_RCDATA);
   try
     LStringStream := TStringStream.Create;
     try
       LStringStream.LoadFromStream(LResource);
       result := LStringStream.DataString;
-      Result := result.Replace('::SWAGGER_TITLE', Swagger.Info.Title)
-                    .Replace('::SWAGGER_JSON', AJSONPath)
-                    .Replace('<%=jsonurl%>', AJSONPath)
-                    .Replace('::SWAGGER_CSS', Swagger.Config.ResourcePath)
-                    .Replace('::SWAGGER_UI_BUNDLE_JS', Swagger.Config.ResourcePath)
-                    .Replace('::SWAGGER_UI_STANDALONE', Swagger.Config.ResourcePath);
     finally
       LStringStream.Free;
     end;
   finally
     LResource.Free;
   end;
+end;
+
+function GETSwagger_HTML(AJSONPath: string): string;
+begin
+  result := LoadResource('GBSwagger20html');
+  Result := result.Replace('::SWAGGER_TITLE', Swagger.Info.Title)
+                  .Replace('::SWAGGER_JSON', AJSONPath)
+                  .Replace('<%=jsonurl%>', AJSONPath)
+                  .Replace('::SWAGGER_CSS', LoadResource('GBSwagger20css'))
+                  .Replace('::SWAGGER_UI_BUNDLE_JS', LoadResource('GBSwagger20Bundlejs'))
+                  .Replace('::SWAGGER_UI_STANDALONE', LoadResource('GBSwagger20StandAlonejs'));
 end;
 
 end.

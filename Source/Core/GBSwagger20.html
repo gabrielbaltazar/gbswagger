@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <title>::SWAGGER_TITLE</title>
-	<link rel="stylesheet" type="text/css" href="::SWAGGER_CSS/swagger-ui.css" >
+	<!--<link rel="stylesheet" type="text/css" href="::SWAGGER_CSS/swagger-ui.css" >-->
+	<style>
+		::SWAGGER_CSS
+	</style>
     <style>
 
       html
@@ -31,8 +34,8 @@
 
   <body>
     <div id="swagger-ui"></div>
-	<script src="::SWAGGER_UI_BUNDLE_JS/swagger-ui-bundle.js"> </script>
-    <script src="::SWAGGER_UI_STANDALONE/swagger-ui-standalone-preset.js"> </script>
+	<script> ::SWAGGER_UI_BUNDLE_JS </script>
+    <script> ::SWAGGER_UI_STANDALONE </script>
     
     <script>
     window.onload = function() {
