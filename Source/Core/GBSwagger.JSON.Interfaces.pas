@@ -1,4 +1,4 @@
-unit GBSwagger.Model.JSON.Interfaces;
+unit GBSwagger.JSON.Interfaces;
 
 interface
 
@@ -12,17 +12,17 @@ type
     function ToJSON: TJSONValue;
   end;
 
-function SwaggerJSON      (ASwagger: IGBSwagger): TJSONValue;
+function SwaggerJSON(ASwagger: IGBSwagger): TJSONValue;
 function SwaggerJSONString(ASwagger: IGBSwagger): String;
 
 implementation
 
 uses
-  GBSwagger.Model.JSON;
+  GBSwagger.JSON.V2;
 
 function SwaggerJSON(ASwagger: IGBSwagger): TJSONValue;
 begin
-  result := TGBSwaggerModelJSON.New(ASwagger)
+  result := TGBSwaggerJSONV2.New(ASwagger)
               .ToJSON;
 end;
 

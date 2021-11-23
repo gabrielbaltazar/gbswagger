@@ -11,28 +11,27 @@ type TGBSwaggerModelConfig = class(TInterfacedObject, IGBSwaggerConfig)
     [Weak]
     FParent: IGBSwagger;
 
-    FModuleName    : string;
-    FHTMLTitle     : string;
-    FDateFormat    : string;
-    FClassPrefixes : TArray<String>;
-    FResourcePath  : string; // Pra deixar o dominio opcional - Colaboração Paulo Monteiro
+    FModuleName: string;
+    FHTMLTitle: string;
+    FDateFormat: string;
+    FClassPrefixes: TArray<String>;
+    FResourcePath: string; // Pra deixar o dominio opcional - Colaboração Paulo Monteiro
 
   protected
-    function DateFormat   (Value: String): IGBSwaggerConfig; overload;
+    function DateFormat(Value: String): IGBSwaggerConfig; overload;
     function ClassPrefixes(Value: String): IGBSwaggerConfig; overload;
-    function ResourcePath (Value: String): IGBSwaggerConfig; overload;
-    function ModuleName   (Value: String): IGBSwaggerConfig; overload;
+    function ResourcePath(Value: String): IGBSwaggerConfig; overload;
+    function ModuleName(Value: String): IGBSwaggerConfig; overload;
 
-    function DateFormat   : string; overload;
+    function DateFormat: string; overload;
     function ClassPrefixes: TArray<String>; overload;
-    function ResourcePath : String; overload;
-    function ModuleName   : String; overload;
+    function ResourcePath: String; overload;
+    function ModuleName: String; overload;
 
     function &End: IGBSwagger;
   public
     class function New(Parent: IGBSwagger): IGBSwaggerConfig;
     constructor create(Parent: IGBSwagger);
-
 end;
 
 implementation

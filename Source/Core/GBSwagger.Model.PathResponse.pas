@@ -14,31 +14,30 @@ type TGBSwaggerModelPathResponse = class(TInterfacedObject, IGBSwaggerPathRespon
   private
     [Weak]
     FParent: IGBSwaggerPathMethod;
-
-    FHttpCode   : Integer;
+    FHttpCode: Integer;
     FDescription: String;
-    FSchemaStr  : string;
-    FSchema     : TClass;
-    FIsArray    : Boolean;
-    FHeaders    : TList<IGBSwaggerHeader>;
+    FSchemaStr: string;
+    FSchema: TClass;
+    FIsArray: Boolean;
+    FHeaders: TList<IGBSwaggerHeader>;
 
     function GetHeader(Name: String): IGBSwaggerHeader;
 
   protected
-    function HttpCode    (Value: Integer): IGBSwaggerPathResponse; overload;
-    function Description (Value: String): IGBSwaggerPathResponse; overload;
-    function Schema      (Value: String): IGBSwaggerPathResponse; overload;
-    function Schema      (Value: TClass): IGBSwaggerPathResponse; overload;
-    function IsArray     (Value: Boolean): IGBSwaggerPathResponse; overload;
+    function HttpCode(Value: Integer): IGBSwaggerPathResponse; overload;
+    function Description(Value: String): IGBSwaggerPathResponse; overload;
+    function Schema(Value: String): IGBSwaggerPathResponse; overload;
+    function Schema(Value: TClass): IGBSwaggerPathResponse; overload;
+    function IsArray(Value: Boolean): IGBSwaggerPathResponse; overload;
 
     function Header(Name: String = ''; Description: String = ''): IGBSwaggerHeader;
     function Headers: TArray<IGBSwaggerHeader>;
 
-    function HttpCode   : Integer; overload;
+    function HttpCode: Integer; overload;
     function Description: String; overload;
-    function Schema     : TClass; overload;
-    function IsArray    : Boolean; overload;
-    function &Type      : string;
+    function Schema: TClass; overload;
+    function IsArray: Boolean; overload;
+    function &Type: string;
 
     function &End: IGBSwaggerPathMethod;
 

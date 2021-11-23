@@ -10,25 +10,25 @@ type TGBSwaggerModelContact = class(TInterfacedObject, IGBSwaggerContact)
   private
     [Weak]
     FParent: IGBSwaggerInfo;
+    FName: String;
+    FEmail: string;
+    FURL: string;
 
-    FName  : String;
-    FEmail : string;
-    FURL   : string;
   protected
-    function Name  (Value: String): IGBSwaggerContact; overload;
-    function Email (Value: string): IGBSwaggerContact; overload;
-    function URL   (Value: String): IGBSwaggerContact; overload;
+    function Name(Value: String): IGBSwaggerContact; overload;
+    function Email(Value: string): IGBSwaggerContact; overload;
+    function URL(Value: String): IGBSwaggerContact; overload;
 
-    function Name  : String; overload;
-    function Email : string; overload;
-    function URL   : string; overload;
+    function Name: String; overload;
+    function Email: string; overload;
+    function URL: string; overload;
 
     function &End: IGBSwaggerInfo;
 
   public
     constructor create(Parent: IGBSwaggerInfo);
     class function New(Parent: IGBSwaggerInfo): IGBSwaggerContact;
-    destructor  Destroy; override;
+    destructor Destroy; override;
 end;
 
 implementation

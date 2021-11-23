@@ -1,4 +1,4 @@
-unit GBSwagger.Model.JSON.Utils;
+unit GBSwagger.JSON.Utils;
 
 interface
 
@@ -10,7 +10,7 @@ type TGBSwaggerModelJSONUtils = class
 
   public
     class function JSONContentTypes(Value: TArray<String>): TJSONArray;
-    class function JSONProtocols   (Value: TArray<TGBSwaggerProtocol>)   : TJSONArray;
+    class function JSONProtocols(Value: TArray<TGBSwaggerProtocol>)   : TJSONArray;
 
     class function JSONSchemaArray (SchemaName: string): TJSONObject;
     class function JSONSchemaObject(SchemaName: string): TJSONObject;
