@@ -8,7 +8,7 @@ uses
   System.Rtti,
   GBSwagger.Model.Interfaces,
   GBSwagger.RTTI,
-  GBSwagger.Model.Types;
+  GBSwagger.Types;
 
 type TGBSwaggerModelParameter = class(TInterfacedObject, IGBSwaggerParameter)
 

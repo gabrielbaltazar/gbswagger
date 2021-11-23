@@ -4,7 +4,7 @@ interface
 
 uses
   System.JSON,
-  GBSwagger.Model.Types;
+  GBSwagger.Types;
 
 type TGBSwaggerModelJSONUtils = class
 

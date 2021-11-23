@@ -1,7 +1,7 @@
 object GBSwaggerResources: TGBSwaggerResources
-  OldCreateOrder = False
   Height = 246
   Width = 388
+  PixelsPerInch = 96
   object swagger_html: TPageProducer
     HTMLDoc.Strings = (
       '<!DOCTYPE html>'

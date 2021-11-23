@@ -67,3 +67,5 @@ __recovery/
 
 # Boss dependency manager vendor folder https://github.com/HashLoad/boss
 modules/
+Samples/Lazarus/Horse/basic/console/lib/
+Samples/Lazarus/Horse/basic/console/backup/

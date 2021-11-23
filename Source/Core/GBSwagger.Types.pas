@@ -1,13 +1,18 @@
-unit GBSwagger.Model.Types;
+unit GBSwagger.Types;
 
 interface
 
 uses
-  {$IFNDEF DSNAP}
+{$IFNDEF DSNAP}
   Horse,
-  {$ENDIF}
-  System.SysUtils,
-  Web.HTTPApp;
+{$ENDIF}
+{$IF DEFINED(FPC)}
+  fpHTTP, HTTPDefs;
+{$ELSE}
+  Web.HTTPApp,
+{$ENDIF}
+  System.SysUtils;
+
 
 const
   SWAG_STRING  = 'string';
@@ -16,9 +21,17 @@ const
 type
   TRouteCallback = {$IFNDEF DSNAP} Horse.THorseCallback {$ELSE} TObject {$ENDIF};
 
+{$IF DEFINED(FPC)}
+  TMethodType = (mtAny, mtGet, mtPut, mtPost, mtHead, mtDelete, mtPatch);
+  TWebResponse = HTTPDefs.TResponse;
+{$ELSE}
+  TMethodType = Web.HTTPApp.TMethodType;
+  TWebResponse = Web.HTTPApp.TWebResponse;
+{$ENDIF}
+
   TGBSwaggerContentType = (gbAppJSON, gbAppXML, gbTextHtml, gbPlainText, gbMultiPartFormData, gbAppOctetStream);
-  TGBSwaggerProtocol    = (gbHttp, gbHttps);
-  TGBSwaggerParamType   = (gbHeader, gbBody, gbQuery, gbPath, gbFormData);
+  TGBSwaggerProtocol = (gbHttp, gbHttps);
+  TGBSwaggerParamType = (gbHeader, gbBody, gbQuery, gbPath, gbFormData);
   TGBSwaggerSecurityType = (gbBasic, gbApiKey, gbOAuth2);
   TGBSwaggerSecurityFlow = (gbImplicit, gbPassword, gbApplication, gbAccessCode);
 

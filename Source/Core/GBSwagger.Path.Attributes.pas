@@ -3,7 +3,7 @@ unit GBSwagger.Path.Attributes;
 interface
 
 uses
-  GBSwagger.Model.Types,
+  GBSwagger.Types,
   System.SysUtils;
 
 type

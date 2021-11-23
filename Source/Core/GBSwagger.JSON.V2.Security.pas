@@ -5,7 +5,7 @@ interface
 uses
   GBSwagger.JSON.Interfaces,
   GBSwagger.Model.Interfaces,
-  GBSwagger.Model.Types,
+  GBSwagger.Types,
   System.SysUtils,
   System.JSON;
 

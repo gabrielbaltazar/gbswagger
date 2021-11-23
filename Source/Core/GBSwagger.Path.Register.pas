@@ -3,7 +3,7 @@ unit GBSwagger.Path.Register;
 interface
 
 uses
-  GBSwagger.Model.Types,
+  GBSwagger.Types,
   GBSwagger.Model.Interfaces,
   GBSwagger.RTTI,
   GBSwagger.Path.Attributes,
@@ -12,8 +12,8 @@ uses
   System.SysUtils;
 
 const
-  SWAG_STRING  = GBSwagger.Model.Types.SWAG_STRING;
-  SWAG_INTEGER = GBSwagger.Model.Types.SWAG_INTEGER;
+  SWAG_STRING  = GBSwagger.Types.SWAG_STRING;
+  SWAG_INTEGER = GBSwagger.Types.SWAG_INTEGER;
 
 type
   SwagPath        = GBSwagger.Path.Attributes.SwagPath;

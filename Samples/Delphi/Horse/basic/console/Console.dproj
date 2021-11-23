@@ -93,6 +93,45 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.JSON.Interfaces.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.JSON.Utils.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.JSON.V2.Contact.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.JSON.V2.Header.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.JSON.V2.Info.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.JSON.V2.Parameter.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.JSON.V2.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.JSON.V2.Path.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.JSON.V2.PathMethod.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.JSON.V2.PathResponse.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.JSON.V2.Schema.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.JSON.V2.Security.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Model.Attributes.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Model.Config.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Model.Contact.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Model.Header.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Model.Info.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Model.Interfaces.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Model.Parameter.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Model.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Model.Path.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Model.PathMethod.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Model.PathResponse.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Model.Schema.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Model.Security.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Model.Tag.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Types.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Path.Attributes.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Path.Register.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Register.Interfaces.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Register.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Register.Response.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Resources.pas">
+            <Form>GBSwaggerResources</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.RTTI.pas"/>
+        <DCCReference Include="..\..\..\..\..\Source\Core\GBSwagger.Web.HTML.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

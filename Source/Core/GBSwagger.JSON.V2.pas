@@ -9,7 +9,7 @@ uses
   GBSwagger.JSON.V2.Path,
   GBSwagger.JSON.V2.Security,
   GBSwagger.Model.Interfaces,
-  GBSwagger.Model.Types,
+  GBSwagger.Types,
   GBSwagger.Model,
   GBSwagger.RTTI,
   System.SysUtils,

@@ -1,0 +1,11 @@
+{
+	"name": "console",
+	"description": "",
+	"version": "1.0.0",
+	"homepage": "",
+	"mainsrc": "./",
+	"projects": [],
+	"dependencies": {
+		"github.com/hashload/horse": "2.0.13"
+	}
+}

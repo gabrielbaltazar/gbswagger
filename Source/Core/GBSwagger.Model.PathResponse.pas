@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils,
   System.Generics.Collections,
-  GBSwagger.Model.Types,
+  GBSwagger.Types,
   GBSwagger.Model.Header,
   GBSwagger.Model.Interfaces;
 

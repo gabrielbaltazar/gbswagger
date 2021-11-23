@@ -8,7 +8,7 @@ uses
   GBSwagger.JSON.V2.PathResponse,
   GBSwagger.JSON.V2.Parameter,
   GBSwagger.Model.Interfaces,
-  GBSwagger.Model.Types,
+  GBSwagger.Types,
   System.SysUtils,
   System.StrUtils,
   System.JSON;

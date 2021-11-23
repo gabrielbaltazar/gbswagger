@@ -4,7 +4,7 @@ interface
 
 uses
   GBSwagger.Model.Interfaces,
-  GBSwagger.Model.Types;
+  GBSwagger.Types;
 
 type TGBSwaggerModelSecurity = class(TInterfacedObject, IGBSwaggerSecurity)
 

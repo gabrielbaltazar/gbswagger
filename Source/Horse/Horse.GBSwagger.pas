@@ -6,27 +6,26 @@ uses
   Horse,
   Horse.GBSwagger.Register,
   Horse.GBSwagger.Controller,
+  GBSwagger.Types,
   GBSwagger.Model.Interfaces,
   GBSwagger.JSON.Interfaces,
-  GBSwagger.Model.Types,
   GBSwagger.Web.HTML,
   System.JSON,
   System.Classes,
   System.StrUtils,
-  System.SysUtils,
-  Web.HTTPApp;
+  System.SysUtils;
 
 const
-  SWAG_STRING  = GBSwagger.Model.Types.SWAG_STRING;
-  SWAG_INTEGER = GBSwagger.Model.Types.SWAG_INTEGER;
+  SWAG_STRING  = GBSwagger.Types.SWAG_STRING;
+  SWAG_INTEGER = GBSwagger.Types.SWAG_INTEGER;
 
   PATH_HTML = '/swagger/doc/html';
   PATH_JSON = '/swagger/doc/json';
 
 type
-  TGBSwaggerContentType   = GBSwagger.Model.Types.TGBSwaggerContentType;
-  TGBSwaggerProtocol      = GBSwagger.Model.Types.TGBSwaggerProtocol;
-  TGBSwaggerParamType     = GBSwagger.Model.Types.TGBSwaggerParamType;
+  TGBSwaggerContentType   = GBSwagger.Types.TGBSwaggerContentType;
+  TGBSwaggerProtocol      = GBSwagger.Types.TGBSwaggerProtocol;
+  TGBSwaggerParamType     = GBSwagger.Types.TGBSwaggerParamType;
   THorseGBSwaggerRegister = Horse.GBSwagger.Register.THorseGBSwaggerRegister;
   THorseGBSwagger         = Horse.GBSwagger.Controller.THorseGBSwagger;
 

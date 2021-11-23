@@ -5,7 +5,7 @@ interface
 uses
   Horse,
   GBSwagger.Model.Interfaces,
-  GBSwagger.Model.Types,
+  GBSwagger.Types,
   GBSwagger.Path.Attributes,
   GBSwagger.Path.Register,
   GBSwagger.RTTI,

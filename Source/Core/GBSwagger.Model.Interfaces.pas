@@ -4,18 +4,18 @@ interface
 
 uses
   Web.HTTPApp,
-  GBSwagger.Model.Types;
+  GBSwagger.Types;
 
 const
-  SWAG_STRING = GBSwagger.Model.Types.SWAG_STRING;
-  SWAG_INTEGER = GBSwagger.Model.Types.SWAG_INTEGER;
+  SWAG_STRING = GBSwagger.Types.SWAG_STRING;
+  SWAG_INTEGER = GBSwagger.Types.SWAG_INTEGER;
 
 type
-  TGBSwaggerContentType = GBSwagger.Model.Types.TGBSwaggerContentType;
-  TGBSwaggerProtocol = GBSwagger.Model.Types.TGBSwaggerProtocol;
-  TGBSwaggerParamType = GBSwagger.Model.Types.TGBSwaggerParamType;
-  TGBSwaggerSecurityType = GBSwagger.Model.Types.TGBSwaggerSecurityType;
-  TGBSwaggerSecurityFlow = GBSwagger.Model.Types.TGBSwaggerSecurityFlow;
+  TGBSwaggerContentType = GBSwagger.Types.TGBSwaggerContentType;
+  TGBSwaggerProtocol = GBSwagger.Types.TGBSwaggerProtocol;
+  TGBSwaggerParamType = GBSwagger.Types.TGBSwaggerParamType;
+  TGBSwaggerSecurityType = GBSwagger.Types.TGBSwaggerSecurityType;
+  TGBSwaggerSecurityFlow = GBSwagger.Types.TGBSwaggerSecurityFlow;
 
   IGBSwagger = interface;
   IGBSwaggerInfo = interface;

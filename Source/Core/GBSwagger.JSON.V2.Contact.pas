@@ -5,7 +5,7 @@ interface
 uses
   GBSwagger.JSON.Interfaces,
   GBSwagger.Model.Interfaces,
-  GBSwagger.Model.Types,
+  GBSwagger.Types,
   System.JSON;
 
 type TGBSwaggerJSONV2Contact = class(TInterfacedObject, IGBSwaggerModelJSON)

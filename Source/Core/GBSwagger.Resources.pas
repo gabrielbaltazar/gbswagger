@@ -9,7 +9,7 @@ uses
   Web.HTTPApp,
   Web.HTTPProd,
   GBSwagger.Model.Interfaces,
-  GBSwagger.Model.Types;
+  GBSwagger.Types;
 
 type
   TGBSwaggerResources = class(TDataModule)

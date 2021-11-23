@@ -4,7 +4,7 @@ interface
 
 uses
   GBSwagger.Model.Interfaces,
-  GBSwagger.Model.Types,
+  GBSwagger.Types,
   GBSwagger.Model.Parameter,
   GBSwagger.Model.PathResponse,
   System.Generics.Collections,

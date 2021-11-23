@@ -6,7 +6,7 @@ uses
   GBSwagger.JSON.Interfaces,
   GBSwagger.JSON.Utils,
   GBSwagger.Model.Interfaces,
-  GBSwagger.Model.Types,
+  GBSwagger.Types,
   System.SysUtils,
   System.StrUtils,
   System.Variants,
