@@ -35,12 +35,10 @@ type
     ['{8C8E5F41-02CF-4FC2-BBF9-7E5C0A4FF607}']
     function DateFormat(Value: String): IGBSwaggerConfig; overload;
     function ClassPrefixes(Value: String): IGBSwaggerConfig; overload;
-    function ResourcePath(Value: String): IGBSwaggerConfig; overload;
     function ModuleName(Value: String): IGBSwaggerConfig; overload;
 
     function DateFormat: string; overload;
     function ClassPrefixes: TArray<String>; overload;
-    function ResourcePath: String; overload;
     function ModuleName: String; overload;
 
     function &End: IGBSwagger;

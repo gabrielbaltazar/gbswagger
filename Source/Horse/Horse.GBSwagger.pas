@@ -93,7 +93,7 @@ begin
 
     pathJSON := basePath + pathJSON;
 
-    HTMLSwagger := SwaggerDocument(Swagger.Config.ResourcePath, pathJSON);
+    HTMLSwagger := SwaggerDocument(pathJSON);
   end;
 
   AResponse.Send(HTMLSwagger);
