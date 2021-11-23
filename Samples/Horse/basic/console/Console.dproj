@@ -49,7 +49,7 @@
         <DCC_K>false</DCC_K>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <SanitizedProjectName>Console</SanitizedProjectName>
-        <DCC_UnitSearchPath>..\..\..\..\Source\Core;..\..\..\..\Source\Horse;$(DCC_UnitSearchPath);modules\.dcp;modules\.dcu;modules;modules\horse\src</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\..\..\..\Source\Core;..\..\..\..\Source\Horse;modules\.dcp;modules\.dcu;modules;modules\horse\src;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_Locale>1046</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_DUPLICATE_CTOR_DTOR>false</DCC_DUPLICATE_CTOR_DTOR>
@@ -99,18 +99,6 @@
         <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.Header.pas"/>
         <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.Info.pas"/>
         <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.Interfaces.pas"/>
-        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.JSON.Contact.pas"/>
-        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.JSON.Header.pas"/>
-        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.JSON.Info.pas"/>
-        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.JSON.Interfaces.pas"/>
-        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.JSON.Parameter.pas"/>
-        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.JSON.pas"/>
-        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.JSON.Path.pas"/>
-        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.JSON.PathMethod.pas"/>
-        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.JSON.PathResponse.pas"/>
-        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.JSON.Schema.pas"/>
-        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.JSON.Security.pas"/>
-        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.JSON.Utils.pas"/>
         <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.Parameter.pas"/>
         <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.pas"/>
         <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Model.Path.pas"/>
@@ -132,6 +120,18 @@
         </DCCReference>
         <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.RTTI.pas"/>
         <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.Web.HTML.pas"/>
+        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.JSON.Interfaces.pas"/>
+        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.JSON.Utils.pas"/>
+        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.JSON.V2.Contact.pas"/>
+        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.JSON.V2.Header.pas"/>
+        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.JSON.V2.Info.pas"/>
+        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.JSON.V2.Parameter.pas"/>
+        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.JSON.V2.pas"/>
+        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.JSON.V2.Path.pas"/>
+        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.JSON.V2.PathMethod.pas"/>
+        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.JSON.V2.PathResponse.pas"/>
+        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.JSON.V2.Schema.pas"/>
+        <DCCReference Include="..\..\..\..\Source\Core\GBSwagger.JSON.V2.Security.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -158,8 +158,18 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="$(BDS)\Redist\osx32\libcgsqlite3.dylib" Class="DependencyModule">
+                <DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule">
                     <Platform Name="OSX32">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libcgunwind.1.0.dylib" Class="DependencyModule">
+                    <Platform Name="iOSSimulator">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libpcre.dylib" Class="DependencyModule">
+                    <Platform Name="iOSSimulator">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -169,23 +179,13 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libpcre.dylib" Class="DependencyModule">
-                    <Platform Name="iOSSimulator">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\iossimulator\libPCRE.dylib" Class="DependencyModule">
                     <Platform Name="iOSSimulator">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule">
+                <DeployFile LocalName="$(BDS)\Redist\osx32\libcgsqlite3.dylib" Class="DependencyModule">
                     <Platform Name="OSX32">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libcgunwind.1.0.dylib" Class="DependencyModule">
-                    <Platform Name="iOSSimulator">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
