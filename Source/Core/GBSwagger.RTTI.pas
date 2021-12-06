@@ -40,6 +40,8 @@ type
       function GetSwagClass: SwagClass;
       function IsList: Boolean;
       function TypeName: string;
+
+      function GetEnumNames: SwagEnumNames;
   end;
 
   TGBSwaggerRTTIPropertyHelper = class helper for TRttiProperty
@@ -194,6 +196,11 @@ begin
   result := GetAttribute<SwagClass>;
 end;
 
+function TGBSwaggerRTTITypeHelper.GetEnumNames: SwagEnumNames;
+begin
+  result := GetAttribute<SwagEnumNames>;
+end;
+
 { TGBSwaggerRTTIPropertyHelper }
 
 function TGBSwaggerRTTIPropertyHelper.ArrayType: string;
@@ -225,19 +232,29 @@ var
   i : Integer;
   unitName: string;
   enumName: string;
+  enumNamesAtt: SwagEnumNames;
 begin
-  unitName := PropertyType.QualifiedName.Replace('.' + PropertyType.ToString, EmptyStr);
-  i        := 0;
+  enumNamesAtt := GetAttribute<SwagEnumNames>;
+  if not Assigned(enumNamesAtt) then
+    enumNamesAtt := Self.PropertyType.GetEnumNames;
 
-  repeat
-    enumName := GetEnumName(TGBSwaggerRTTI.GetInstance.FindType(PropertyType.QualifiedName).Handle, i);
-    if not enumName.Equals(unitName) then
-    begin
-      SetLength(result, i + 1);
-      result[i] := enumName;
-      i := i + 1;
-    end;
-  until enumName.Equals(unitName);
+  if Assigned(enumNamesAtt) then
+    Result := enumNamesAtt.Names
+  else
+  begin
+    unitName := PropertyType.QualifiedName.Replace('.' + PropertyType.ToString, EmptyStr);
+    i        := 0;
+
+    repeat
+      enumName := GetEnumName(TGBSwaggerRTTI.GetInstance.FindType(PropertyType.QualifiedName).Handle, i);
+      if not enumName.Equals(unitName) then
+      begin
+        SetLength(result, i + 1);
+        result[i] := enumName;
+        i := i + 1;
+      end;
+    until enumName.Equals(unitName);
+  end;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.GetListType(AObject: TObject): TRttiType;
