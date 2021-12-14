@@ -207,19 +207,27 @@ var
   i : Integer;
   unitName: string;
   enumName: string;
-begin
-  unitName := Self.QualifiedName.Replace('.' + Self.ToString, EmptyStr);
-  i        := 0;
 
-  repeat
-    enumName := GetEnumName(TGBSwaggerRTTI.GetInstance.FindType(Self.QualifiedName).Handle, i);
-    if not enumName.Equals(unitName) then
-    begin
-      SetLength(result, i + 1);
-      result[i] := enumName;
-      i := i + 1;
-    end;
-  until enumName.Equals(unitName);
+  enumNamesAtt: SwagEnumNames;
+begin
+  enumNamesAtt := Self.GetEnumNames;
+  if Assigned(enumNamesAtt) then
+    Result := enumNamesAtt.Names
+  else
+  begin
+    unitName := Self.QualifiedName.Replace('.' + Self.ToString, EmptyStr);
+    i        := 0;
+
+    repeat
+      enumName := GetEnumName(TGBSwaggerRTTI.GetInstance.FindType(Self.QualifiedName).Handle, i);
+      if not enumName.Equals(unitName) then
+      begin
+        SetLength(result, i + 1);
+        result[i] := enumName;
+        i := i + 1;
+      end;
+    until enumName.Equals(unitName);
+  end;
 end;
 
 { TGBSwaggerRTTIPropertyHelper }
