@@ -207,7 +207,12 @@ function TGBSwaggerRTTIPropertyHelper.ArrayType: string;
 begin
   result := EmptyStr;
   if (IsArray) then
-    result := TRttiDynamicArrayType(Self.PropertyType).ElementType.Name;
+  begin
+    if Self.PropertyType.TypeKind = tkSet then
+      result := TRttiSetType(Self.PropertyType).ElementType.Name
+    else
+      result := TRttiDynamicArrayType(Self.PropertyType).ElementType.Name;
+  end;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.GetAttribute<T>: T;
