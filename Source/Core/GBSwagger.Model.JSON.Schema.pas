@@ -130,11 +130,28 @@ begin
 end;
 
 function TGBSwaggerModelJSONSchema.JSONPropertyPairArray(AProperty: TRttiProperty): TJSONPair;
+var
+  enumNames: TArray<String>;
+  jsonArray: TJSONArray;
+  i: Integer;
 begin
-  Result := TJSONPair.Create(
-        'items', TJSONObject.Create
-                    .AddPair('type', AProperty.ArrayType)
-    );
+  if AProperty.PropertyType.TypeKind = tkSet then
+  begin
+    enumNames := TRttiSetType(AProperty.PropertyType).ElementType.GetEnumNamesArray;
+    jsonArray := TJSONArray.Create;
+
+    for i := 0 to Length(enumNames) - 1 do
+      jsonArray.Add(enumNames[i]);
+
+    Result := TJSONPair.Create('items',TJSONObject.Create
+                                        .AddPair('type','string')
+                                        .AddPair('enum',jsonArray));
+  end
+  else
+    Result := TJSONPair.Create(
+          'items', TJSONObject.Create
+                      .AddPair('type', AProperty.ArrayType)
+      );
 end;
 
 function TGBSwaggerModelJSONSchema.JSONPropertyPairEnum(AProperty: TRttiProperty): TJSONPair;
