@@ -5,6 +5,7 @@ interface
 uses
   Horse,
   GBSwagger.Path.Attributes,
+  GBSwagger.Validator.Interfaces,
   Annotation.Classes,
   System.JSON;
 
@@ -64,6 +65,7 @@ end;
 
 procedure TUserController.DeleteUser;
 begin
+  SwaggerValidator.validate()
   FResponse.Status(204);
 end;
 

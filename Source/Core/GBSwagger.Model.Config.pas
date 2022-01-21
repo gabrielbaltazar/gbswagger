@@ -13,16 +13,21 @@ type TGBSwaggerModelConfig = class(TInterfacedObject, IGBSwaggerConfig)
     FModuleName: string;
     FHTMLTitle: string;
     FDateFormat: string;
+    FLanguage: String;
     FClassPrefixes: TArray<String>;
 
   protected
     function DateFormat(Value: String): IGBSwaggerConfig; overload;
-    function ClassPrefixes(Value: String): IGBSwaggerConfig; overload;
-    function ModuleName(Value: String): IGBSwaggerConfig; overload;
-
     function DateFormat: string; overload;
+
+    function ClassPrefixes(Value: String): IGBSwaggerConfig; overload;
     function ClassPrefixes: TArray<String>; overload;
+
+    function ModuleName(Value: String): IGBSwaggerConfig; overload;
     function ModuleName: String; overload;
+
+    function Language(Value: String): IGBSwaggerConfig; overload;
+    function Language: String; overload;
 
     function &End: IGBSwagger;
   public
@@ -47,6 +52,17 @@ begin
   result := FParent;
 end;
 
+function TGBSwaggerModelConfig.Language: String;
+begin
+  result := FLanguage;
+end;
+
+function TGBSwaggerModelConfig.Language(Value: String): IGBSwaggerConfig;
+begin
+  result := Self;
+  FLanguage := Value;
+end;
+
 function TGBSwaggerModelConfig.ModuleName: String;
 begin
   result := FModuleName;
@@ -69,6 +85,7 @@ constructor TGBSwaggerModelConfig.create(Parent: IGBSwagger);
 begin
   FParent := Parent;
   FHTMLTitle := 'GBSwagger';
+  FLanguage := 'en-US';
 end;
 
 function TGBSwaggerModelConfig.DateFormat: string;

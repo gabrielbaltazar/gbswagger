@@ -9,11 +9,17 @@ uses
   Horse.GBSwagger,
   System.SysUtils,
   Annotation.Classes in '..\..\annotations\Annotation.Classes.pas',
-  Annotation.Controller.User in '..\..\annotations\Annotation.Controller.User.pas';
+  Annotation.Controller.User in '..\..\annotations\Annotation.Controller.User.pas',
+  GBSwagger.Validator.Messages.Interfaces in '..\..\..\..\Source\Validator\GBSwagger.Validator.Messages.Interfaces.pas',
+  GBSwagger.Validator.Messages.Base in '..\..\..\..\Source\Validator\GBSwagger.Validator.Messages.Base.pas',
+  GBSwagger.Validator.Messages.EnUS in '..\..\..\..\Source\Validator\GBSwagger.Validator.Messages.EnUS.pas',
+  GBSwagger.Validator.Messages.PtBR in '..\..\..\..\Source\Validator\GBSwagger.Validator.Messages.PtBR.pas';
 
 procedure SwaggerConfig;
 begin
   Swagger
+    .Config
+      .DateFormat()
     .Register
       .SchemaOnError(TAPIError)
     .&End
