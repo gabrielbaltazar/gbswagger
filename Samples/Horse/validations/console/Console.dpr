@@ -6,6 +6,7 @@ program Console;
 
 uses
   Horse,
+  Horse.BasicAuthentication,
   Horse.GBSwagger,
   System.SysUtils,
   Annotation.Classes in '..\..\annotations\Annotation.Classes.pas',
@@ -18,8 +19,6 @@ uses
 procedure SwaggerConfig;
 begin
   Swagger
-    .Config
-      .DateFormat()
     .Register
       .SchemaOnError(TAPIError)
     .&End
@@ -32,7 +31,13 @@ begin
         .URL('http://www.mypage.com.br')
       .&End
     .&End
-    .BasePath('v1');
+    .BasePath('v1')
+    .AddBasicSecurity
+      .Callback(
+        HorseBasicAuthentication(function(const AUsername, APassword: string): Boolean
+          begin
+            result := AUsername = 'teste';
+          end));
 end;
 
 begin

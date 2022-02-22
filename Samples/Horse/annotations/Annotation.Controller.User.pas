@@ -17,7 +17,7 @@ type
     FResponse: THorseResponse;
 
   public
-    [SwagGET('List Users')]
+    [SwagGET('List Users', True)]
     [SwagParamQuery('id', 'user id')]
     [SwagResponse(200, TUser, 'Users data', True)]
     procedure GetUsers;
@@ -65,7 +65,6 @@ end;
 
 procedure TUserController.DeleteUser;
 begin
-  SwaggerValidator.validate()
   FResponse.Status(204);
 end;
 
