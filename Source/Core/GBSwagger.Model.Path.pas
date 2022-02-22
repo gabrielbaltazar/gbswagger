@@ -13,32 +13,33 @@ type TGBSwaggerModelPath = class(TInterfacedObject, IGBSwaggerPath)
   private
     [Weak]
     FParent: IGBSwagger;
-
     FName: string;
     FTags: TList<String>;
     FMethods: TList<IGBSwaggerPathMethod>;
 
     function AddMethod(Summary, Description: String): IGBSwaggerPathMethod;
+
   protected
     function Name(Value: String): IGBSwaggerPath; overload;
     function Name: string; overload;
 
-    function Tag(Value: String): IGBSwaggerPath; overload;
-    function Tags: TArray<String>; overload;
+    function Tag(Value: String): IGBSwaggerPath;
+    function Tags: TArray<String>;
 
-    function GET    (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
-    function POST   (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
-    function PUT    (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
-    function DELETE (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
-    function PATCH  (Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
+    function GET(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
+    function POST(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
+    function PUT(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
+    function DELETE(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
+    function PATCH(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
 
     function Methods: TArray<IGBSwaggerPathMethod>;
 
     function &End: IGBSwagger;
+
   public
     constructor create(Parent: IGBSwagger);
     class function New(Parent: IGBSwagger): IGBSwaggerPath;
-    destructor  Destroy; override;
+    destructor Destroy; override;
 
 end;
 

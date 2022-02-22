@@ -1,25 +1,25 @@
-unit GBSwagger.Model.JSON.PathResponse;
+unit GBSwagger.JSON.V2.PathResponse;
 
 interface
 
 uses
   GBSwagger.RTTI,
-  GBSwagger.Model.JSON.Utils,
-  GBSwagger.Model.JSON.Interfaces,
+  GBSwagger.JSON.Utils,
+  GBSwagger.JSON.Interfaces,
   GBSwagger.Model.Interfaces,
-  GBSwagger.Model.JSON.Header,
+  GBSwagger.JSON.V2.Header,
   GBSwagger.Model.Types,
   System.SysUtils,
   System.StrUtils,
   System.JSON;
 
-type TGBSwaggerModelJSONPathResponse = class(TInterfacedObject, IGBSwaggerModelJSON)
+type TGBSwaggerJSONV2PathResponse = class(TInterfacedObject, IGBSwaggerModelJSON)
 
   private
     FSwaggerPathResponse: IGBSwaggerPathResponse;
 
-    function JSONSchema   : TJSONObject;
-    function JSONHeaders  : TJSONObject;
+    function JSONSchema: TJSONObject;
+    function JSONHeaders: TJSONObject;
   public
     constructor create(SwaggerPathResponse: IGBSwaggerPathResponse);
     class function New(SwaggerPathResponse: IGBSwaggerPathResponse): IGBSwaggerModelJSON;
@@ -29,14 +29,14 @@ end;
 
 implementation
 
-{ TGBSwaggerModelJSONPathResponse }
+{ TGBSwaggerJSONV2PathResponse }
 
-constructor TGBSwaggerModelJSONPathResponse.create(SwaggerPathResponse: IGBSwaggerPathResponse);
+constructor TGBSwaggerJSONV2PathResponse.create(SwaggerPathResponse: IGBSwaggerPathResponse);
 begin
   FSwaggerPathResponse := SwaggerPathResponse;
 end;
 
-function TGBSwaggerModelJSONPathResponse.JSONHeaders: TJSONObject;
+function TGBSwaggerJSONV2PathResponse.JSONHeaders: TJSONObject;
 var
   header  : IGBSwaggerHeader;
   headers : TArray<IGBSwaggerHeader>;
@@ -47,11 +47,11 @@ begin
   if Length(headers) > 0 then
   begin
     for header in headers do
-      result.AddPair(header.Name, TGBSwaggerModelJSONHeader.New(header).ToJSON);
+      result.AddPair(header.Name, TGBSwaggerJSONV2Header.New(header).ToJSON);
   end;
 end;
 
-function TGBSwaggerModelJSONPathResponse.JSONSchema: TJSONObject;
+function TGBSwaggerJSONV2PathResponse.JSONSchema: TJSONObject;
 var
   schemaName: String;
 begin
@@ -62,12 +62,12 @@ begin
     result := TGBSwaggerModelJSONUtils.JSONSchemaObject(schemaName);
 end;
 
-class function TGBSwaggerModelJSONPathResponse.New(SwaggerPathResponse: IGBSwaggerPathResponse): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2PathResponse.New(SwaggerPathResponse: IGBSwaggerPathResponse): IGBSwaggerModelJSON;
 begin
   result := Self.create(SwaggerPathResponse);
 end;
 
-function TGBSwaggerModelJSONPathResponse.ToJSON: TJSONValue;
+function TGBSwaggerJSONV2PathResponse.ToJSON: TJSONValue;
 var
   json: TJSONObject;
 begin

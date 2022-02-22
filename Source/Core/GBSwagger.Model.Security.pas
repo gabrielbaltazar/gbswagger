@@ -11,34 +11,33 @@ type TGBSwaggerModelSecurity = class(TInterfacedObject, IGBSwaggerSecurity)
   private
     [Weak]
     FParent: IGBSwagger;
-
-    FType             : TGBSwaggerSecurityType;
-    FCallback         : TRouteCallback;
-    FDescription      : String;
-    FName             : String;
-    FIn               : TGBSwaggerParamType;
-    FFlow             : TGBSwaggerSecurityFlow;
-    FAuthorizationURL : String;
-    FTokenURL         : String;
+    FType: TGBSwaggerSecurityType;
+    FCallback: TRouteCallback;
+    FDescription: String;
+    FName: String;
+    FIn: TGBSwaggerParamType;
+    FFlow: TGBSwaggerSecurityFlow;
+    FAuthorizationURL: String;
+    FTokenURL: String;
 
   protected
-    function &Type       (Value: TGBSwaggerSecurityType): IGBSwaggerSecurity; overload;
-    function Description (Value: String): IGBSwaggerSecurity; overload;
-    function Name        (Value: String): IGBSwaggerSecurity; overload;
-    function Flow        (Value: TGBSwaggerSecurityFlow): IGBSwaggerSecurity; overload;
-    function &In         (Value: TGBSwaggerParamType): IGBSwaggerSecurity; overload;
+    function &Type(Value: TGBSwaggerSecurityType): IGBSwaggerSecurity; overload;
+    function Description(Value: String): IGBSwaggerSecurity; overload;
+    function Name(Value: String): IGBSwaggerSecurity; overload;
+    function Flow(Value: TGBSwaggerSecurityFlow): IGBSwaggerSecurity; overload;
+    function &In(Value: TGBSwaggerParamType): IGBSwaggerSecurity; overload;
     function AuthorizationURL(Value: String): IGBSwaggerSecurity; overload;
-    function TokenURL (Value: String): IGBSwaggerSecurity; overload;
-    function Callback (Value: TRouteCallback): IGBSwaggerSecurity; overload;
+    function TokenURL(Value: String): IGBSwaggerSecurity; overload;
+    function Callback(Value: TRouteCallback): IGBSwaggerSecurity; overload;
 
-    function &Type            : TGBSwaggerSecurityType; overload;
-    function Description      : String; overload;
-    function Name             : String; overload;
-    function &In              : TGBSwaggerParamType; overload;
-    function Flow             : TGBSwaggerSecurityFlow; overload;
-    function AuthorizationURL : String; overload;
-    function TokenURL         : String; overload;
-    function Callback         : TRouteCallback; overload;
+    function &Type: TGBSwaggerSecurityType; overload;
+    function Description: String; overload;
+    function Name: String; overload;
+    function &In: TGBSwaggerParamType; overload;
+    function Flow: TGBSwaggerSecurityFlow; overload;
+    function AuthorizationURL: String; overload;
+    function TokenURL: String; overload;
+    function Callback: TRouteCallback; overload;
 
     function &End: IGBSwagger;
 

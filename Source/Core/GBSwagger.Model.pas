@@ -24,20 +24,19 @@ type TGBSwaggerModel = class(TInterfacedObject, IGBSwagger)
     class var
       FInstance: IGBSwagger;
 
-    FInfo      : IGBSwaggerInfo;
-    FConfig    : IGBSwaggerConfig;
-    FTags      : TList<IGBSwaggerTag>;
-    FConsumes  : TList<String>;
-    FProduces  : TList<String>;
-    FProtocols : TList<TGBSwaggerProtocol>;
-    FSchemas   : TDictionary<String,IGBSwaggerSchema>;
-    FPaths     : TDictionary<String,IGBSwaggerPath>;
+    FInfo: IGBSwaggerInfo;
+    FConfig: IGBSwaggerConfig;
+    FTags: TList<IGBSwaggerTag>;
+    FConsumes: TList<String>;
+    FProduces: TList<String>;
+    FProtocols: TList<TGBSwaggerProtocol>;
+    FSchemas: TDictionary<String,IGBSwaggerSchema>;
+    FPaths: TDictionary<String,IGBSwaggerPath>;
     FSecurities: TDictionary<String,IGBSwaggerSecurity>;
-    FRegister  : IGBSwaggerRegister;
-
-    FVersion  : string;
-    FHost     : String;
-    FBasePath : String;
+    FRegister: IGBSwaggerRegister;
+    FVersion: string;
+    FHost: String;
+    FBasePath: String;
 
     function AddSchemaObjectReference(Schemas: TArray<TClass>): IGBSwagger;
 
@@ -55,14 +54,15 @@ type TGBSwaggerModel = class(TInterfacedObject, IGBSwagger)
 
     function containSchema(ClassType: TClass): Boolean;
   	constructor createPrivate;
-  protected
-    function Version  (Value: String): IGBSwagger; overload;
-    function Host     (Value: String): IGBSwagger; overload;
-    function BasePath (Value: String): IGBSwagger; overload;
 
-    function Version  : string; overload;
-    function Host     : String; overload;
-    function BasePath : String; overload;
+  protected
+    function Version(Value: String): IGBSwagger; overload;
+    function Host(Value: String): IGBSwagger; overload;
+    function BasePath(Value: String): IGBSwagger; overload;
+
+    function Version: string; overload;
+    function Host: String; overload;
+    function BasePath: String; overload;
 
     function Path(Name: String): IGBSwaggerPath;
 
@@ -73,18 +73,18 @@ type TGBSwaggerModel = class(TInterfacedObject, IGBSwagger)
     function Paths: TArray<IGBSwaggerPath>;
     function Securities: TArray<IGBSwaggerSecurity>;
 
-    function Info   : IGBSwaggerInfo;
-    function Config : IGBSwaggerConfig;
+    function Info: IGBSwaggerInfo;
+    function Config: IGBSwaggerConfig;
 
-    function AddConsumes (Value: TGBSwaggerContentType): IGBSwagger; overload;
-    function AddConsumes (Value: String): IGBSwagger; overload;
-    function AddProduces (Value: String): IGBSwagger; overload;
-    function AddProduces (Value: TGBSwaggerContentType): IGBSwagger; overload;
-    function AddProtocol (Value: TGBSwaggerProtocol)   : IGBSwagger;
+    function AddConsumes(Value: TGBSwaggerContentType): IGBSwagger; overload;
+    function AddConsumes(Value: String): IGBSwagger; overload;
+    function AddProduces(Value: String): IGBSwagger; overload;
+    function AddProduces(Value: TGBSwaggerContentType): IGBSwagger; overload;
+    function AddProtocol(Value: TGBSwaggerProtocol)   : IGBSwagger;
 
     function AddSecurity(Description: String): IGBSwaggerSecurity;
     function AddBearerSecurity: IGBSwaggerSecurity;
-    function AddBasicSecurity : IGBSwaggerSecurity;
+    function AddBasicSecurity: IGBSwaggerSecurity;
 
     function AddTag: IGBSwaggerTag;
     function AddModel(ClassType: TClass): IGBSwagger; overload;

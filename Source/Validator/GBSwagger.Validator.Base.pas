@@ -6,6 +6,7 @@ uses
   GBSwagger.Model.Attributes,
   GBSwagger.Validator.Attributes,
   GBSwagger.Validator.Interfaces,
+  GBSwagger.Validator.Messages.Interfaces,
   GBSwagger.RTTI,
   System.Rtti,
   System.SysUtils,
@@ -14,6 +15,7 @@ uses
 type TGBSwaggerValidator = class(TInterfacedObject, IGBSwaggerValidator)
 
   private
+    FMessages: IGBSwaggerValidatorMessages;
     function GetPropertyName(AProp: TRttiProperty; AInstanceName: String): string;
 
     procedure validateRequiredProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
@@ -57,12 +59,18 @@ var
   i: Integer;
   properties : TArray<TRttiProperty>;
 begin
+  FMessages := GetValidatorMessage;
   if not Assigned(Value) then
     Exit;
 
   properties := Value.GetProperties;
   for i := 0 to Pred(Length(properties)) do
+  begin
+    if properties[i].IsSwaggerReadOnly then
+      Continue;
+
     validateProperty(Value, properties[i], AInstanceName);
+  end;
 end;
 
 procedure TGBSwaggerValidator.validateDoubleProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
@@ -91,7 +99,7 @@ begin
   enumValue := AProp.GetValue(Value).AsOrdinal;
   enumNames := AProp.GetEnumNames;
   if (enumValue < 0) or (enumValue > Pred(Length(enumNames))) then
-    raise Exception.CreateFmt('The property %s must be in [%s]', [GetPropertyName(AProp, AInstanceName), splitEnumNames]);
+    raise Exception.CreateFmt(FMessages.EnumValueMessage, [GetPropertyName(AProp, AInstanceName), splitEnumNames]);
 end;
 
 procedure TGBSwaggerValidator.validateIntegerProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
@@ -127,18 +135,23 @@ procedure TGBSwaggerValidator.validateNumberProperty(Value: TObject; AProp: TRtt
 var
   propValue: Double;
   number: SwagNumber;
+  positive: SwagPositive;
 begin
   propValue := AProp.GetValue(Value).AsExtended;
-  number    := AProp.GetAttribute<SwagNumber>;
+  number := AProp.GetAttribute<SwagNumber>;
+  positive := AProp.GetAttribute<SwagPositive>;
 
   if Assigned(number) then
   begin
     if (number.minimum <> 0) and (propValue < number.minimum) then
-      raise Exception.CreateFmt('The minimum value to property %s is %s.', [GetPropertyName(AProp, AInstanceName), number.minimum.ToString]);
+      raise Exception.CreateFmt(FMessages.MinimumValueMessage, [GetPropertyName(AProp, AInstanceName), number.minimum.ToString]);
 
     if (number.maximum <> 0) and (propValue > number.maximum) then
-      raise Exception.CreateFmt('The maximum value to property %s is %s.', [GetPropertyName(AProp, AInstanceName), number.maximum.ToString]);
+      raise Exception.CreateFmt(FMessages.MaximumValueMessage, [GetPropertyName(AProp, AInstanceName), number.maximum.ToString]);
   end;
+
+  if (Assigned(positive)) and (propValue < 0) then
+    raise Exception.CreateFmt(FMessages.PositiveMessage, [GetPropertyName(AProp, AInstanceName)]);
 end;
 
 procedure TGBSwaggerValidator.validateObjectListProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
@@ -168,14 +181,14 @@ end;
 
 procedure TGBSwaggerValidator.validateObjectProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
 var
-  propertiesToValidate : TArray<String>;
-  SwagProps            : SwagValidateProperties;
-  prop                 : TRttiProperty;
-  AObject              : TObject;
-  i                    : Integer;
+  propertiesToValidate: TArray<String>;
+  SwagProps: SwagValidateProperties;
+  prop: TRttiProperty;
+  AObject: TObject;
+  i: Integer;
 begin
   SwagProps := AProp.GetAttribute<SwagValidateProperties>;
-  AObject   := AProp.GetValue(Value).AsObject;
+  AObject := AProp.GetValue(Value).AsObject;
 
   if not Assigned(SwagProps) then
   begin
@@ -241,11 +254,11 @@ var
 begin
   required := AProp.GetAttribute<SwagRequired>;
   if (Assigned(required)) and (AProp.IsEmptyValue(Value)) then
-    raise Exception.CreateFmt('The property %s is required.', [GetPropertyName(AProp, AInstanceName)]);
+    raise Exception.CreateFmt(FMessages.RequiredMessage, [GetPropertyName(AProp, AInstanceName)]);
 
   swaggerProp := AProp.GetAttribute<SwagProp>;
   if (Assigned(swaggerProp)) and (swaggerProp.required) and (AProp.IsEmptyValue(Value)) then
-    raise Exception.CreateFmt('The property %s is required.', [GetPropertyName(AProp, AInstanceName)]);
+    raise Exception.CreateFmt(FMessages.RequiredMessage, [GetPropertyName(AProp, AInstanceName)]);
 end;
 
 procedure TGBSwaggerValidator.validateStringProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
@@ -262,10 +275,10 @@ begin
       Exit;
 
     if (str.minLength > 0) and (propValue.Length < str.minLength) then
-      raise Exception.CreateFmt('The minimun length to property %s is %d.', [GetPropertyName(AProp, AInstanceName), str.minLength]);
+      raise Exception.CreateFmt(FMessages.MinimumLengthMessage, [GetPropertyName(AProp, AInstanceName), str.minLength]);
 
     if (str.maxLength > 0) and (propValue.Length > str.maxLength) then
-      raise Exception.CreateFmt('The maximum length to property %s is %d.', [GetPropertyName(AProp, AInstanceName), str.maxLength]);
+      raise Exception.CreateFmt(FMessages.MaximumLengthMessage, [GetPropertyName(AProp, AInstanceName), str.maxLength]);
   end;
 end;
 

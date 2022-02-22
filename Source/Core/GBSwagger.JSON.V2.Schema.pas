@@ -1,10 +1,10 @@
-unit GBSwagger.Model.JSON.Schema;
+unit GBSwagger.JSON.V2.Schema;
 
 interface
 
 uses
   GBSwagger.Model.Interfaces,
-  GBSwagger.Model.JSON.Interfaces,
+  GBSwagger.JSON.Interfaces,
   GBSwagger.RTTI,
   System.Rtti,
   System.JSON,
@@ -13,7 +13,7 @@ uses
   System.StrUtils,
   GBSwagger.Model.Attributes;
 
-type TGBSwaggerModelJSONSchema = class(TInterfacedObject, IGBSwaggerModelJSON)
+type TGBSwaggerJSONV2Schema = class(TInterfacedObject, IGBSwaggerModelJSON)
 
   private
     FSchema: IGBSwaggerSchema;
@@ -22,11 +22,11 @@ type TGBSwaggerModelJSONSchema = class(TInterfacedObject, IGBSwaggerModelJSON)
     function JSONRequired: TJSONArray;
     function JSONProperties: TJSONObject;
 
-    function JSONProperty             (AProperty: TRttiProperty): TJSONObject;
-    function JSONPropertyPairArray    (AProperty: TRttiProperty): TJSONPair;
-    function JSONPropertyPairList     (AProperty: TRttiProperty): TJSONPair;
-    function JSONPropertyPairEnum     (AProperty: TRttiProperty): TJSONPair;
-    function JSONPropertyPairObject   (AProperty: TRttiProperty): TJSONPair;
+    function JSONProperty(AProperty: TRttiProperty): TJSONObject;
+    function JSONPropertyPairArray(AProperty: TRttiProperty): TJSONPair;
+    function JSONPropertyPairList(AProperty: TRttiProperty): TJSONPair;
+    function JSONPropertyPairEnum(AProperty: TRttiProperty): TJSONPair;
+    function JSONPropertyPairObject(AProperty: TRttiProperty): TJSONPair;
 
     function PropertyDateTimeFormat(AProperty: TRttiProperty): string;
   public
@@ -39,20 +39,20 @@ end;
 
 implementation
 
-{ TGBSwaggerModelJSONSchema }
+{ TGBSwaggerJSONV2Schema }
 
-constructor TGBSwaggerModelJSONSchema.create(Schema: IGBSwaggerSchema);
+constructor TGBSwaggerJSONV2Schema.create(Schema: IGBSwaggerSchema);
 begin
   FSchema := Schema;
 end;
 
-destructor TGBSwaggerModelJSONSchema.Destroy;
+destructor TGBSwaggerJSONV2Schema.Destroy;
 begin
 
   inherited;
 end;
 
-function TGBSwaggerModelJSONSchema.JSONProperties: TJSONObject;
+function TGBSwaggerJSONV2Schema.JSONProperties: TJSONObject;
 var
   rttiProperty: TRttiProperty;
   pair: TJSONPair;
@@ -74,7 +74,7 @@ begin
     end;
 end;
 
-function TGBSwaggerModelJSONSchema.JSONProperty(AProperty: TRttiProperty): TJSONObject;
+function TGBSwaggerJSONV2Schema.JSONProperty(AProperty: TRttiProperty): TJSONObject;
 var
   attSwagNumber: SwagNumber;
 begin
@@ -129,7 +129,7 @@ begin
   end;
 end;
 
-function TGBSwaggerModelJSONSchema.JSONPropertyPairArray(AProperty: TRttiProperty): TJSONPair;
+function TGBSwaggerJSONV2Schema.JSONPropertyPairArray(AProperty: TRttiProperty): TJSONPair;
 begin
   Result := TJSONPair.Create(
         'items', TJSONObject.Create
@@ -137,7 +137,7 @@ begin
     );
 end;
 
-function TGBSwaggerModelJSONSchema.JSONPropertyPairEnum(AProperty: TRttiProperty): TJSONPair;
+function TGBSwaggerJSONV2Schema.JSONPropertyPairEnum(AProperty: TRttiProperty): TJSONPair;
 var
   enumNames: TArray<String>;
   jsonArray: TJSONArray;
@@ -152,7 +152,7 @@ begin
   result := TJSONPair.Create('enum', jsonArray);
 end;
 
-function TGBSwaggerModelJSONSchema.JSONPropertyPairList(AProperty: TRttiProperty): TJSONPair;
+function TGBSwaggerJSONV2Schema.JSONPropertyPairList(AProperty: TRttiProperty): TJSONPair;
 var
   classType: TClass;
   className: string;
@@ -165,7 +165,7 @@ begin
   );
 end;
 
-function TGBSwaggerModelJSONSchema.JSONPropertyPairObject(AProperty: TRttiProperty): TJSONPair;
+function TGBSwaggerJSONV2Schema.JSONPropertyPairObject(AProperty: TRttiProperty): TJSONPair;
 var
   classType: TClass;
   className: string;
@@ -182,7 +182,7 @@ begin
 //  Result := TJSONPair.Create('$ref', '#/definitions/' + className);
 end;
 
-function TGBSwaggerModelJSONSchema.JSONRequired: TJSONArray;
+function TGBSwaggerJSONV2Schema.JSONRequired: TJSONArray;
 var
   i : Integer;
   requiredFields: TArray<String>;
@@ -194,7 +194,7 @@ begin
     result.Add(requiredFields[i]);
 end;
 
-function TGBSwaggerModelJSONSchema.JSONSchema: TJSONObject;
+function TGBSwaggerJSONV2Schema.JSONSchema: TJSONObject;
 begin
   result := TJSONObject.Create
               .AddPair('type', 'object')
@@ -206,12 +206,12 @@ begin
   result.AddPair('properties', JSONProperties);
 end;
 
-class function TGBSwaggerModelJSONSchema.New(Schema: IGBSwaggerSchema): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2Schema.New(Schema: IGBSwaggerSchema): IGBSwaggerModelJSON;
 begin
   result := Self.create(Schema);
 end;
 
-function TGBSwaggerModelJSONSchema.PropertyDateTimeFormat(AProperty: TRttiProperty): string;
+function TGBSwaggerJSONV2Schema.PropertyDateTimeFormat(AProperty: TRttiProperty): string;
 var
   swDate: SwagDate;
 begin
@@ -228,7 +228,7 @@ begin
     result := 'date-time';
 end;
 
-function TGBSwaggerModelJSONSchema.ToJSON: TJSONValue;
+function TGBSwaggerJSONV2Schema.ToJSON: TJSONValue;
 begin
   Result := JSONSchema;
 end;

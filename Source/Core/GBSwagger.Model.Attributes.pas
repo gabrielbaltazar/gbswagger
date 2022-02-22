@@ -29,6 +29,8 @@ type
   end;
 
   SwagProp = class(TCustomAttribute)
+  private
+    FwriteOnly: Boolean;
   protected
     FName: string;
     FDescription: string;
@@ -36,23 +38,27 @@ type
     FRequired: Boolean;
 
   public
-    property name: String read FName write FName;
-    property description: String read FDescription write FDescription;
-    property readOnly: Boolean read FReadOnly write FReadOnly;
-    property required: Boolean read FRequired write FRequired;
+    property name: String read FName;
+    property description: String read FDescription;
+    property readOnly: Boolean read FReadOnly;
+    property writeOnly: Boolean read FwriteOnly;
+    property required: Boolean read FRequired;
 
     constructor create(AName: String;
                        ADescription: string = '';
                        bRequired: Boolean = False;
-                       bReadOnly: Boolean = False); overload;
+                       bReadOnly: Boolean = False;
+                       bWriteOnly: Boolean = False); overload;
 
     constructor create(ADescription: string;
                        bRequired: Boolean;
                        bReadOnly: Boolean = False;
+                       bWriteOnly: Boolean = False;
                        AName: string = ''); overload;
 
     constructor create(bRequired: Boolean;
                        bReadOnly: Boolean = False;
+                       bWriteOnly: Boolean = False;
                        ADescription: String = '';
                        AName: String = ''); overload;
   end;
@@ -79,6 +85,9 @@ type
 
       property minimum: Double read Fminimum write Fminimum;
       property maximum: Double read Fmaximum write Fmaximum;
+  end;
+
+  SwagPositive = class(TCustomAttribute)
   end;
 
   SwagDate = class(TCustomAttribute)
@@ -123,28 +132,31 @@ end;
 
 { SwagProp }
 
-constructor SwagProp.create(AName, ADescription: string; bRequired, bReadOnly: Boolean);
+constructor SwagProp.create(AName, ADescription: string; bRequired, bReadOnly, bWriteOnly: Boolean);
 begin
   FName        := AName;
   FDescription := ADescription;
   FRequired    := bRequired;
   FReadOnly    := bReadOnly;
+  FwriteOnly   := bWriteOnly;
 end;
 
-constructor SwagProp.create(bRequired, bReadOnly: Boolean; ADescription, AName: String);
+constructor SwagProp.create(bRequired, bReadOnly, bWriteOnly: Boolean; ADescription, AName: String);
 begin
   FName        := AName;
   FDescription := ADescription;
   FRequired    := bRequired;
   FReadOnly    := bReadOnly;
+  FwriteOnly   := bWriteOnly;
 end;
 
-constructor SwagProp.create(ADescription: string; bRequired,  bReadOnly: Boolean; AName: string);
+constructor SwagProp.create(ADescription: string; bRequired,  bReadOnly, bWriteOnly: Boolean; AName: string);
 begin
   FName        := AName;
   FDescription := ADescription;
   FRequired    := bRequired;
   FReadOnly    := bReadOnly;
+  FwriteOnly   := bWriteOnly;
 end;
 
 { SwagIgnore }
