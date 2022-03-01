@@ -4,16 +4,16 @@
 	"installedModules": {
 		"github.com/hashload/horse": {
 			"name": "horse",
-			"version": "v2.0.1",
-			"hash": "a9e80dbc40536b989ad1089a85bb1c5b",
+			"version": "3.0.0",
+			"hash": "195e14c9c225f81a8c69d18b5118c149",
 			"artifacts": {},
 			"failed": false,
 			"changed": false
 		},
 		"github.com/hashload/horse-cors": {
 			"name": "horse-cors",
-			"version": "1.0.2",
-			"hash": "f1fd91acb4d43c9a778249d447027f16",
+			"version": "1.0.5",
+			"hash": "655dbd17159adb9d87d36f3aa56be5a5",
 			"artifacts": {},
 			"failed": false,
 			"changed": false
