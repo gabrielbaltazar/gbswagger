@@ -14,6 +14,7 @@ type TGBSwaggerModelConfig = class(TInterfacedObject, IGBSwaggerConfig)
     FHTMLTitle: string;
     FDateFormat: string;
     FLanguage: String;
+    FResourcePath: String;
     FClassPrefixes: TArray<String>;
 
   protected
@@ -28,6 +29,9 @@ type TGBSwaggerModelConfig = class(TInterfacedObject, IGBSwaggerConfig)
 
     function Language(Value: String): IGBSwaggerConfig; overload;
     function Language: String; overload;
+
+    function ResourcePath(AValue: string): IGBSwaggerConfig; overload;
+    function ResourcePath: string; overload;
 
     function &End: IGBSwagger;
   public
@@ -86,6 +90,7 @@ begin
   FParent := Parent;
   FHTMLTitle := 'GBSwagger';
   FLanguage := 'en-US';
+  FResourcePath := 'https://petstore.swagger.io';
 end;
 
 function TGBSwaggerModelConfig.DateFormat: string;
@@ -102,6 +107,17 @@ end;
 class function TGBSwaggerModelConfig.New(Parent: IGBSwagger): IGBSwaggerConfig;
 begin
   result := Self.create(Parent);
+end;
+
+function TGBSwaggerModelConfig.ResourcePath: string;
+begin
+  result := FResourcePath;
+end;
+
+function TGBSwaggerModelConfig.ResourcePath(AValue: string): IGBSwaggerConfig;
+begin
+  result := Self;
+  FResourcePath := AValue;
 end;
 
 end.

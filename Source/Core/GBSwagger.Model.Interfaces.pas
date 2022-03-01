@@ -45,6 +45,9 @@ type
     function Language(Value: String): IGBSwaggerConfig; overload;
     function Language: String; overload;
 
+    function ResourcePath(AValue: string): IGBSwaggerConfig; overload;
+    function ResourcePath: string; overload;
+
     function &End: IGBSwagger;
   end;
 
