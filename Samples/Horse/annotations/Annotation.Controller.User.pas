@@ -5,6 +5,7 @@ interface
 uses
   Horse,
   GBSwagger.Path.Attributes,
+  GBSwagger.Validator.Interfaces,
   Annotation.Classes,
   System.JSON;
 
@@ -16,7 +17,7 @@ type
     FResponse: THorseResponse;
 
   public
-    [SwagGET('List Users')]
+    [SwagGET('List Users', True)]
     [SwagParamQuery('id', 'user id')]
     [SwagResponse(200, TUser, 'Users data', True)]
     procedure GetUsers;

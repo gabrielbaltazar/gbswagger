@@ -3,6 +3,9 @@
         <ProjectGuid>{454FAC48-C874-41B6-9BAA-875C38FF82BB}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
+        <Projects Include="console\Console_ce.dproj">
+            <Dependencies/>
+        </Projects>
         <Projects Include="console\Console.dproj">
             <Dependencies/>
         </Projects>
@@ -15,9 +18,6 @@
         <Projects Include="vcl\VCL.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="jwt\Console_jwt.dproj">
-            <Dependencies/>
-        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -26,6 +26,15 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
+    <Target Name="Console_ce">
+        <MSBuild Projects="console\Console_ce.dproj"/>
+    </Target>
+    <Target Name="Console_ce:Clean">
+        <MSBuild Projects="console\Console_ce.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Console_ce:Make">
+        <MSBuild Projects="console\Console_ce.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Console">
         <MSBuild Projects="console\Console.dproj"/>
     </Target>
@@ -62,23 +71,14 @@
     <Target Name="VCL:Make">
         <MSBuild Projects="vcl\VCL.dproj" Targets="Make"/>
     </Target>
-    <Target Name="Console_jwt">
-        <MSBuild Projects="jwt\Console_jwt.dproj"/>
-    </Target>
-    <Target Name="Console_jwt:Clean">
-        <MSBuild Projects="jwt\Console_jwt.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="Console_jwt:Make">
-        <MSBuild Projects="jwt\Console_jwt.dproj" Targets="Make"/>
-    </Target>
     <Target Name="Build">
-        <CallTarget Targets="Console;Apache;ISAPI;VCL;Console_jwt"/>
+        <CallTarget Targets="Console_ce;Console;Apache;ISAPI;VCL"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Console:Clean;Apache:Clean;ISAPI:Clean;VCL:Clean;Console_jwt:Clean"/>
+        <CallTarget Targets="Console_ce:Clean;Console:Clean;Apache:Clean;ISAPI:Clean;VCL:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Console:Make;Apache:Make;ISAPI:Make;VCL:Make;Console_jwt:Make"/>
+        <CallTarget Targets="Console_ce:Make;Console:Make;Apache:Make;ISAPI:Make;VCL:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

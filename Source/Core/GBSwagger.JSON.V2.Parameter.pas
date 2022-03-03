@@ -1,10 +1,10 @@
-unit GBSwagger.Model.JSON.Parameter;
+unit GBSwagger.JSON.V2.Parameter;
 
 interface
 
 uses
-  GBSwagger.Model.JSON.Interfaces,
-  GBSwagger.Model.JSON.Utils,
+  GBSwagger.JSON.Interfaces,
+  GBSwagger.JSON.Utils,
   GBSwagger.Model.Interfaces,
   GBSwagger.Model.Types,
   System.SysUtils,
@@ -12,7 +12,7 @@ uses
   System.Variants,
   System.JSON;
 
-type TGBSwaggerModelJSONParameter = class(TInterfacedObject, IGBSwaggerModelJSON)
+type TGBSwaggerJSONV2Parameter = class(TInterfacedObject, IGBSwaggerModelJSON)
 
   private
     FSwaggerParameter: IGBSwaggerParameter;
@@ -27,19 +27,19 @@ end;
 
 implementation
 
-{ TGBSwaggerModelJSONParameter }
+{ TGBSwaggerJSONV2Parameter }
 
-constructor TGBSwaggerModelJSONParameter.create(SwaggerParameter: IGBSwaggerParameter);
+constructor TGBSwaggerJSONV2Parameter.create(SwaggerParameter: IGBSwaggerParameter);
 begin
   FSwaggerParameter := SwaggerParameter;
 end;
 
-class function TGBSwaggerModelJSONParameter.New(SwaggerParameter: IGBSwaggerParameter): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2Parameter.New(SwaggerParameter: IGBSwaggerParameter): IGBSwaggerModelJSON;
 begin
   result := Self.create(SwaggerParameter);
 end;
 
-procedure TGBSwaggerModelJSONParameter.ParamEnum(AJsonObject: TJSONObject);
+procedure TGBSwaggerJSONV2Parameter.ParamEnum(AJsonObject: TJSONObject);
 var
   jsonArray: TJSONArray;
   i        : Integer;
@@ -56,7 +56,7 @@ begin
                         .AddPair('default', VarToStr(FSwaggerParameter.EnumValues[0]));
 end;
 
-function TGBSwaggerModelJSONParameter.ToJSON: TJSONValue;
+function TGBSwaggerJSONV2Parameter.ToJSON: TJSONValue;
 var
   jsonObject: TJSONObject;
   schemaName: string;

@@ -16,54 +16,52 @@ type TGBSwaggerModelPathMethod = class(TInterfacedObject, IGBSwaggerPathMethod)
   private
     [Weak]
     FParent: IGBSwaggerPath;
-
-    FMethodType : TMethodType;
-    FSummary    : String;
+    FMethodType: TMethodType;
+    FSummary: String;
     FDescription: string;
     FOperationId: string;
-    FIsPublic   : Boolean;
-
-    FConsumes  : TList<String>;
-    FProduces  : TList<String>;
+    FIsPublic: Boolean;
+    FConsumes: TList<String>;
+    FProduces: TList<String>;
     FParameters: TList<IGBSwaggerParameter>;
-    FResponses : TList<IGBSwaggerPathResponse>;
+    FResponses: TList<IGBSwaggerPathResponse>;
     FSecurities: TList<String>;
-    FTags      : TList<String>;
+    FTags: TList<String>;
 
   protected
-    function MethodType  (Value: TMethodType): IGBSwaggerPathMethod; overload;
-    function Summary     (Value: String): IGBSwaggerPathMethod; overload;
-    function Description (Value: string): IGBSwaggerPathMethod; overload;
-    function OperationId (Value: string): IGBSwaggerPathMethod; overload;
-    function AddConsumes (Value: String): IGBSwaggerPathMethod; overload;
-    function AddConsumes (Value: TGBSwaggerContentType): IGBSwaggerPathMethod; overload;
-    function AddProduces (Value: String): IGBSwaggerPathMethod; overload;
-    function AddProduces (Value: TGBSwaggerContentType): IGBSwaggerPathMethod; overload;
-    function AddTag      (Value: String): IGBSwaggerPathMethod; overload;
+    function MethodType(Value: TMethodType): IGBSwaggerPathMethod; overload;
+    function Summary(Value: String): IGBSwaggerPathMethod; overload;
+    function Description(Value: string): IGBSwaggerPathMethod; overload;
+    function OperationId(Value: string): IGBSwaggerPathMethod; overload;
+    function AddConsumes(Value: String): IGBSwaggerPathMethod; overload;
+    function AddConsumes(Value: TGBSwaggerContentType): IGBSwaggerPathMethod; overload;
+    function AddProduces(Value: String): IGBSwaggerPathMethod; overload;
+    function AddProduces(Value: TGBSwaggerContentType): IGBSwaggerPathMethod; overload;
+    function AddTag(Value: String): IGBSwaggerPathMethod; overload;
 
-    function MethodType : TMethodType; overload;
-    function Summary    : String; overload;
+    function MethodType: TMethodType; overload;
+    function Summary: String; overload;
     function Description: string; overload;
     function OperationId: string; overload;
 
-    function AddParameter    (Name: String = ''; Description: String = '') : IGBSwaggerParameter;
-    function AddParamHeader  (Name: string = ''; Description: String = ''): IGBSwaggerParameter;
-    function AddParamBody    (Name: string = ''; Description: String = ''): IGBSwaggerParameter;
-    function AddParamQuery   (Name: string = ''; Description: String = ''): IGBSwaggerParameter;
-    function AddParamPath    (Name: string = ''; Description: String = ''): IGBSwaggerParameter;
+    function AddParameter(Name: String = ''; Description: String = '') : IGBSwaggerParameter;
+    function AddParamHeader(Name: string = ''; Description: String = ''): IGBSwaggerParameter;
+    function AddParamBody(Name: string = ''; Description: String = ''): IGBSwaggerParameter;
+    function AddParamQuery(Name: string = ''; Description: String = ''): IGBSwaggerParameter;
+    function AddParamPath(Name: string = ''; Description: String = ''): IGBSwaggerParameter;
     function AddParamFormData(Name: string = ''; Description: String = ''): IGBSwaggerParameter;
 
-    function AddResponse (HttpCode: Integer; Description: String = '')  : IGBSwaggerPathResponse; overload;
+    function AddResponse(HttpCode: Integer; Description: String = '')  : IGBSwaggerPathResponse; overload;
     function AddSecurity(Description: String): IGBSwaggerPathMethod;
 
     function IsPublic(Value: Boolean): IGBSwaggerPathMethod; overload;
     function IsPublic: Boolean; overload;
 
-    function Consumes  : TArray<String>;
-    function Produces  : TArray<String>;
+    function Consumes: TArray<String>;
+    function Produces: TArray<String>;
     function Parameters: TArray<IGBSwaggerParameter>;
-    function Responses : TArray<IGBSwaggerPathResponse>;
-    function Tags      : TArray<String>;
+    function Responses: TArray<IGBSwaggerPathResponse>;
+    function Tags: TArray<String>;
     function Securities: TArray<String>;
 
     function &End: IGBSwaggerPath;

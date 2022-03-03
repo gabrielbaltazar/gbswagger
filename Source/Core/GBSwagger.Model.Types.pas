@@ -14,7 +14,7 @@ const
   SWAG_INTEGER = 'integer';
 
 type
-  TRouteCallback = {$IFNDEF HORSE} Horse.THorseCallback {$ELSE} TObject {$ENDIF};
+  TRouteCallback = {$IFNDEF DSNAP} Horse.THorseCallback {$ELSE} TObject {$ENDIF};
 
   TGBSwaggerContentType = (gbAppJSON, gbAppXML, gbTextHtml, gbPlainText, gbMultiPartFormData, gbAppOctetStream);
   TGBSwaggerProtocol    = (gbHttp, gbHttps);
