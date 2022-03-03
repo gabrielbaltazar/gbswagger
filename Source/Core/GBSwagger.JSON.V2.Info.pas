@@ -1,16 +1,16 @@
-unit GBSwagger.Model.JSON.Info;
+unit GBSwagger.JSON.V2.Info;
 
 interface
 
 uses
-  GBSwagger.Model.JSON.Interfaces,
+  GBSwagger.JSON.Interfaces,
   GBSwagger.Model.Interfaces,
   GBSwagger.Model.Types,
-  GBSwagger.Model.JSON.Contact,
+  GBSwagger.JSON.V2.Contact,
   System.JSON,
   System.SysUtils;
 
-type TGBSwaggerModelJSONInfo = class(TInterfacedObject, IGBSwaggerModelJSON)
+type TGBSwaggerJSONV2Info = class(TInterfacedObject, IGBSwaggerModelJSON)
 
   private
     FSwaggerInfo: IGBSwaggerInfo;
@@ -25,19 +25,19 @@ end;
 
 implementation
 
-{ TGBSwaggerModelJSONInfo }
+{ TGBSwaggerJSONV2Info }
 
-constructor TGBSwaggerModelJSONInfo.create(SwaggerInfo: IGBSwaggerInfo);
+constructor TGBSwaggerJSONV2Info.create(SwaggerInfo: IGBSwaggerInfo);
 begin
   FSwaggerInfo := SwaggerInfo;
 end;
 
-class function TGBSwaggerModelJSONInfo.New(SwaggerInfo: IGBSwaggerInfo): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2Info.New(SwaggerInfo: IGBSwaggerInfo): IGBSwaggerModelJSON;
 begin
   Result := Self.create(SwaggerInfo);
 end;
 
-function TGBSwaggerModelJSONInfo.ToJSON: TJSONValue;
+function TGBSwaggerJSONV2Info.ToJSON: TJSONValue;
 var
   title: string;
   ext  : string;
@@ -55,8 +55,8 @@ begin
               .AddPair('version', FSwaggerInfo.Version)
               .AddPair('title', title)
               .AddPair('termsOfService', FSwaggerInfo.TermsOfService)
-              .AddPair('contact', TGBSwaggerModelJSONContact.New(FSwaggerInfo.Contact).ToJSON)
-              .AddPair('license', TGBSwaggerModelJSONContact.New(FSwaggerInfo.License).ToJSON);
+              .AddPair('contact', TGBSwaggerJSONV2Contact.New(FSwaggerInfo.Contact).ToJSON)
+              .AddPair('license', TGBSwaggerJSONV2Contact.New(FSwaggerInfo.License).ToJSON);
 end;
 
 end.

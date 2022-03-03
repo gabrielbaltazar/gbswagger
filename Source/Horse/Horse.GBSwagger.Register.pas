@@ -108,34 +108,28 @@ class procedure THorseGBSwaggerRegister.RegisterMethod(AClass: TClass; AMethod: 
 var
   endpoint : SwagEndPoint;
   path : string;
-  authCallbacks: array of TRouteCallback;
   i : Integer;
 begin
   endpoint := AMethod.GetSwagEndPoint;
   path := GetPathMethod(AClass, endpoint);
-  SetLength(authCallbacks, 0);
   if not endpoint.isPublic then
-  begin
-    SetLength(authCallbacks, Length(Swagger.Securities));
     for i := 0 to Pred(Length(Swagger.Securities)) do
-      authCallbacks[i] := Swagger.Securities[i].Callback;
-  end;
-
+      THorse.AddCallback(Swagger.Securities[i].Callback);
 
   if endpoint is SwagGET then
-    THorse.GetInstance.Get(path, authCallbacks, HorseCallback(AClass, AMethod))
+    THorse.Get(path, HorseCallback(AClass, AMethod))
   else
   if endpoint is SwagPOST then
-    THorse.GetInstance.Post(path, authCallbacks, HorseCallback(AClass, AMethod))
+    THorse.Post(path, HorseCallback(AClass, AMethod))
   else
   if endpoint is SwagPUT then
-    THorse.GetInstance.Put(path, authCallbacks, HorseCallback(AClass, AMethod))
+    THorse.Put(path, HorseCallback(AClass, AMethod))
   else
   if endpoint is SwagDELETE then
-    THorse.GetInstance.Delete(path, authCallbacks, HorseCallback(AClass, AMethod))
+    THorse.Delete(path, HorseCallback(AClass, AMethod))
   else
   if endpoint is SwagPATCH then
-    THorse.GetInstance.Patch(path, authCallbacks, HorseCallback(AClass, AMethod))
+    THorse.Patch(path, HorseCallback(AClass, AMethod))
   else
     raise ENotImplemented.CreateFmt('Verbo http não implementado.', []);
 end;

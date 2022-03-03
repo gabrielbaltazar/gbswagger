@@ -10,30 +10,29 @@ type TGBSwaggerModelInfo = class(TInterfacedObject, IGBSwaggerInfo)
 
   private
     [Weak]
-    FParent  : IGBSwagger;
-    FContact : IGBSwaggerContact;
-    FLicense : IGBSwaggerContact;
-
-    FTitle          : string;
-    FDescription    : String;
-    FTermsOfService : string;
-    FVersion        : string;
+    FParent: IGBSwagger;
+    FContact: IGBSwaggerContact;
+    FLicense: IGBSwaggerContact;
+    FTitle: string;
+    FDescription: String;
+    FTermsOfService: string;
+    FVersion: string;
 
   protected
-    function &End: IGBSwagger;
+    function Title(Value: String): IGBSwaggerInfo; overload;
+    function TermsOfService(Value: String): IGBSwaggerInfo; overload;
+    function Description(Value: String): IGBSwaggerInfo; overload;
+    function Version(Value: String): IGBSwaggerInfo; overload;
 
-    function Title          (Value: String): IGBSwaggerInfo; overload;
-    function TermsOfService (Value: String): IGBSwaggerInfo; overload;
-    function Description    (Value: String): IGBSwaggerInfo; overload;
-    function Version        (Value: String): IGBSwaggerInfo; overload;
-
-    function Title          : string; overload;
-    function Description    : String; overload;
-    function TermsOfService : string; overload;
-    function Version        : string; overload;
+    function Title: string; overload;
+    function Description: String; overload;
+    function TermsOfService: string; overload;
+    function Version: string; overload;
 
     function Contact: IGBSwaggerContact;
     function License: IGBSwaggerContact;
+
+    function &End: IGBSwagger;
 
   public
     class function New(Parent: IGBSwagger): IGBSwaggerInfo;

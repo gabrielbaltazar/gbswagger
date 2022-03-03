@@ -1,22 +1,22 @@
-unit GBSwagger.Model.JSON.Security;
+unit GBSwagger.JSON.V2.Security;
 
 interface
 
 uses
-  GBSwagger.Model.JSON.Interfaces,
+  GBSwagger.JSON.Interfaces,
   GBSwagger.Model.Interfaces,
   GBSwagger.Model.Types,
   System.SysUtils,
   System.JSON;
 
-type TGBSwaggerModelJSONSecurity = class(TInterfacedObject, IGBSwaggerModelJSON)
+type TGBSwaggerJSONV2Security = class(TInterfacedObject, IGBSwaggerModelJSON)
 
   private
     FSwaggerSecurity: IGBSwaggerSecurity;
 
     function JSONBasicAuth: TJSONObject;
-    function JSONAPIKey   : TJSONObject;
-    function JSONOAuth    : TJSONObject;
+    function JSONAPIKey: TJSONObject;
+    function JSONOAuth: TJSONObject;
   public
     constructor create(SwaggerSecurity: IGBSwaggerSecurity);
     class function New(SwaggerSecurity: IGBSwaggerSecurity): IGBSwaggerModelJSON;
@@ -27,14 +27,14 @@ end;
 
 implementation
 
-{ TGBSwaggerModelJSONSecurity }
+{ TGBSwaggerJSONV2Security }
 
-constructor TGBSwaggerModelJSONSecurity.create(SwaggerSecurity: IGBSwaggerSecurity);
+constructor TGBSwaggerJSONV2Security.create(SwaggerSecurity: IGBSwaggerSecurity);
 begin
   FSwaggerSecurity := SwaggerSecurity;
 end;
 
-function TGBSwaggerModelJSONSecurity.JSONAPIKey: TJSONObject;
+function TGBSwaggerJSONV2Security.JSONAPIKey: TJSONObject;
 begin
   result := TJSONObject.Create
                 .AddPair('type', FSwaggerSecurity.&Type.toString)
@@ -42,14 +42,14 @@ begin
                 .AddPair('in', FSwaggerSecurity.&In.toString);
 end;
 
-function TGBSwaggerModelJSONSecurity.JSONBasicAuth: TJSONObject;
+function TGBSwaggerJSONV2Security.JSONBasicAuth: TJSONObject;
 begin
   result := TJSONObject.Create
               .AddPair('type', FSwaggerSecurity.&Type.toString)
               .AddPair('name', FSwaggerSecurity.Name);
 end;
 
-function TGBSwaggerModelJSONSecurity.JSONOAuth: TJSONObject;
+function TGBSwaggerJSONV2Security.JSONOAuth: TJSONObject;
 begin
   Result := TJSONObject.Create
               .AddPair('type', FSwaggerSecurity.&Type.toString)
@@ -57,12 +57,12 @@ begin
               .AddPair('flow', FSwaggerSecurity.Flow.toString);
 end;
 
-class function TGBSwaggerModelJSONSecurity.New(SwaggerSecurity: IGBSwaggerSecurity): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2Security.New(SwaggerSecurity: IGBSwaggerSecurity): IGBSwaggerModelJSON;
 begin
   result := Self.create(SwaggerSecurity);
 end;
 
-function TGBSwaggerModelJSONSecurity.ToJSON: TJSONValue;
+function TGBSwaggerJSONV2Security.ToJSON: TJSONValue;
 begin
   case FSwaggerSecurity.&Type of
     gbBasic : result := JSONBasicAuth;

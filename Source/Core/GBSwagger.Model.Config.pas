@@ -10,29 +10,33 @@ type TGBSwaggerModelConfig = class(TInterfacedObject, IGBSwaggerConfig)
   private
     [Weak]
     FParent: IGBSwagger;
-
-    FModuleName    : string;
-    FHTMLTitle     : string;
-    FDateFormat    : string;
-    FClassPrefixes : TArray<String>;
-    FResourcePath  : string; // Pra deixar o dominio opcional - Colaboração Paulo Monteiro
+    FModuleName: string;
+    FHTMLTitle: string;
+    FDateFormat: string;
+    FLanguage: String;
+    FResourcePath: String;
+    FClassPrefixes: TArray<String>;
 
   protected
-    function DateFormat   (Value: String): IGBSwaggerConfig; overload;
-    function ClassPrefixes(Value: String): IGBSwaggerConfig; overload;
-    function ResourcePath (Value: String): IGBSwaggerConfig; overload;
-    function ModuleName   (Value: String): IGBSwaggerConfig; overload;
+    function DateFormat(Value: String): IGBSwaggerConfig; overload;
+    function DateFormat: string; overload;
 
-    function DateFormat   : string; overload;
+    function ClassPrefixes(Value: String): IGBSwaggerConfig; overload;
     function ClassPrefixes: TArray<String>; overload;
-    function ResourcePath : String; overload;
-    function ModuleName   : String; overload;
+
+    function ModuleName(Value: String): IGBSwaggerConfig; overload;
+    function ModuleName: String; overload;
+
+    function Language(Value: String): IGBSwaggerConfig; overload;
+    function Language: String; overload;
+
+    function ResourcePath(AValue: string): IGBSwaggerConfig; overload;
+    function ResourcePath: string; overload;
 
     function &End: IGBSwagger;
   public
     class function New(Parent: IGBSwagger): IGBSwaggerConfig;
     constructor create(Parent: IGBSwagger);
-
 end;
 
 implementation
@@ -50,6 +54,17 @@ end;
 function TGBSwaggerModelConfig.&End: IGBSwagger;
 begin
   result := FParent;
+end;
+
+function TGBSwaggerModelConfig.Language: String;
+begin
+  result := FLanguage;
+end;
+
+function TGBSwaggerModelConfig.Language(Value: String): IGBSwaggerConfig;
+begin
+  result := Self;
+  FLanguage := Value;
 end;
 
 function TGBSwaggerModelConfig.ModuleName: String;
@@ -72,9 +87,10 @@ end;
 
 constructor TGBSwaggerModelConfig.create(Parent: IGBSwagger);
 begin
-  FParent       := Parent;
+  FParent := Parent;
+  FHTMLTitle := 'GBSwagger';
+  FLanguage := 'en-US';
   FResourcePath := 'https://petstore.swagger.io';
-  FHTMLTitle    := 'GBSwagger';
 end;
 
 function TGBSwaggerModelConfig.DateFormat: string;
@@ -93,15 +109,15 @@ begin
   result := Self.create(Parent);
 end;
 
-function TGBSwaggerModelConfig.ResourcePath(Value: String): IGBSwaggerConfig;
-begin
-  result := Self;
-  FResourcePath := Value;
-end;
-
-function TGBSwaggerModelConfig.ResourcePath: String;
+function TGBSwaggerModelConfig.ResourcePath: string;
 begin
   result := FResourcePath;
+end;
+
+function TGBSwaggerModelConfig.ResourcePath(AValue: string): IGBSwaggerConfig;
+begin
+  result := Self;
+  FResourcePath := AValue;
 end;
 
 end.

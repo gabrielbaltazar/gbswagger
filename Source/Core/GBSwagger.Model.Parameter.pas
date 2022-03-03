@@ -15,36 +15,34 @@ type TGBSwaggerModelParameter = class(TInterfacedObject, IGBSwaggerParameter)
   private
     [Weak]
     FParent: IGBSwaggerPathMethod;
-
-    FParamType  : TGBSwaggerParamType;
-    FName       : string;
+    FParamType: TGBSwaggerParamType;
+    FName: string;
     FDescription: String;
-    FSchemaStr  : string;
-    FSchema     : TClass;
-    FRequired   : Boolean;
-    FIsArray    : Boolean;
-    FEnumValues : TArray<Variant>;
+    FSchemaStr: string;
+    FSchema: TClass;
+    FRequired: Boolean;
+    FIsArray: Boolean;
+    FEnumValues: TArray<Variant>;
 
   protected
-    function ParamType   (Value: TGBSwaggerParamType): IGBSwaggerParameter; overload;
-    function Name        (Value: string): IGBSwaggerParameter; overload;
-    function Description (Value: String): IGBSwaggerParameter; overload;
-    function Schema      (Value: String): IGBSwaggerParameter; overload;
-    function Schema      (Value: TClass): IGBSwaggerParameter; overload;
-    function Required    (Value: Boolean): IGBSwaggerParameter; overload;
-    function IsArray     (Value: Boolean): IGBSwaggerParameter; overload;
-    function EnumValues  (Value: TArray<Variant>): IGBSwaggerParameter; overload;
+    function ParamType(Value: TGBSwaggerParamType): IGBSwaggerParameter; overload;
+    function Name(Value: string): IGBSwaggerParameter; overload;
+    function Description(Value: String): IGBSwaggerParameter; overload;
+    function Schema(Value: String): IGBSwaggerParameter; overload;
+    function Schema(Value: TClass): IGBSwaggerParameter; overload;
+    function Required(Value: Boolean): IGBSwaggerParameter; overload;
+    function IsArray(Value: Boolean): IGBSwaggerParameter; overload;
+    function EnumValues(Value: TArray<Variant>): IGBSwaggerParameter; overload;
 
-    function ParamType  : TGBSwaggerParamType; overload;
-    function Name       : string; overload;
+    function ParamType: TGBSwaggerParamType; overload;
+    function Name: string; overload;
     function Description: String; overload;
-    function Schema     : TClass; overload;
-    function Required   : Boolean; overload;
-    function IsArray    : Boolean; overload;
-    function IsObject   : Boolean; overload;
-    function IsEnum     : Boolean;
-    function EnumValues : TArray<Variant>; overload;
-
+    function Schema: TClass; overload;
+    function Required: Boolean; overload;
+    function IsArray: Boolean; overload;
+    function IsObject: Boolean; overload;
+    function IsEnum: Boolean;
+    function EnumValues: TArray<Variant>; overload;
     function SchemaType: string;
 
     function &End: IGBSwaggerPathMethod;
@@ -52,7 +50,7 @@ type TGBSwaggerModelParameter = class(TInterfacedObject, IGBSwaggerParameter)
   public
     constructor create(Parent: IGBSwaggerPathMethod);
     class function New(Parent: IGBSwaggerPathMethod): IGBSwaggerParameter;
-    destructor  Destroy; override;
+    destructor Destroy; override;
 end;
 
 implementation

@@ -6,10 +6,15 @@ program Console;
 
 uses
   Horse,
+  Horse.BasicAuthentication,
   Horse.GBSwagger,
   System.SysUtils,
   Annotation.Classes in '..\..\annotations\Annotation.Classes.pas',
-  Annotation.Controller.User in '..\..\annotations\Annotation.Controller.User.pas';
+  Annotation.Controller.User in '..\..\annotations\Annotation.Controller.User.pas',
+  GBSwagger.Validator.Messages.Interfaces in '..\..\..\..\Source\Validator\GBSwagger.Validator.Messages.Interfaces.pas',
+  GBSwagger.Validator.Messages.Base in '..\..\..\..\Source\Validator\GBSwagger.Validator.Messages.Base.pas',
+  GBSwagger.Validator.Messages.EnUS in '..\..\..\..\Source\Validator\GBSwagger.Validator.Messages.EnUS.pas',
+  GBSwagger.Validator.Messages.PtBR in '..\..\..\..\Source\Validator\GBSwagger.Validator.Messages.PtBR.pas';
 
 procedure SwaggerConfig;
 begin
@@ -26,7 +31,13 @@ begin
         .URL('http://www.mypage.com.br')
       .&End
     .&End
-    .BasePath('v1');
+    .BasePath('v1')
+    .AddBasicSecurity
+      .Callback(
+        HorseBasicAuthentication(function(const AUsername, APassword: string): Boolean
+          begin
+            result := AUsername = 'teste';
+          end));
 end;
 
 begin

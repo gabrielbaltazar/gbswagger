@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{D7AB4EDC-B38C-40C5-9B2A-0943E1D93568}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="JWT\Console_jwt.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="basic\Console_basic.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Console_jwt">
+        <MSBuild Projects="JWT\Console_jwt.dproj"/>
+    </Target>
+    <Target Name="Console_jwt:Clean">
+        <MSBuild Projects="JWT\Console_jwt.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Console_jwt:Make">
+        <MSBuild Projects="JWT\Console_jwt.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Console_basic">
+        <MSBuild Projects="basic\Console_basic.dproj"/>
+    </Target>
+    <Target Name="Console_basic:Clean">
+        <MSBuild Projects="basic\Console_basic.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Console_basic:Make">
+        <MSBuild Projects="basic\Console_basic.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Console_jwt;Console_basic"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Console_jwt:Clean;Console_basic:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Console_jwt:Make;Console_basic:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
