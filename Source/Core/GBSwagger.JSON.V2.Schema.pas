@@ -1,4 +1,4 @@
-unit GBSwagger.JSON.V2.Schema;
+﻿unit GBSwagger.JSON.V2.Schema;
 
 interface
 
@@ -130,6 +130,10 @@ begin
 end;
 
 function TGBSwaggerJSONV2Schema.JSONPropertyPairArray(AProperty: TRttiProperty): TJSONPair;
+var
+  enumNames: TArray<String>;
+  jsonArray: TJSONArray;
+  i: Integer;
 begin
   if AProperty.PropertyType.TypeKind = tkSet then
   begin
