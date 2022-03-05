@@ -3,6 +3,7 @@ unit GBSwagger.Model.Security;
 interface
 
 uses
+  System.Generics.Collections,
   GBSwagger.Model.Interfaces,
   GBSwagger.Model.Types;
 
@@ -12,7 +13,7 @@ type TGBSwaggerModelSecurity = class(TInterfacedObject, IGBSwaggerSecurity)
     [Weak]
     FParent: IGBSwagger;
     FType: TGBSwaggerSecurityType;
-    FCallback: TRouteCallback;
+    FCallbacks: TList<TRouteCallback>;
     FDescription: String;
     FName: String;
     FIn: TGBSwaggerParamType;
@@ -28,7 +29,10 @@ type TGBSwaggerModelSecurity = class(TInterfacedObject, IGBSwaggerSecurity)
     function &In(Value: TGBSwaggerParamType): IGBSwaggerSecurity; overload;
     function AuthorizationURL(Value: String): IGBSwaggerSecurity; overload;
     function TokenURL(Value: String): IGBSwaggerSecurity; overload;
-    function Callback(Value: TRouteCallback): IGBSwaggerSecurity; overload;
+    function Callback(Value: TRouteCallback): IGBSwaggerSecurity; overload; deprecated 'Use AddCallback';
+
+    function AddCallback(Value: TRouteCallback): IGBSwaggerSecurity;
+    function Callbacks: TArray<TRouteCallback>;
 
     function &Type: TGBSwaggerSecurityType; overload;
     function Description: String; overload;
@@ -37,7 +41,7 @@ type TGBSwaggerModelSecurity = class(TInterfacedObject, IGBSwaggerSecurity)
     function Flow: TGBSwaggerSecurityFlow; overload;
     function AuthorizationURL: String; overload;
     function TokenURL: String; overload;
-    function Callback: TRouteCallback; overload;
+    function Callback: TRouteCallback; overload; deprecated 'Use Callbacks';
 
     function &End: IGBSwagger;
 
@@ -51,6 +55,12 @@ implementation
 
 { TGBSwaggerModelSecurity }
 
+function TGBSwaggerModelSecurity.AddCallback(Value: TRouteCallback): IGBSwaggerSecurity;
+begin
+  result := Self;
+  FCallbacks.Add(VAlue);
+end;
+
 function TGBSwaggerModelSecurity.AuthorizationURL: String;
 begin
   result := FAuthorizationURL;
@@ -58,13 +68,20 @@ end;
 
 function TGBSwaggerModelSecurity.Callback: TRouteCallback;
 begin
-  Result := FCallback;
+  Result := nil;
+  if FCallbacks.Count > 0 then
+    result := FCallbacks[0];
+end;
+
+function TGBSwaggerModelSecurity.Callbacks: TArray<TRouteCallback>;
+begin
+  result := FCallbacks.ToArray;
 end;
 
 function TGBSwaggerModelSecurity.Callback(Value: TRouteCallback): IGBSwaggerSecurity;
 begin
   result := Self;
-  FCallback := Value;
+  AddCallback(Value);
 end;
 
 function TGBSwaggerModelSecurity.AuthorizationURL(Value: String): IGBSwaggerSecurity;
@@ -76,6 +93,7 @@ end;
 constructor TGBSwaggerModelSecurity.create(Parent: IGBSwagger);
 begin
   FParent := Parent;
+  FCallbacks := TList<TRouteCallback>.Create;
 end;
 
 function TGBSwaggerModelSecurity.Description: String;
@@ -91,7 +109,7 @@ end;
 
 destructor TGBSwaggerModelSecurity.Destroy;
 begin
-
+  FCallbacks.Free;
   inherited;
 end;
 
