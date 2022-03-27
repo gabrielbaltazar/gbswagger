@@ -58,52 +58,53 @@ end;
 
 function TGBSwaggerJSONV2Parameter.ToJSON: TJSONValue;
 var
-  jsonObject: TJSONObject;
-  schemaName: string;
+  LJSON: TJSONObject;
+  LSchema: string;
 begin
-  jsonObject := TJSONObject.Create
+  LSchema := FSwaggerParameter.SchemaType;
+
+  LJSON := TJSONObject.Create
                   .AddPair('in', FSwaggerParameter.ParamType.toString)
                   .AddPair('name', FSwaggerParameter.Name)
                   .AddPair('description', FSwaggerParameter.Description)
                   .AddPair('required', TJSONBool.Create(FSwaggerParameter.Required));
 
-  schemaName := FSwaggerParameter.SchemaType;
 
-  if not schemaName.IsEmpty then
+  if not LSchema.IsEmpty then
     if FSwaggerParameter.IsArray then
     begin
       if FSwaggerParameter.SchemaType.IsEmpty then
-        jsonObject.AddPair('schema', TGBSwaggerModelJSONUtils.JSONSchemaArray(schemaName))
+        LJSON.AddPair('schema', TGBSwaggerModelJSONUtils.JSONSchemaArray(LSchema))
       else
       begin
         if FSwaggerParameter.Schema <> nil then
         begin
-          jsonObject.AddPair('schema', TJSONObject.Create
+          LJSON.AddPair('schema', TJSONObject.Create
                                           .AddPair('type', 'array')
                                           .AddPair('items', TJSONObject.Create
-                                              .AddPair('$ref', '#/definitions/' + schemaName)) );
+                                              .AddPair('$ref', '#/definitions/' + LSchema)) );
         end
         else
-        jsonObject
+        LJSON
           .AddPair('type', 'array')
           .AddPair('items', TJSONObject.Create.AddPair('type', FSwaggerParameter.SchemaType));
       end;
     end
     else
     if FSwaggerParameter.IsObject then
-      jsonObject.AddPair('schema', TGBSwaggerModelJSONUtils.JSONSchemaObject(schemaName))
+      LJSON.AddPair('schema', TGBSwaggerModelJSONUtils.JSONSchemaObject(LSchema))
     else
     if FSwaggerParameter.IsEnum then
-      ParamEnum(jsonObject)
+      ParamEnum(LJSON)
     else
     begin
       if FSwaggerParameter.ParamType = gbBody then
-        jsonObject.AddPair('schema', TJSONObject.Create.AddPair('type', schemaName))
+        LJSON.AddPair('schema', TJSONObject.Create.AddPair('type', LSchema))
       else
-        jsonObject.AddPair('type', schemaName);
+        LJSON.AddPair('type', LSchema);
     end;
 
-  result := jsonObject;
+  result := LJSON;
 end;
 
 end.

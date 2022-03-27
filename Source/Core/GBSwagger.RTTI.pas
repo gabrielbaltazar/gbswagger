@@ -89,6 +89,7 @@ type
       function GetSwagEndPoint    : SwagEndPoint;
       function GetSwagParamPath   : TArray<SwagParamPath>;
       function GetSwagParamHeader : TArray<SwagParamHeader>;
+      function GetSwagParamFormData: TArray<SwagParamFormData>;
       function GetSwagConsumes    : TArray<String>;
       function GetSwagProduces    : TArray<String>;
       function GetSwagParamQuery  : TArray<SwagParamQuery>;
@@ -115,6 +116,7 @@ type
       class function GetSwagParamPaths: TArray<SwagParamPath>;
       class function GetSwagParamHeaders: TArray<SwagParamHeader>;
       class function GetSwagParamQueries: TArray<SwagParamQuery>;
+      class function GetSwagParamsFormData: TArray<SwagParamFormData>;
 
       class function SwagDescription(ASwagger: IGBSwagger): string;
       class function SwaggerRequiredFields: TArray<String>;
@@ -630,6 +632,11 @@ begin
   Result := GetAttribute<SwagClass>;
 end;
 
+class function TGBSwaggerObjectHelper.GetSwagParamsFormData: TArray<SwagParamFormData>;
+begin
+  result := Self.GetAttributes<SwagParamFormData>;
+end;
+
 class function TGBSwaggerObjectHelper.GetSwagParamHeaders: TArray<SwagParamHeader>;
 begin
   result := Self.GetAttributes<SwagParamHeader>;
@@ -785,6 +792,21 @@ begin
   begin
     if GetAttributes[i].ClassNameIs(SwagParamBody.ClassName) then
       Exit(SwagParamBody(GetAttributes[i]));
+  end;
+end;
+
+function TGBSwaggerMethodHelper.GetSwagParamFormData: TArray<SwagParamFormData>;
+var
+  i: Integer;
+begin
+  result := [];
+  for i := 0 to Pred(Length(GetAttributes)) do
+  begin
+    if GetAttributes[i].ClassNameIs(SwagParamFormData.ClassName) then
+    begin
+      SetLength(Result, Length(result) + 1);
+      result[Length(Result) - 1] := SwagParamFormData(GetAttributes[i]);
+    end;
   end;
 end;
 

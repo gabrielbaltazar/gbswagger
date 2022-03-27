@@ -39,6 +39,7 @@ type
     class procedure RegisterConsumes       (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
     class procedure RegisterProduces       (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
     class procedure RegisterMethodBody     (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
+    class procedure RegisterMethodFormData (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
     class procedure RegisterMethodResponse (AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
 
     class function GetSwaggerMethod(AClass: TClass; AMethod: TRttiMethod): IGBSwaggerPathMethod;
@@ -123,6 +124,7 @@ begin
   RegisterConsumes       (AMethod, pathMethod);
   RegisterProduces       (AMethod, pathMethod);
   RegisterMethodBody     (AMethod, pathMethod);
+  RegisterMethodFormData (AMethod, pathMethod);
   RegisterMethodResponse (AMethod, pathMethod);
 end;
 
@@ -144,6 +146,27 @@ begin
       parameter.Schema(body.classType)
     else
       parameter.Schema(body.schema);
+  end;
+end;
+
+class procedure TGBSwaggerPathRegister.RegisterMethodFormData(AMethod: TRttiMethod; APathMethod: IGBSwaggerPathMethod);
+var
+  LParams: TArray<SwagParamFormData>;
+  LFormData: SwagParamFormData;
+  LCount: Integer;
+  LParameter: IGBSwaggerParameter;
+begin
+  LParams := AMethod.GetSwagParamFormData;
+  for LCount := 0 to Pred(Length(LParams)) do
+  begin
+    LFormData := LParams[LCount];
+    LParameter := APathMethod.AddParamFormData(LFormData.name, LFormData.description);
+    LParameter
+      .Required(LFormData.required)
+      .Schema('string');
+
+    if LFormData.IsFile then
+      LParameter.Schema('file');
   end;
 end;
 

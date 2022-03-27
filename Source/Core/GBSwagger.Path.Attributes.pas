@@ -153,6 +153,17 @@ type
                        bRequired: Boolean = True); overload;
   end;
 
+  SwagParamFormData = class(SwagParam)
+  private
+    FIsFile: Boolean;
+    function GetIsFile: Boolean;
+  public
+    property IsFile: Boolean read GetIsFile;
+
+    constructor create(AName: string; ADescription: string = ''; AFile: Boolean = False; ARequired: Boolean = True); overload;
+    constructor create(AName: string; AFile: Boolean; ADescription: string = ''; ARequired: Boolean = True); overload;
+  end;
+
   SwagEndPoint = class(TCustomAttribute)
   private
     Fsummary: string;
@@ -518,6 +529,26 @@ end;
 constructor SwagProduces.create(Value: TGBSwaggerContentType);
 begin
   FAccept := Value.toString;
+end;
+
+{ SwagParamFormData }
+
+constructor SwagParamFormData.create(AName, ADescription: string; AFile, ARequired: Boolean);
+begin
+  Fname := AName;
+  Fdescription := ADescription;
+  FIsFile := AFile;
+  Frequired := ARequired;
+end;
+
+constructor SwagParamFormData.create(AName: string; AFile: Boolean; ADescription: string; ARequired: Boolean);
+begin
+  create(AName, ADescription, AFile, ARequired);
+end;
+
+function SwagParamFormData.GetIsFile: Boolean;
+begin
+  result := FIsFile;
 end;
 
 end.
