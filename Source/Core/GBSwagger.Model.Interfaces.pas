@@ -279,7 +279,10 @@ type
     function &In(Value: TGBSwaggerParamType): IGBSwaggerSecurity; overload;
     function AuthorizationURL(Value: String): IGBSwaggerSecurity; overload;
     function TokenURL(Value: String): IGBSwaggerSecurity; overload;
-    function Callback(Value: TRouteCallback): IGBSwaggerSecurity; overload;
+    function Callback(Value: TRouteCallback): IGBSwaggerSecurity; overload; deprecated 'Use AddCallback';
+
+    function AddCallback(Value: TRouteCallback): IGBSwaggerSecurity;
+    function Callbacks: TArray<TRouteCallback>;
 
     function &Type: TGBSwaggerSecurityType; overload;
     function Description: String; overload;
@@ -288,7 +291,7 @@ type
     function Flow: TGBSwaggerSecurityFlow; overload;
     function AuthorizationURL: String; overload;
     function TokenURL: String; overload;
-    function Callback: TRouteCallback; overload;
+    function Callback: TRouteCallback; overload; deprecated 'Use Callbacks';
 
     function &End: IGBSwagger;
   end;
