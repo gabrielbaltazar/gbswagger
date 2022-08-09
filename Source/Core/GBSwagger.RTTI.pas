@@ -52,6 +52,8 @@ type
       function IsObject   : Boolean;
       function IsFloat    : Boolean;
       function IsDateTime : Boolean;
+      function IsDate     : Boolean;
+      function IsTime     : Boolean;
       function IsBoolean  : Boolean;
 
       // Vários ORMs trabalham com tipo Nullable
@@ -277,6 +279,18 @@ begin
     result := Self.PropertyType.ToString.ToLower.Equals('boolean');
 end;
 
+function TGBSwaggerRTTIPropertyHelper.IsDate: Boolean;
+var
+  Ltype : string;
+begin
+  if Self.IsNullable then
+    Ltype := Self.NullableType.ToLower
+  else
+    Ltype := Self.PropertyType.ToString.ToLower;
+
+  result := (Ltype.Equals('tdate'));
+end;
+
 function TGBSwaggerRTTIPropertyHelper.IsDateTime: Boolean;
 var
   Ltype : string;
@@ -286,9 +300,7 @@ begin
   else
     Ltype := Self.PropertyType.ToString.ToLower;
 
-  result := (Ltype.Equals('tdatetime')) or
-            (Ltype.Equals('tdate')) or
-            (Ltype.Equals('ttime'));
+  result := (Ltype.Equals('tdatetime'));
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsEmptyValue(AObject: TObject): Boolean;
@@ -303,7 +315,7 @@ begin
   if IsFloat then
     Exit(Self.GetValue(AObject).AsExtended = 0);
 
-  if IsDateTime then
+  if IsDateTime or IsDate or IsTime then
     Exit(Self.GetValue(AObject).AsExtended = 0);
 end;
 
@@ -321,7 +333,7 @@ begin
               Self.NullableType.ToLower.Equals('extended') or
               Self.NullableType.ToLower.Equals('single')
   else
-    Result := (Self.PropertyType.TypeKind = tkFloat) and (not IsDateTime);
+    Result := (Self.PropertyType.TypeKind = tkFloat) and (not IsDateTime) and (not IsDate) and (not IsTime);
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsInteger: Boolean;
@@ -416,6 +428,18 @@ begin
   swaggerProp := GetAttribute<SwagProp>;
   if (Assigned(swaggerProp)) and (swaggerProp.readOnly) then
     result := True;
+end;
+
+function TGBSwaggerRTTIPropertyHelper.IsTime: Boolean;
+var
+  Ltype : string;
+begin
+  if Self.IsNullable then
+    Ltype := Self.NullableType.ToLower
+  else
+    Ltype := Self.PropertyType.ToString.ToLower;
+
+  result := (Ltype.Equals('ttime'));
 end;
 
 function TGBSwaggerRTTIPropertyHelper.ListType: string;
@@ -531,6 +555,12 @@ begin
     Exit('string');
 
   if Self.IsDateTime then
+    Exit('string');
+
+  if Self.IsDate then
+    Exit('string');
+
+  if Self.IsTime then
     Exit('string');
 
   if Self.IsNullable then

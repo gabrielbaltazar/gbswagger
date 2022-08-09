@@ -103,6 +103,18 @@ begin
     Exit;
   end;
 
+  if AProperty.IsDate then
+  begin
+    result.AddPair('format', PropertyDateTimeFormat(AProperty));
+    Exit;
+  end;
+
+  if AProperty.IsTime then
+  begin
+    result.AddPair('format', PropertyDateTimeFormat(AProperty));
+    Exit;
+  end;
+
   if AProperty.IsArray then
   begin
     Result.AddPair(JSONPropertyPairArray(AProperty));
@@ -225,7 +237,15 @@ begin
     result := FSchema.&End.Config.DateFormat;
 
   if result.IsEmpty then
-    result := 'date-time';
+  begin
+    if AProperty.IsDate then
+      result := 'date'
+    else
+    if AProperty.IsTime then
+      result := 'time'
+    else
+      result := 'date-time';
+  end;
 end;
 
 function TGBSwaggerJSONV2Schema.ToJSON: TJSONValue;
