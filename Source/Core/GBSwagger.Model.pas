@@ -389,12 +389,6 @@ end;
 function TGBSwaggerModel.Protocols: TArray<TGBSwaggerProtocol>;
 begin
   result := FProtocols.ToArray;
-
-  if Length(result) = 0 then
-  begin
-    SetLength(result, 1);
-    result[0] := gbHttp;
-  end;
 end;
 
 function TGBSwaggerModel.Register: IGBSwaggerRegister;
