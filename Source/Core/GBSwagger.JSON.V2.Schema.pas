@@ -1,4 +1,4 @@
-unit GBSwagger.JSON.V2.Schema;
+ï»¿unit GBSwagger.JSON.V2.Schema;
 
 interface
 
@@ -65,7 +65,7 @@ begin
         Result.AddPair(rttiProperty.SwagName, JSONProperty(rttiProperty))
   end;
 
-  // Excluir Swagger Ignore em caso de herança
+  // Excluir Swagger Ignore em caso de heranï¿½a
   for rttiProperty in FSchema.ClassType.GetProperties do
     if rttiProperty.IsSwaggerIgnore(FSchema.ClassType) then
     begin
@@ -142,11 +142,28 @@ begin
 end;
 
 function TGBSwaggerJSONV2Schema.JSONPropertyPairArray(AProperty: TRttiProperty): TJSONPair;
+var
+  enumNames: TArray<String>;
+  jsonArray: TJSONArray;
+  i: Integer;
 begin
-  Result := TJSONPair.Create(
-        'items', TJSONObject.Create
-                    .AddPair('type', AProperty.ArrayType)
-    );
+  if AProperty.PropertyType.TypeKind = tkSet then
+  begin
+    enumNames := TRttiSetType(AProperty.PropertyType).ElementType.GetEnumNamesArray;
+    jsonArray := TJSONArray.Create;
+
+    for i := 0 to Length(enumNames) - 1 do
+      jsonArray.Add(enumNames[i]);
+
+    Result := TJSONPair.Create('items',TJSONObject.Create
+                                        .AddPair('type','string')
+                                        .AddPair('enum',jsonArray));
+  end
+  else
+    Result := TJSONPair.Create(
+          'items', TJSONObject.Create
+                      .AddPair('type', AProperty.ArrayType)
+      );
 end;
 
 function TGBSwaggerJSONV2Schema.JSONPropertyPairEnum(AProperty: TRttiProperty): TJSONPair;

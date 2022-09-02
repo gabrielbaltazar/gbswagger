@@ -40,6 +40,9 @@ type
       function GetSwagClass: SwagClass;
       function IsList: Boolean;
       function TypeName: string;
+
+      function GetEnumNames: SwagEnumNames;
+      function GetEnumNamesArray: TArray<string>;
   end;
 
   TGBSwaggerRTTIPropertyHelper = class helper for TRttiProperty
@@ -198,13 +201,51 @@ begin
   result := GetAttribute<SwagClass>;
 end;
 
+function TGBSwaggerRTTITypeHelper.GetEnumNames: SwagEnumNames;
+begin
+  result := GetAttribute<SwagEnumNames>;
+end;
+
+function TGBSwaggerRTTITypeHelper.GetEnumNamesArray: TArray<string>;
+var
+  i : Integer;
+  unitName: string;
+  enumName: string;
+
+  enumNamesAtt: SwagEnumNames;
+begin
+  enumNamesAtt := Self.GetEnumNames;
+  if Assigned(enumNamesAtt) then
+    Result := enumNamesAtt.Names
+  else
+  begin
+    unitName := Self.QualifiedName.Replace('.' + Self.ToString, EmptyStr);
+    i        := 0;
+
+    repeat
+      enumName := GetEnumName(TGBSwaggerRTTI.GetInstance.FindType(Self.QualifiedName).Handle, i);
+      if not enumName.Equals(unitName) then
+      begin
+        SetLength(result, i + 1);
+        result[i] := enumName;
+        i := i + 1;
+      end;
+    until enumName.Equals(unitName);
+  end;
+end;
+
 { TGBSwaggerRTTIPropertyHelper }
 
 function TGBSwaggerRTTIPropertyHelper.ArrayType: string;
 begin
   result := EmptyStr;
   if (IsArray) then
-    result := TRttiDynamicArrayType(Self.PropertyType).ElementType.Name;
+  begin
+    if Self.PropertyType.TypeKind = tkSet then
+      result := TRttiSetType(Self.PropertyType).ElementType.Name
+    else
+      result := TRttiDynamicArrayType(Self.PropertyType).ElementType.Name;
+  end;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.GetAttribute<T>: T;
@@ -226,22 +267,18 @@ end;
 
 function TGBSwaggerRTTIPropertyHelper.GetEnumNames: TArray<String>;
 var
-  i : Integer;
-  unitName: string;
-  enumName: string;
+  enumNamesAtt: SwagEnumNames;
 begin
-  unitName := PropertyType.QualifiedName.Replace('.' + PropertyType.ToString, EmptyStr);
-  i        := 0;
+  enumNamesAtt := GetAttribute<SwagEnumNames>;
+  if not Assigned(enumNamesAtt) then
+    enumNamesAtt := Self.PropertyType.GetEnumNames;
 
-  repeat
-    enumName := GetEnumName(TGBSwaggerRTTI.GetInstance.FindType(PropertyType.QualifiedName).Handle, i);
-    if not enumName.Equals(unitName) then
-    begin
-      SetLength(result, i + 1);
-      result[i] := enumName;
-      i := i + 1;
-    end;
-  until enumName.Equals(unitName);
+  if Assigned(enumNamesAtt) then
+    Result := enumNamesAtt.Names
+  else
+  begin
+    Result := Self.PropertyType.GetEnumNamesArray;
+  end;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.GetListType(AObject: TObject): TRttiType;
