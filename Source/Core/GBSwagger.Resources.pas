@@ -40,7 +40,8 @@ begin
                     .Replace('<%=jsonurl%>', AJSONPath)
                     .Replace('::SWAGGER_CSS', Swagger.Config.ResourcePath)
                     .Replace('::SWAGGER_UI_BUNDLE_JS', Swagger.Config.ResourcePath)
-                    .Replace('::SWAGGER_UI_STANDALONE', Swagger.Config.ResourcePath);
+                    .Replace('::SWAGGER_UI_STANDALONE', Swagger.Config.ResourcePath)
+                    .Replace('::SWAGGER_DOC_EXPANSION', Swagger.Config.DocExpansion.toString);
   finally
     dm.Free;
   end;
