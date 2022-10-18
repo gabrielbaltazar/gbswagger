@@ -13,8 +13,8 @@ uses
   System.StrUtils,
   System.JSON;
 
-type TGBSwaggerJSONV2PathMethod = class(TInterfacedObject, IGBSwaggerModelJSON)
-
+type
+  TGBSwaggerJSONV2PathMethod = class(TInterfacedObject, IGBSwaggerModelJSON)
   private
     FSwaggerPathMethod: IGBSwaggerPathMethod;
 
@@ -23,98 +23,93 @@ type TGBSwaggerJSONV2PathMethod = class(TInterfacedObject, IGBSwaggerModelJSON)
     function JSONResponses: TJSONObject;
     function JSONParameters: TJSONArray;
     function JSONTags: TJSONArray;
-
   public
-    constructor create(SwaggerPathMethod: IGBSwaggerPathMethod);
-    class function New(SwaggerPathMethod: IGBSwaggerPathMethod): IGBSwaggerModelJSON;
-
+    constructor Create(ASwaggerPathMethod: IGBSwaggerPathMethod);
+    class function New(ASwaggerPathMethod: IGBSwaggerPathMethod): IGBSwaggerModelJSON;
     function ToJSON: TJSONValue;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerJSONV2PathMethod }
 
-constructor TGBSwaggerJSONV2PathMethod.create(SwaggerPathMethod: IGBSwaggerPathMethod);
+constructor TGBSwaggerJSONV2PathMethod.Create(ASwaggerPathMethod: IGBSwaggerPathMethod);
 begin
-  FSwaggerPathMethod := SwaggerPathMethod;
+  FSwaggerPathMethod := ASwaggerPathMethod;
 end;
 
 function TGBSwaggerJSONV2PathMethod.JSONMethod: TJSONObject;
 begin
   Result := TJSONObject.Create
-                .AddPair('tags', JSONTags)
-                .AddPair('summary', FSwaggerPathMethod.Summary)
-                .AddPair('description', FSwaggerPathMethod.Description)
-                .AddPair('consumes', TGBSwaggerModelJSONUtils.JSONContentTypes(FSwaggerPathMethod.Consumes))
-                .AddPair('produces', TGBSwaggerModelJSONUtils.JSONContentTypes(FSwaggerPathMethod.Produces))
-                .AddPair('parameters', JSONParameters)
-                .AddPair('responses', JSONResponses)
-                .AddPair('security', JSONSecurity);
+    .AddPair('tags', JSONTags)
+    .AddPair('summary', FSwaggerPathMethod.Summary)
+    .AddPair('description', FSwaggerPathMethod.Description)
+    .AddPair('consumes', TGBSwaggerModelJSONUtils.JSONContentTypes(FSwaggerPathMethod.Consumes))
+    .AddPair('produces', TGBSwaggerModelJSONUtils.JSONContentTypes(FSwaggerPathMethod.Produces))
+    .AddPair('parameters', JSONParameters)
+    .AddPair('responses', JSONResponses)
+    .AddPair('security', JSONSecurity);
 end;
 
 function TGBSwaggerJSONV2PathMethod.JSONParameters: TJSONArray;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := TJSONArray.Create;
-  for i := 0 to Pred(Length(FSwaggerPathMethod.Parameters)) do
-    Result.AddElement(TGBSwaggerJSONV2Parameter.New(FSwaggerPathMethod.Parameters[i]).ToJSON);
+  Result := TJSONArray.Create;
+  for I := 0 to Pred(Length(FSwaggerPathMethod.Parameters)) do
+    Result.AddElement(TGBSwaggerJSONV2Parameter.New(FSwaggerPathMethod.Parameters[I]).ToJSON);
 end;
 
 function TGBSwaggerJSONV2PathMethod.JSONResponses: TJSONObject;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := TJSONObject.Create;
-
-  for i := 0 to Pred(Length(FSwaggerPathMethod.Responses)) do
-    Result.AddPair(FSwaggerPathMethod.Responses[i].HttpCode.ToString,
-                   TGBSwaggerJSONV2PathResponse
-                      .New(FSwaggerPathMethod.Responses[i])
-                        .ToJSON);
+  Result := TJSONObject.Create;
+  for I := 0 to Pred(Length(FSwaggerPathMethod.Responses)) do
+    Result.AddPair(FSwaggerPathMethod.Responses[I].HttpCode.ToString,
+      TGBSwaggerJSONV2PathResponse.New(FSwaggerPathMethod.Responses[I]).ToJSON);
 end;
 
 function TGBSwaggerJSONV2PathMethod.JSONSecurity: TJSONArray;
 var
-  i          : Integer;
-  swagger    : IGBSwagger;
-  securities : TArray<IGBSwaggerSecurity>;
+  I: Integer;
+  LSwagger: IGBSwagger;
+  LSecurities: TArray<IGBSwaggerSecurity>;
 begin
-  result  := TJSONArray.Create;
-  swagger := FSwaggerPathMethod.&End.&End;
-
+  Result := TJSONArray.Create;
+  LSwagger := FSwaggerPathMethod.&End.&End;
   if (not FSwaggerPathMethod.IsPublic) and (Length(FSwaggerPathMethod.Securities) = 0)  then
   begin
-    securities := swagger.Securities;
-    for i := 0 to Pred(Length(securities)) do
-    Result.Add(TJSONObject.Create.AddPair(securities[i].Description, TJSONArray.Create));
+    LSecurities := LSwagger.Securities;
+    for I := 0 to Pred(Length(LSecurities)) do
+      Result.Add(TJSONObject.Create
+        .AddPair(LSecurities[I].Description, TJSONArray.Create));
   end
   else
   begin
-    for i := 0 to Pred(Length(FSwaggerPathMethod.Securities)) do
-      Result.Add(TJSONObject.Create.AddPair(FSwaggerPathMethod.Securities[i], TJSONArray.Create));
+    for I := 0 to Pred(Length(FSwaggerPathMethod.Securities)) do
+      Result.Add(TJSONObject.Create
+        .AddPair(FSwaggerPathMethod.Securities[I], TJSONArray.Create));
   end;
 end;
 
 function TGBSwaggerJSONV2PathMethod.JSONTags: TJSONArray;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := TJSONArray.Create;
-  for i := 0 to Pred(Length(FSwaggerPathMethod.Tags)) do
-    Result.Add(FSwaggerPathMethod.Tags[i]);
+  Result := TJSONArray.Create;
+  for I := 0 to Pred(Length(FSwaggerPathMethod.Tags)) do
+    Result.Add(FSwaggerPathMethod.Tags[I]);
 end;
 
-class function TGBSwaggerJSONV2PathMethod.New(SwaggerPathMethod: IGBSwaggerPathMethod): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2PathMethod.New(ASwaggerPathMethod: IGBSwaggerPathMethod): IGBSwaggerModelJSON;
 begin
-  result := Self.create(SwaggerPathMethod);
+  Result := Self.Create(ASwaggerPathMethod);
 end;
 
 function TGBSwaggerJSONV2PathMethod.ToJSON: TJSONValue;
 begin
-  result := JSONMethod;
-
+  Result := JSONMethod;
 end;
 
 end.

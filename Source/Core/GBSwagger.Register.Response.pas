@@ -3,15 +3,14 @@ unit GBSwagger.Register.Response;
 interface
 
 uses
-  GBSwagger.Register.Interfaces,
   GBSwagger.Model.Interfaces,
   GBSwagger.Model.PathResponse,
   System.Classes,
   System.sysUtils,
   System.Generics.Collections;
 
-type TGBSwaggerRegisterResponse = class(TInterfacedObject, IGBSwaggerRegisterResponse)
-
+type
+  TGBSwaggerRegisterResponse = class(TInterfacedObject, IGBSwaggerRegisterResponse)
   private
     [Weak]
     FParent: IGBSwaggerRegister;
@@ -19,43 +18,40 @@ type TGBSwaggerRegisterResponse = class(TInterfacedObject, IGBSwaggerRegisterRes
     FResponses: TDictionary<Integer, IGBSwaggerPathResponse>;
 
     function ActiveResponse: IGBSwaggerPathResponse;
-    function Response(StatusCode: Integer): IGBSwaggerPathResponse;
-
+    function Response(AStatusCode: Integer): IGBSwaggerPathResponse;
   protected
-    function &Register(StatusCode: Integer): IGBSwaggerRegisterResponse;
-    function HttpCode(Value: Integer): IGBSwaggerRegisterResponse;
-    function Description(Value: String): IGBSwaggerRegisterResponse;
-    function Schema(Value: String): IGBSwaggerRegisterResponse; overload;
-    function Schema(Value: TClass): IGBSwaggerRegisterResponse; overload;
-    function IsArray(Value: Boolean): IGBSwaggerRegisterResponse;
+    function &Register(AStatusCode: Integer): IGBSwaggerRegisterResponse;
+    function HttpCode(AValue: Integer): IGBSwaggerRegisterResponse;
+    function Description(AValue: string): IGBSwaggerRegisterResponse;
+    function Schema(AValue: string): IGBSwaggerRegisterResponse; overload;
+    function Schema(AValue: TClass): IGBSwaggerRegisterResponse; overload;
+    function IsArray(AValue: Boolean): IGBSwaggerRegisterResponse;
     function PathResponse: IGBSwaggerPathResponse;
-
     function &End: IGBSwaggerRegister;
-
   public
-    constructor create(Parent: IGBSwaggerRegister);
-    class function New(Parent: IGBSwaggerRegister): IGBSwaggerRegisterResponse;
+    constructor Create(AParent: IGBSwaggerRegister);
+    class function New(AParent: IGBSwaggerRegister): IGBSwaggerRegisterResponse;
     destructor Destroy; override;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerRegisterResponse }
 
-function TGBSwaggerRegisterResponse.Description(Value: String): IGBSwaggerRegisterResponse;
+function TGBSwaggerRegisterResponse.Description(AValue: string): IGBSwaggerRegisterResponse;
 begin
   Result := Self;
-  ActiveResponse.Description(Value);
+  ActiveResponse.Description(AValue);
 end;
 
 function TGBSwaggerRegisterResponse.ActiveResponse: IGBSwaggerPathResponse;
 begin
-  result := Response(FStatusCode);
+  Result := Response(FStatusCode);
 end;
 
-constructor TGBSwaggerRegisterResponse.create(Parent: IGBSwaggerRegister);
+constructor TGBSwaggerRegisterResponse.Create(AParent: IGBSwaggerRegister);
 begin
-  FParent    := Parent;
+  FParent := AParent;
   FResponses := TDictionary<Integer, IGBSwaggerPathResponse>.Create;
 end;
 
@@ -67,62 +63,60 @@ end;
 
 function TGBSwaggerRegisterResponse.&End: IGBSwaggerRegister;
 begin
-  result := FParent;
+  Result := FParent;
 end;
 
-function TGBSwaggerRegisterResponse.HttpCode(Value: Integer): IGBSwaggerRegisterResponse;
+function TGBSwaggerRegisterResponse.HttpCode(AValue: Integer): IGBSwaggerRegisterResponse;
 begin
-  result := Self;
-  FStatusCode := Value;
+  Result := Self;
+  FStatusCode := AValue;
 end;
 
-class function TGBSwaggerRegisterResponse.New(Parent: IGBSwaggerRegister): IGBSwaggerRegisterResponse;
+class function TGBSwaggerRegisterResponse.New(AParent: IGBSwaggerRegister): IGBSwaggerRegisterResponse;
 begin
-  result := Self.create(Parent);
+  Result := Self.Create(AParent);
 end;
 
 function TGBSwaggerRegisterResponse.PathResponse: IGBSwaggerPathResponse;
 begin
   if FResponses.ContainsKey(FStatusCode) then
     Exit(FResponses.Items[FStatusCode]);
-
-  raise EResNotFound.CreateFmt('Path %s não encontrado.', [FStatusCode.ToString]);
+  raise EResNotFound.CreateFmt('Path %s não encontrado.', [FStatusCode.Tostring]);
 end;
 
-function TGBSwaggerRegisterResponse.IsArray(Value: Boolean): IGBSwaggerRegisterResponse;
-begin
-  result := Self;
-  ActiveResponse.IsArray(Value);
-end;
-
-function TGBSwaggerRegisterResponse.Register(StatusCode: Integer): IGBSwaggerRegisterResponse;
+function TGBSwaggerRegisterResponse.IsArray(AValue: Boolean): IGBSwaggerRegisterResponse;
 begin
   Result := Self;
-  FStatusCode := StatusCode;
+  ActiveResponse.IsArray(AValue);
+end;
+
+function TGBSwaggerRegisterResponse.Register(AStatusCode: Integer): IGBSwaggerRegisterResponse;
+begin
+  Result := Self;
+  FStatusCode := AStatusCode;
   Response(FStatusCode);
 end;
 
-function TGBSwaggerRegisterResponse.Response(StatusCode: Integer): IGBSwaggerPathResponse;
+function TGBSwaggerRegisterResponse.Response(AStatusCode: Integer): IGBSwaggerPathResponse;
 begin
-  if FResponses.ContainsKey(StatusCode) then
-    Exit(FResponses.Items[StatusCode]);
+  if FResponses.ContainsKey(AStatusCode) then
+    Exit(FResponses.Items[AStatusCode]);
 
-  result := TGBSwaggerModelPathResponse.New(nil)
-              .HttpCode(StatusCode);
-
-  FResponses.Add(StatusCode, result);
+  Result := TGBSwaggerModelPathResponse.New(nil)
+              .HttpCode(AStatusCode);
+  FResponses.Add(AStatusCode, Result);
 end;
 
-function TGBSwaggerRegisterResponse.Schema(Value: TClass): IGBSwaggerRegisterResponse;
+function TGBSwaggerRegisterResponse.Schema(AValue: TClass): IGBSwaggerRegisterResponse;
 begin
-  result := Self;
-  ActiveResponse.Schema(Value);
+  Result := Self;
+  ActiveResponse.Schema(AValue);
 end;
 
-function TGBSwaggerRegisterResponse.Schema(Value: String): IGBSwaggerRegisterResponse;
+function TGBSwaggerRegisterResponse.Schema(AValue: string): IGBSwaggerRegisterResponse;
 begin
-  result := Self;
-  ActiveResponse.Schema(Value);
+  Result := Self;
+  ActiveResponse.Schema(AValue);
 end;
 
 end.

@@ -5,97 +5,93 @@ interface
 uses
   GBSwagger.Model.Interfaces;
 
-type TGBSwaggerModelTag = class(TInterfacedObject, IGBSwaggerTag)
-
+type
+  TGBSwaggerModelTag = class(TInterfacedObject, IGBSwaggerTag)
   private
     [Weak]
     FParent: IGBSwagger;
-    FName: String;
-    FDescription: String;
-    FDocDescription: String;
-    FDocURL: String;
-
+    FName: string;
+    FDescription: string;
+    FDocDescription: string;
+    FDocURL: string;
   protected
-    function Name(Value: String): IGBSwaggerTag; overload;
-    function Description(Value: String): IGBSwaggerTag; overload;
-    function DocDescription(Value: String): IGBSwaggerTag; overload;
-    function DocURL(Value: String): IGBSwaggerTag; overload;
+    function Name(AValue: string): IGBSwaggerTag; overload;
+    function Description(AValue: string): IGBSwaggerTag; overload;
+    function DocDescription(AValue: string): IGBSwaggerTag; overload;
+    function DocURL(AValue: string): IGBSwaggerTag; overload;
 
-    function Name: String; overload;
-    function Description: String; overload;
-    function DocDescription: String; overload;
-    function DocURL: String; overload;
-
+    function Name: string; overload;
+    function Description: string; overload;
+    function DocDescription: string; overload;
+    function DocURL: string; overload;
     function &End: IGBSwagger;
-
   public
-    constructor create(Parent: IGBSwagger);
-    class function New(Parent: IGBSwagger): IGBSwaggerTag;
+    constructor Create(AParent: IGBSwagger);
+    class function New(AParent: IGBSwagger): IGBSwaggerTag;
     destructor Destroy; override;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerModelTag }
 
-constructor TGBSwaggerModelTag.create(Parent: IGBSwagger);
+constructor TGBSwaggerModelTag.Create(AParent: IGBSwagger);
 begin
-  FParent := Parent;
+  FParent := AParent;
 end;
 
-function TGBSwaggerModelTag.Description(Value: String): IGBSwaggerTag;
+function TGBSwaggerModelTag.Description(AValue: string): IGBSwaggerTag;
 begin
-  result := Self;
-  FDescription := Value;
+  Result := Self;
+  FDescription := AValue;
 end;
 
-function TGBSwaggerModelTag.Description: String;
+function TGBSwaggerModelTag.Description: string;
 begin
-  result := FDescription;
+  Result := FDescription;
 end;
 
 destructor TGBSwaggerModelTag.Destroy;
 begin
-
   inherited;
 end;
 
-function TGBSwaggerModelTag.DocDescription(Value: String): IGBSwaggerTag;
+function TGBSwaggerModelTag.DocDescription(AValue: string): IGBSwaggerTag;
 begin
-  result := Self;
-  FDocDescription := Value;
+  Result := Self;
+  FDocDescription := AValue;
 end;
 
-function TGBSwaggerModelTag.DocDescription: String;
+function TGBSwaggerModelTag.DocDescription: string;
 begin
-  result := FDocDescription;
+  Result := FDocDescription;
 end;
 
-function TGBSwaggerModelTag.DocURL(Value: String): IGBSwaggerTag;
+function TGBSwaggerModelTag.DocURL(AValue: string): IGBSwaggerTag;
 begin
-  result  := Self;
-  FDocURL := Value;
+  Result := Self;
+  FDocURL := AValue;
 end;
 
-function TGBSwaggerModelTag.DocURL: String;
+function TGBSwaggerModelTag.DocURL: string;
 begin
   Result := FDocURL;
 end;
 
-function TGBSwaggerModelTag.Name(Value: String): IGBSwaggerTag;
+function TGBSwaggerModelTag.Name(AValue: string): IGBSwaggerTag;
 begin
-  result := Self;
-  FName  := Value;
+  Result := Self;
+  FName := AValue;
 end;
 
-function TGBSwaggerModelTag.Name: String;
+function TGBSwaggerModelTag.Name: string;
 begin
-  result := FName;
+  Result := FName;
 end;
 
-class function TGBSwaggerModelTag.New(Parent: IGBSwagger): IGBSwaggerTag;
+class function TGBSwaggerModelTag.New(AParent: IGBSwagger): IGBSwaggerTag;
 begin
-  result := Self.create(Parent);
+  Result := Self.Create(AParent);
 end;
 
 function TGBSwaggerModelTag.&End: IGBSwagger;

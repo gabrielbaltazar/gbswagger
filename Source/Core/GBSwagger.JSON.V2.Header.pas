@@ -9,40 +9,37 @@ uses
   System.StrUtils,
   System.JSON;
 
-type TGBSwaggerJSONV2Header = class(TInterfacedObject, IGBSwaggerModelJSON)
-
+type
+  TGBSwaggerJSONV2Header = class(TInterfacedObject, IGBSwaggerModelJSON)
   private
     FSwaggerHeader: IGBSwaggerHeader;
-
   public
-    constructor create(SwaggerHeader: IGBSwaggerHeader);
-    class function New(SwaggerHeader: IGBSwaggerHeader): IGBSwaggerModelJSON;
+    constructor Create(ASwaggerHeader: IGBSwaggerHeader);
+    class function New(ASwaggerHeader: IGBSwaggerHeader): IGBSwaggerModelJSON;
 
     function ToJSON: TJSONValue;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerJSONV2Header }
 
-constructor TGBSwaggerJSONV2Header.create(SwaggerHeader: IGBSwaggerHeader);
+constructor TGBSwaggerJSONV2Header.Create(ASwaggerHeader: IGBSwaggerHeader);
 begin
-  FSwaggerHeader := SwaggerHeader;
+  FSwaggerHeader := ASwaggerHeader;
 end;
 
-class function TGBSwaggerJSONV2Header.New(SwaggerHeader: IGBSwaggerHeader): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2Header.New(ASwaggerHeader: IGBSwaggerHeader): IGBSwaggerModelJSON;
 begin
-  result := Self.create(SwaggerHeader);
+  Result := Self.Create(ASwaggerHeader);
 end;
 
 function TGBSwaggerJSONV2Header.ToJSON: TJSONValue;
 begin
-  result :=
-    TJSONObject.Create
-      .AddPair('type', FSwaggerHeader.&Type)
-      .AddPair('format', FSwaggerHeader.Format)
-      .AddPair('description', FSwaggerHeader.Description);
-
+  Result := TJSONObject.Create
+    .AddPair('type', FSwaggerHeader.&Type)
+    .AddPair('format', FSwaggerHeader.Format)
+    .AddPair('description', FSwaggerHeader.Description);
 end;
 
 end.

@@ -8,11 +8,10 @@ uses
 type
   SwagClass = class(TCustomAttribute)
   private
-    Fdescription: String;
-    public
-      constructor create(ADescription: String); overload;
-
-      property description: String read Fdescription;
+    FDescription: string;
+  public
+    constructor Create(ADescription: string); overload;
+    property Description: string read FDescription;
   end;
 
   SwagRequired = class(TCustomAttribute)
@@ -20,71 +19,61 @@ type
 
   SwagIgnore = class(TCustomAttribute)
   private
-    FIgnoreProperties: TArray<String>;
-
+    FIgnoreProperties: TArray<string>;
   public
-    property IgnoreProperties: TArray<String> read FIgnoreProperties write FIgnoreProperties;
-    constructor create; overload;
-    constructor create(AIgnoreProperties: String); overload;
+    property IgnoreProperties: TArray<string> read FIgnoreProperties write FIgnoreProperties;
+    constructor Create; overload;
+    constructor Create(AIgnoreProperties: string); overload;
   end;
 
   SwagProp = class(TCustomAttribute)
   private
-    FwriteOnly: Boolean;
+    FWriteOnly: Boolean;
   protected
     FName: string;
     FDescription: string;
     FReadOnly: Boolean;
     FRequired: Boolean;
-
   public
-    property name: String read FName;
-    property description: String read FDescription;
-    property readOnly: Boolean read FReadOnly;
-    property writeOnly: Boolean read FwriteOnly;
-    property required: Boolean read FRequired;
+    constructor Create(AName: string; ADescription: string = '';
+      ARequired: Boolean = False; AReadOnly: Boolean = False;
+      AWriteOnly: Boolean = False); overload;
 
-    constructor create(AName: String;
-                       ADescription: string = '';
-                       bRequired: Boolean = False;
-                       bReadOnly: Boolean = False;
-                       bWriteOnly: Boolean = False); overload;
+    constructor Create(ADescription: string; ARequired: Boolean;
+      AReadOnly: Boolean = False; AWriteOnly: Boolean = False;
+      AName: string = ''); overload;
 
-    constructor create(ADescription: string;
-                       bRequired: Boolean;
-                       bReadOnly: Boolean = False;
-                       bWriteOnly: Boolean = False;
-                       AName: string = ''); overload;
+    constructor create(ARequired: Boolean; AReadOnly: Boolean = False;
+      AWriteOnly: Boolean = False; ADescription: string = '';
+      AName: string = ''); overload;
 
-    constructor create(bRequired: Boolean;
-                       bReadOnly: Boolean = False;
-                       bWriteOnly: Boolean = False;
-                       ADescription: String = '';
-                       AName: String = ''); overload;
+    property Name: string read FName;
+    property Description: string read FDescription;
+    property ReadOnly: Boolean read FReadOnly;
+    property WriteOnly: Boolean read FWriteOnly;
+    property Required: Boolean read FRequired;
   end;
 
   SwagString = class(TCustomAttribute)
   private
-    FmaxLength: Integer;
-    FminLength: Integer;
+    FMaxLength: Integer;
+    FMinLength: Integer;
   public
-    property minLength: Integer read FminLength;
-    property maxLength: Integer read FmaxLength;
+    constructor Create(AMaxLength: Integer; AMinLength: Integer = 0); overload;
 
-    constructor create(AMaxLength: Integer; AMinLength: Integer = 0); overload;
-
+    property MinLength: Integer read FMinLength;
+    property MaxLength: Integer read FMaxLength;
   end;
 
   SwagNumber = class(TCustomAttribute)
   private
-    Fminimum: Double;
-    Fmaximum: Double;
+    FMinimum: Double;
+    FMaximum: Double;
+  public
+    constructor Create(AMinimum: Double; AMaximum: Double = 0); overload;
 
-    public
-      constructor create(AMinimum: Double; AMaximum: Double = 0); overload;
-
-      property minimum: Double read Fminimum write Fminimum;
-      property maximum: Double read Fmaximum write Fmaximum;
+    property Minimum: Double read FMinimum write FMinimum;
+    property Maximum: Double read FMaximum write FMaximum;
   end;
 
   SwagPositive = class(TCustomAttribute)
@@ -94,81 +83,80 @@ type
   private
     FDateFormat: string;
   public
-    constructor create(DateFormat: string);
-    property dateFormat: string read FdateFormat;
+    constructor Create(ADateFormat: string);
+    property DateFormat: string read FdateFormat;
   end;
 
 implementation
 
 { SwagClass }
 
-constructor SwagClass.create(ADescription: String);
+constructor SwagClass.Create(ADescription: string);
 begin
-  Fdescription:= ADescription;
+  FDescription:= ADescription;
 end;
 
 { SwagNumber }
 
-constructor SwagNumber.create(AMinimum: Double; AMaximum: Double = 0);
+constructor SwagNumber.Create(AMinimum: Double; AMaximum: Double = 0);
 begin
-  Fminimum := AMinimum;
-  Fmaximum := AMaximum;
+  FMinimum := AMinimum;
+  FMaximum := AMaximum;
 end;
 
 { SwagString }
 
-constructor SwagString.create(AMaxLength: Integer; AMinLength: Integer = 0);
+constructor SwagString.Create(AMaxLength: Integer; AMinLength: Integer = 0);
 begin
-  FminLength := AMinLength;
+  FMinLength := AMinLength;
   FMaxLength := AMaxLength;
 end;
 
 { SwagDate }
 
-constructor SwagDate.create(DateFormat: string);
+constructor SwagDate.Create(ADateFormat: string);
 begin
-  FDateFormat := DateFormat;
+  FDateFormat := ADateFormat;
 end;
 
 { SwagProp }
 
-constructor SwagProp.create(AName, ADescription: string; bRequired, bReadOnly, bWriteOnly: Boolean);
+constructor SwagProp.Create(AName, ADescription: string; ARequired, AReadOnly, AWriteOnly: Boolean);
 begin
-  FName        := AName;
+  FName := AName;
   FDescription := ADescription;
-  FRequired    := bRequired;
-  FReadOnly    := bReadOnly;
-  FwriteOnly   := bWriteOnly;
+  FRequired := ARequired;
+  FReadOnly := AReadOnly;
+  FWriteOnly := AWriteOnly;
 end;
 
-constructor SwagProp.create(bRequired, bReadOnly, bWriteOnly: Boolean; ADescription, AName: String);
+constructor SwagProp.Create(ARequired, AReadOnly, AWriteOnly: Boolean; ADescription, AName: string);
 begin
-  FName        := AName;
+  FName := AName;
   FDescription := ADescription;
-  FRequired    := bRequired;
-  FReadOnly    := bReadOnly;
-  FwriteOnly   := bWriteOnly;
+  FRequired := ARequired;
+  FReadOnly := AReadOnly;
+  FWriteOnly := AWriteOnly;
 end;
 
-constructor SwagProp.create(ADescription: string; bRequired,  bReadOnly, bWriteOnly: Boolean; AName: string);
+constructor SwagProp.Create(ADescription: string; ARequired, AReadOnly, AWriteOnly: Boolean; AName: string);
 begin
-  FName        := AName;
+  FName := AName;
   FDescription := ADescription;
-  FRequired    := bRequired;
-  FReadOnly    := bReadOnly;
-  FwriteOnly   := bWriteOnly;
+  FRequired := ARequired;
+  FReadOnly := AReadOnly;
+  FWriteOnly := AWriteOnly;
 end;
 
 { SwagIgnore }
 
-constructor SwagIgnore.create(AIgnoreProperties: String);
+constructor SwagIgnore.Create(AIgnoreProperties: string);
 begin
   FIgnoreProperties := AIgnoreProperties.Split([',']);
 end;
 
-constructor SwagIgnore.create;
+constructor SwagIgnore.Create;
 begin
-
 end;
 
 end.

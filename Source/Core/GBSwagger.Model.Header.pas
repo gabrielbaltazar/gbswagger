@@ -6,8 +6,8 @@ uses
   GBSwagger.Model.Interfaces,
   GBSwagger.Model.Types;
 
-type TGBSwaggerModelHeader = class(TInterfacedObject, IGBSwaggerHeader)
-
+type
+  TGBSwaggerModelHeader = class(TInterfacedObject, IGBSwaggerHeader)
   private
     [Weak]
     FParent: IGBSwaggerPathResponse;
@@ -15,95 +15,91 @@ type TGBSwaggerModelHeader = class(TInterfacedObject, IGBSwaggerHeader)
     FDescription: string;
     FType: string;
     FFormat: string;
-
   protected
-    function Name: String; overload;
-    function Description: String; overload;
-    function &Type: String; overload;
+    function Name: string; overload;
+    function Description: string; overload;
+    function &Type: string; overload;
     function Format: string; overload;
 
-    function Name(Value: String): IGBSwaggerHeader; overload;
-    function Description(Value: String): IGBSwaggerHeader; overload;
-    function &Type(Value: String): IGBSwaggerHeader; overload;
-    function Format(Value: String): IGBSwaggerHeader; overload;
+    function Name(AValue: string): IGBSwaggerHeader; overload;
+    function Description(AValue: string): IGBSwaggerHeader; overload;
+    function &Type(AValue: string): IGBSwaggerHeader; overload;
+    function Format(AValue: string): IGBSwaggerHeader; overload;
 
     function &End: IGBSwaggerPathResponse;
-
   public
-    constructor create(Parent: IGBSwaggerPathResponse);
-    class function New(Parent: IGBSwaggerPathResponse): IGBSwaggerHeader;
+    constructor Create(AParent: IGBSwaggerPathResponse);
+    class function New(AParent: IGBSwaggerPathResponse): IGBSwaggerHeader;
     destructor Destroy; override;
-
-end;
+  end;
 
 implementation
 
 { TGBSwaggerModelHeader }
 
-constructor TGBSwaggerModelHeader.create(Parent: IGBSwaggerPathResponse);
+constructor TGBSwaggerModelHeader.Create(AParent: IGBSwaggerPathResponse);
 begin
-  FParent := Parent;
-  FType   := SWAG_STRING;
+  FParent := AParent;
+  FType := SWAG_STRING;
 end;
 
-function TGBSwaggerModelHeader.Description(Value: String): IGBSwaggerHeader;
+function TGBSwaggerModelHeader.Description(AValue: string): IGBSwaggerHeader;
 begin
-  result := Self;
-  FDescription := Value;
+  Result := Self;
+  FDescription := AValue;
 end;
 
-function TGBSwaggerModelHeader.Description: String;
+function TGBSwaggerModelHeader.Description: string;
 begin
-  result := FDescription;
+  Result := FDescription;
 end;
 
 destructor TGBSwaggerModelHeader.Destroy;
 begin
-
   inherited;
 end;
 
 function TGBSwaggerModelHeader.&End: IGBSwaggerPathResponse;
 begin
-  result := FParent;
+  Result := FParent;
 end;
 
-function TGBSwaggerModelHeader.Format(Value: String): IGBSwaggerHeader;
+function TGBSwaggerModelHeader.Format(AValue: string): IGBSwaggerHeader;
 begin
-  result := Self;
-  FFormat := Value;
+  Result := Self;
+  FFormat := AValue;
 end;
 
 function TGBSwaggerModelHeader.Format: string;
 begin
-  result := FFormat;
+  Result := FFormat;
 end;
 
-function TGBSwaggerModelHeader.Name(Value: String): IGBSwaggerHeader;
+function TGBSwaggerModelHeader.Name(AValue: string): IGBSwaggerHeader;
 begin
-  result := Self;
-  FName  := Value;
+  Result := Self;
+  FName := AValue;
 end;
 
-function TGBSwaggerModelHeader.Name: String;
+function TGBSwaggerModelHeader.Name: string;
 begin
-  result := FName;
+  Result := FName;
 end;
 
-class function TGBSwaggerModelHeader.New(Parent: IGBSwaggerPathResponse): IGBSwaggerHeader;
+class function TGBSwaggerModelHeader.New(AParent: IGBSwaggerPathResponse): IGBSwaggerHeader;
 begin
-  Result := Self.create(Parent);
+  Result := Self.Create(AParent);
 end;
 
-function TGBSwaggerModelHeader.&Type: String;
+function TGBSwaggerModelHeader.&Type: string;
 begin
-  result := FType;
+  Result := FType;
 end;
 
-function TGBSwaggerModelHeader.&Type(Value: String): IGBSwaggerHeader;
+function TGBSwaggerModelHeader.&Type(AValue: string): IGBSwaggerHeader;
 begin
-  result := Self;
-  FType  := Value;
+  Result := Self;
+  FType := AValue;
 end;
 
 end.

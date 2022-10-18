@@ -7,25 +7,22 @@ uses
   GBSwagger.Model.Interfaces,
   GBSwagger.Model.Types,
   GBSwagger.Path.Attributes,
-  GBSwagger.Path.Register,
+  GBSwagger.Path.Registry,
   GBSwagger.RTTI,
   System.Rtti,
   System.StrUtils,
   System.SysUtils,
   System.Classes;
 
-type THorseGBSwaggerRegister = class(TGBSwaggerPathRegister)
-
+type
+  THorseGBSwaggerRegister = class(TGBSwaggerPathRegistry)
   private
     class function GetPathMethod(AClass: TClass; AEndPoint: SwagEndPoint): string;
-
     class procedure RegisterMethods(AClass: TClass; APath: SwagPath);
-    class procedure RegisterMethod (AClass: TClass; AMethod: TRttiMethod);
-
+    class procedure RegisterMethod(AClass: TClass; AMethod: TRttiMethod);
   public
     class procedure RegisterPath(AClass: TClass); override;
-
-end;
+  end;
 
 function HorseCallback(AClass: TClass; AMethod: TRttiMethod): THorseCallback;
 
@@ -33,132 +30,126 @@ implementation
 
 function HorseCallback(AClass: TClass; AMethod: TRttiMethod): THorseCallback;
 begin
-  result :=
+  Result :=
     procedure (Req: THorseRequest; Res: THorseResponse; Next: TProc)
     var
-      constructMethod : TRttiMethod;
-      instance        : TObject;
-      args            : array of TValue;
+      LConstructMethod: TRttiMethod;
+      LInstance: TObject;
+      LArgs: array of TValue;
 
-      procedure raiseConstructorException;
+      procedure RaiseConstructorException;
       begin
         raise EMethodNotFound.CreateFmt('You must implemented constructor method ' +
-                                        'create(Req: THorseRequest; Res: THorseResponse) ' +
-                                        'in %s class', [AClass.ClassName]);
+          'create(Req: THorseRequest; Res: THorseResponse) ' +
+          'in %s class', [AClass.ClassName]);
       end;
 
     begin
-      constructMethod := TGBSwaggerRTTI.GetInstance.GetType(AClass)
-                            .GetMethod('create');
-
-      if Assigned(constructMethod) then
+      LConstructMethod := TGBSwaggerRTTI.GetInstance.GetType(AClass)
+        .GetMethod('create');
+      if Assigned(LConstructMethod) then
       begin
-        if Length( constructMethod.GetParameters ) <> 2 then
-          raiseConstructorException;
+        if Length( LConstructMethod.GetParameters ) <> 2 then
+          RaiseConstructorException;
 
-        if not constructMethod.GetParameters[0]
-              .ParamType.TypeName.ToLower.Equals('thorserequest')
-        then
-          raiseConstructorException;
+        if not LConstructMethod.GetParameters[0]
+          .ParamType.TypeName.ToLower.Equals('thorserequest') then
+          RaiseConstructorException;
 
-        if not constructMethod.GetParameters[1]
-              .ParamType.TypeName.ToLower.Equals('thorseresponse')
-        then
-          raiseConstructorException;
+        if not LConstructMethod.GetParameters[1]
+          .ParamType.TypeName.ToLower.Equals('thorseresponse') then
+          RaiseConstructorException;
 
-        setLength(args, 2);
-        args[0] := TValue.From<THorseRequest>(Req);
-        args[1] := TValue.From<THorseResponse>(Res);
+        SetLength(LArgs, 2);
+        LArgs[0] := TValue.From<THorseRequest>(Req);
+        LArgs[1] := TValue.From<THorseResponse>(Res);
 
-        instance := constructMethod.Invoke(AClass, args).AsObject;
+        LInstance := LConstructMethod.Invoke(AClass, LArgs).AsObject;
         try
-          AMethod.Invoke(instance, []);
+          AMethod.Invoke(LInstance, []);
         finally
-          if not instance.InheritsFrom(TInterfacedObject) then
-            instance.Free;
+          if not LInstance.InheritsFrom(TInterfacedObject) then
+            LInstance.Free;
         end;
       end
     end;
-
-
 end;
 
 { THorseGBSwaggerRegister }
 
 class function THorseGBSwaggerRegister.GetPathMethod(AClass: TClass; AEndPoint: SwagEndPoint): string;
 var
-  pathAttr : SwagPath;
-  pathName : string;
-  basePath : string;
+  LPathAttr: SwagPath;
+  LPathName: string;
+  LBasePath: string;
 begin
-  pathAttr := AClass.GetSwagPath;
+  LPathAttr := AClass.GetSwagPath;
 //  pathName := IfThen(pathAttr.name.IsEmpty, AClass.ClassName, pathAttr.name);
-  pathName := pathAttr.name;
-  basePath := Swagger.BasePath.Replace(Swagger.Config.ModuleName, EmptyStr);
-  if (not basePath.IsEmpty) and (not basePath.EndsWith('/')) then
-    basePath := basePath + '/';
+  LPathName := LPathAttr.name;
+  LBasePath := Swagger.BasePath.Replace(Swagger.Config.ModuleName, EmptyStr);
+  if (not LBasePath.IsEmpty) and (not LBasePath.EndsWith('/')) then
+    LBasePath := LBasePath + '/';
 
-  result := (basePath + pathName + '/' + AEndPoint.path);
-  result := result.Replace('//', '/');
-  result := result.Replace('{', ':');
-  result := result.Replace('}', '');
+  Result := (LBasePath + LPathName + '/' + AEndPoint.path);
+  Result := Result.Replace('//', '/');
+  Result := Result.Replace('{', ':');
+  Result := Result.Replace('}', '');
 end;
 
 class procedure THorseGBSwaggerRegister.RegisterMethod(AClass: TClass; AMethod: TRttiMethod);
 var
-  endpoint : SwagEndPoint;
-  path : string;
-  i : Integer;
+  LEndpoint: SwagEndPoint;
+  LPath: string;
+//  I: Integer;
 begin
-  endpoint := AMethod.GetSwagEndPoint;
-  path := GetPathMethod(AClass, endpoint);
+  LEndpoint := AMethod.GetSwagEndPoint;
+  LPath := GetPathMethod(AClass, LEndpoint);
   {if not endpoint.isPublic then
     for i := 0 to Pred(Length(Swagger.Securities)) do
       THorse.AddCallbacks(Swagger.Securities[i].Callbacks);}
 
-  if endpoint is SwagGET then
-    THorse.Get(path, HorseCallback(AClass, AMethod))
+  if LEndpoint is SwagGET then
+    THorse.Get(LPath, HorseCallback(AClass, AMethod))
   else
-  if endpoint is SwagPOST then
-    THorse.Post(path, HorseCallback(AClass, AMethod))
+  if LEndpoint is SwagPOST then
+    THorse.Post(LPath, HorseCallback(AClass, AMethod))
   else
-  if endpoint is SwagPUT then
-    THorse.Put(path, HorseCallback(AClass, AMethod))
+  if LEndpoint is SwagPUT then
+    THorse.Put(LPath, HorseCallback(AClass, AMethod))
   else
-  if endpoint is SwagDELETE then
-    THorse.Delete(path, HorseCallback(AClass, AMethod))
+  if LEndpoint is SwagDELETE then
+    THorse.Delete(LPath, HorseCallback(AClass, AMethod))
   else
-  if endpoint is SwagPATCH then
-    THorse.Patch(path, HorseCallback(AClass, AMethod))
+  if LEndpoint is SwagPATCH then
+    THorse.Patch(LPath, HorseCallback(AClass, AMethod))
   else
     raise ENotImplemented.CreateFmt('Verbo http não implementado.', []);
 end;
 
 class procedure THorseGBSwaggerRegister.RegisterMethods(AClass: TClass; APath: SwagPath);
 var
-  i, j    : Integer;
-  methods : TArray<TRttiMethod>;
+  I, J: Integer;
+  LMethods: TArray<TRttiMethod>;
 begin
-  methods := AClass.GetMethods;
-  for i := 0 to Pred(Length(methods)) do
+  LMethods := AClass.GetMethods;
+  for I := 0 to Pred(Length(LMethods)) do
   begin
-    for j := 0 to Pred(Length(methods[i].GetAttributes)) do
+    for J := 0 to Pred(Length(LMethods[I].GetAttributes)) do
     begin
-      if methods[i].GetAttributes[j].InheritsFrom(SwagEndPoint) then
-        RegisterMethod(AClass, methods[i]);
+      if LMethods[I].GetAttributes[J].InheritsFrom(SwagEndPoint) then
+        RegisterMethod(AClass, LMethods[I]);
     end;
   end;
 end;
 
 class procedure THorseGBSwaggerRegister.RegisterPath(AClass: TClass);
 var
-  path : SwagPath;
+  LPath: SwagPath;
 begin
   inherited;
-  path := AClass.GetSwagPath;
-
-  if Assigned(path) then
-    RegisterMethods(AClass, path);
+  LPath := AClass.GetSwagPath;
+  if Assigned(LPath) then
+    RegisterMethods(AClass, LPath);
 end;
 
 end.

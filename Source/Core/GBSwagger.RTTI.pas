@@ -18,123 +18,122 @@ type
   end;
 
   TGBSwaggerRTTI = class(TInterfacedObject, IGBSwaggerRTTI)
-    private
-      class var FInstance: IGBSwaggerRTTI;
+  private
+    class var FInstance: IGBSwaggerRTTI;
+  private
+    FContext: TRttiContext;
 
-    private
-      FContext: TRttiContext;
+    constructor CreatePrivate;
+  public
+    class function GetInstance: IGBSwaggerRTTI;
+    constructor Create;
+    destructor Destroy; override;
 
-      constructor createPrivate;
-    public
-      function GetType (AClass: TClass): TRttiType;
-      function FindType(ATypeName: string): TRttiType;
-
-      class function GetInstance: IGBSwaggerRTTI;
-      constructor create;
-      destructor  Destroy; override;
+    function GetType(AClass: TClass): TRttiType;
+    function FindType(ATypeName: string): TRttiType;
   end;
 
   TGBSwaggerRTTITypeHelper = class helper for TRttiType
-    public
-      function GetAttribute<T: TCustomAttribute>: T;
-      function GetSwagClass: SwagClass;
-      function IsList: Boolean;
-      function TypeName: string;
+  public
+    function GetAttribute<T: TCustomAttribute>: T;
+    function GetSwagClass: SwagClass;
+    function IsList: Boolean;
+    function TypeName: string;
   end;
 
   TGBSwaggerRTTIPropertyHelper = class helper for TRttiProperty
-    public
-      function IsList     : Boolean;
-      function IsString   : Boolean;
-      function IsInteger  : Boolean;
-      function IsEnum     : Boolean;
-      function IsArray    : Boolean;
-      function IsObject   : Boolean;
-      function IsFloat    : Boolean;
-      function IsDateTime : Boolean;
-      function IsDate     : Boolean;
-      function IsTime     : Boolean;
-      function IsBoolean  : Boolean;
+  public
+    function IsList: Boolean;
+    function IsString: Boolean;
+    function IsInteger: Boolean;
+    function IsEnum: Boolean;
+    function IsArray: Boolean;
+    function IsObject: Boolean;
+    function IsFloat: Boolean;
+    function IsDateTime: Boolean;
+    function IsDate: Boolean;
+    function IsTime: Boolean;
+    function IsBoolean: Boolean;
 
-      // Vários ORMs trabalham com tipo Nullable
-      // Colaboração do Giorgio para essa compatibilidade
-      function IsNullable : Boolean;
-      function NullableType : string;
+    // Vários ORMs trabalham com tipo Nullable
+    // Colaboração do Giorgio para essa compatibilidade
+    function IsNullable: Boolean;
+    function NullableType: string;
 
-      function IsEmptyValue(AObject: TObject): Boolean;
+    function IsEmptyValue(AObject: TObject): Boolean;
 
-      function GetAttribute<T: TCustomAttribute>: T;
+    function GetAttribute<T: TCustomAttribute>: T;
 
-      function IsSwaggerArray: Boolean;
-      function IsSwaggerIgnore(AClass: TClass): Boolean;
-      function IsSwaggerReadOnly: Boolean;
+    function IsSwaggerArray: Boolean;
+    function IsSwaggerIgnore(AClass: TClass): Boolean;
+    function IsSwaggerReadOnly: Boolean;
 
-      function ArrayType: string;
-      function ListType : string;
-      function ListTypeClass: TClass;
+    function ArrayType: string;
+    function ListType: string;
+    function ListTypeClass: TClass;
 
-      function GetSwagNumber: SwagNumber;
+    function GetSwagNumber: SwagNumber;
 
-      function SwagName: string;
-      function SwagType: string;
-      function SwagDescription: string;
-      function SwagMinLength: Integer;
-      function SwagMaxLength: Integer;
+    function SwagName: string;
+    function SwagType: string;
+    function SwagDescription: string;
+    function SwagMinLength: Integer;
+    function SwagMaxLength: Integer;
 
-      function GetClassType: TClass;
-      function GetListType(AObject: TObject): TRttiType;
-      function GetEnumNames: TArray<String>;
+    function GetClassType: TClass;
+    function GetListType(AObject: TObject): TRttiType;
+    function GetEnumNames: TArray<string>;
   end;
 
   TGBSwaggerMethodHelper = class helper for TRttiMethod
-    public
-      function GetSwagEndPoint    : SwagEndPoint;
-      function GetSwagParamPath   : TArray<SwagParamPath>;
-      function GetSwagParamHeader : TArray<SwagParamHeader>;
-      function GetSwagParamFormData: TArray<SwagParamFormData>;
-      function GetSwagConsumes    : TArray<String>;
-      function GetSwagProduces    : TArray<String>;
-      function GetSwagParamQuery  : TArray<SwagParamQuery>;
-      function GetSwagParamBody   : SwagParamBody;
-      function GetSwagResponse    : TArray<SwagResponse>;
+  public
+    function GetSwagEndPoint: SwagEndPoint;
+    function GetSwagParamPath: TArray<SwagParamPath>;
+    function GetSwagParamHeader: TArray<SwagParamHeader>;
+    function GetSwagParamFormData: TArray<SwagParamFormData>;
+    function GetSwagConsumes: TArray<string>;
+    function GetSwagProduces: TArray<string>;
+    function GetSwagParamQuery: TArray<SwagParamQuery>;
+    function GetSwagParamBody: SwagParamBody;
+    function GetSwagResponse: TArray<SwagResponse>;
   end;
 
   TGBSwaggerObjectHelper = class helper for TObject
-    private
-      class function GetAttributes: TArray<TCustomAttribute>; overload;
-      class function GetAttributes<T: TCustomAttribute>: TArray<T>; overload;
-    public
-      function invokeMethod(const MethodName: string; const Parameters: array of TValue): TValue;
+  private
+    class function GetAttributes: TArray<TCustomAttribute>; overload;
+    class function GetAttributes<T: TCustomAttribute>: TArray<T>; overload;
+  public
+    function InvokeMethod(const AMethodName: string; const AParameters: array of TValue): TValue;
 
-      function GetProperty(Name: String): TRttiProperty;
+    function GetProperty(AName: string): TRttiProperty;
 
-      class function GetObjectProperties: TArray<TClass>;
-      class function GetProperties: TArray<TRttiProperty>;
-      class function GetMethods   : TArray<TRttiMethod>;
-      class function GetAttribute<T: TCustomAttribute>: T;
-      class function GetSwagClass: SwagClass;
-      class function GetSwagPath : SwagPath;
+    class function GetObjectProperties: TArray<TClass>;
+    class function GetProperties: TArray<TRttiProperty>;
+    class function GetMethods: TArray<TRttiMethod>;
+    class function GetAttribute<T: TCustomAttribute>: T;
+    class function GetSwagClass: SwagClass;
+    class function GetSwagPath: SwagPath;
 
-      class function GetSwagParamPaths: TArray<SwagParamPath>;
-      class function GetSwagParamHeaders: TArray<SwagParamHeader>;
-      class function GetSwagParamQueries: TArray<SwagParamQuery>;
-      class function GetSwagParamsFormData: TArray<SwagParamFormData>;
+    class function GetSwagParamPaths: TArray<SwagParamPath>;
+    class function GetSwagParamHeaders: TArray<SwagParamHeader>;
+    class function GetSwagParamQueries: TArray<SwagParamQuery>;
+    class function GetSwagParamsFormData: TArray<SwagParamFormData>;
 
-      class function SwagDescription(ASwagger: IGBSwagger): string;
-      class function SwaggerRequiredFields: TArray<String>;
-      class function SwaggerIgnoreFields: TArray<String>;
+    class function SwagDescription(ASwagger: IGBSwagger): string;
+    class function SwaggerRequiredFields: TArray<string>;
+    class function SwaggerIgnoreFields: TArray<string>;
   end;
 
 implementation
 
 { TGBSwaggerRTTI }
 
-constructor TGBSwaggerRTTI.create;
+constructor TGBSwaggerRTTI.Create;
 begin
-  raise Exception.Create('Utilize o Construtor GetInstance.');
+  raise Exception.Create('Use the GetInstance Construtor.');
 end;
 
-constructor TGBSwaggerRTTI.createPrivate;
+constructor TGBSwaggerRTTI.CreatePrivate;
 begin
   FContext := TRttiContext.Create;
 end;
@@ -153,33 +152,32 @@ end;
 class function TGBSwaggerRTTI.GetInstance: IGBSwaggerRTTI;
 begin
   if not Assigned(FInstance) then
-    FInstance := TGBSwaggerRTTI.createPrivate;
-  result := FInstance;
+    FInstance := TGBSwaggerRTTI.CreatePrivate;
+  Result := FInstance;
 end;
 
 function TGBSwaggerRTTI.GetType(AClass: TClass): TRttiType;
 begin
-  result := FContext.GetType(AClass);
+  Result := FContext.GetType(AClass);
 end;
 
 { TGBSwaggerRTTITypeHelper }
 
 function TGBSwaggerRTTITypeHelper.GetAttribute<T>: T;
 var
-  i : Integer;
+  I: Integer;
 begin
-  result := nil;
-
-  for i := 0 to Length(GetAttributes) - 1 do
+  Result := nil;
+  for I := 0 to Length(GetAttributes) - 1 do
   begin
-    if GetAttributes[i].ClassNameIs(T.className) then
-      Exit(T( GetAttributes[i]));
+    if GetAttributes[I].ClassNameIs(T.className) then
+      Exit(T( GetAttributes[I]));
   end;
 end;
 
 function TGBSwaggerRTTITypeHelper.IsList: Boolean;
 begin
-  result := False;
+  Result := False;
 
   if Self.AsInstance.Name.ToLower.StartsWith('tobjectlist<') then
     Exit(True);
@@ -190,78 +188,74 @@ end;
 
 function TGBSwaggerRTTITypeHelper.TypeName: string;
 begin
-  result := Self.AsInstance.Name;
+  Result := Self.AsInstance.Name;
 end;
 
 function TGBSwaggerRTTITypeHelper.GetSwagClass: SwagClass;
 begin
-  result := GetAttribute<SwagClass>;
+  Result := GetAttribute<SwagClass>;
 end;
 
 { TGBSwaggerRTTIPropertyHelper }
 
 function TGBSwaggerRTTIPropertyHelper.ArrayType: string;
 begin
-  result := EmptyStr;
+  Result := EmptyStr;
   if (IsArray) then
-    result := TRttiDynamicArrayType(Self.PropertyType).ElementType.Name;
+    Result := TRttiDynamicArrayType(Self.PropertyType).ElementType.Name;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.GetAttribute<T>: T;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := nil;
-  for i := 0 to Pred(Length(Self.GetAttributes)) do
-    if Self.GetAttributes[i].ClassNameIs(T.className) then
-      Exit(T( Self.GetAttributes[i]));
+  Result := nil;
+  for I := 0 to Pred(Length(Self.GetAttributes)) do
+    if Self.GetAttributes[I].ClassNameIs(T.className) then
+      Exit(T( Self.GetAttributes[I]));
 end;
 
 function TGBSwaggerRTTIPropertyHelper.GetClassType: TClass;
 begin
-  result := TRttiInstanceType( TGBSwaggerRTTI.GetInstance.FindType(
-    PropertyType.QualifiedName
-  )).MetaclassType;
+  Result := TRttiInstanceType(TGBSwaggerRTTI.GetInstance.FindType(
+    PropertyType.QualifiedName)).MetaclassType;
 end;
 
-function TGBSwaggerRTTIPropertyHelper.GetEnumNames: TArray<String>;
+function TGBSwaggerRTTIPropertyHelper.GetEnumNames: TArray<string>;
 var
-  i : Integer;
-  unitName: string;
-  enumName: string;
+  I: Integer;
+  LUnitName: string;
+  LEnumName: string;
 begin
-  unitName := PropertyType.QualifiedName.Replace('.' + PropertyType.ToString, EmptyStr);
-  i        := 0;
-
+  LUnitName := PropertyType.QualifiedName.Replace('.' + PropertyType.ToString, EmptyStr);
+  I := 0;
   repeat
-    enumName := GetEnumName(TGBSwaggerRTTI.GetInstance.FindType(PropertyType.QualifiedName).Handle, i);
-    if not enumName.Equals(unitName) then
+    LEnumName := GetEnumName(TGBSwaggerRTTI.GetInstance.FindType(PropertyType.QualifiedName).Handle, I);
+    if not LEnumName.Equals(LUnitName) then
     begin
-      SetLength(result, i + 1);
-      result[i] := enumName;
-      i := i + 1;
+      SetLength(Result, I + 1);
+      Result[I] := LEnumName;
+      I := I + 1;
     end;
-  until enumName.Equals(unitName);
+  until LEnumName.Equals(LUnitName);
 end;
 
 function TGBSwaggerRTTIPropertyHelper.GetListType(AObject: TObject): TRttiType;
 var
-  ListType     : TRttiType;
-  ListTypeName : string;
+  ListType: TRttiType;
+  ListTypeName: string;
 begin
   ListType := TGBSwaggerRTTI.GetInstance.GetType(Self.GetValue(AObject).AsObject.ClassType);
   ListTypeName := ListType.ToString;
-
   ListTypeName := ListTypeName.Replace('TObjectList<', EmptyStr);
   ListTypeName := ListTypeName.Replace('TList<', EmptyStr);
   ListTypeName := ListTypeName.Replace('>', EmptyStr);
-
-  result := TGBSwaggerRTTI.GetInstance.FindType(ListTypeName);
+  Result := TGBSwaggerRTTI.GetInstance.FindType(ListTypeName);
 end;
 
 function TGBSwaggerRTTIPropertyHelper.GetSwagNumber: SwagNumber;
 begin
-  result := GetAttribute<SwagNumber>;
+  Result := GetAttribute<SwagNumber>;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsArray: Boolean;
@@ -274,33 +268,32 @@ function TGBSwaggerRTTIPropertyHelper.IsBoolean: Boolean;
 begin
   if Self.IsNullable then
     Result := Self.NullableType.ToLower.Equals('boolean') or
-              Self.NullableType.ToLower.Equals('bool')
+      Self.NullableType.ToLower.Equals('bool')
   else
-    result := Self.PropertyType.ToString.ToLower.Equals('boolean');
+    Result := Self.PropertyType.ToString.ToLower.Equals('boolean');
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsDate: Boolean;
 var
-  Ltype : string;
+  Ltype: string;
 begin
   if Self.IsNullable then
     Ltype := Self.NullableType.ToLower
   else
     Ltype := Self.PropertyType.ToString.ToLower;
-
-  result := (Ltype.Equals('tdate'));
+  Result := (Ltype.Equals('tdate'));
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsDateTime: Boolean;
 var
-  Ltype : string;
+  Ltype: string;
 begin
   if Self.IsNullable then
     Ltype := Self.NullableType.ToLower
   else
     Ltype := Self.PropertyType.ToString.ToLower;
 
-  result := (Ltype.Equals('tdatetime'));
+  Result := (Ltype.Equals('tdatetime'));
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsEmptyValue(AObject: TObject): Boolean;
@@ -321,33 +314,34 @@ end;
 
 function TGBSwaggerRTTIPropertyHelper.IsEnum: Boolean;
 begin
-  result := (not IsBoolean) and (Self.PropertyType.TypeKind = tkEnumeration);
+  Result := (not IsBoolean) and (Self.PropertyType.TypeKind = tkEnumeration);
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsFloat: Boolean;
 begin
   if Self.IsNullable then
     Result := Self.NullableType.ToLower.Equals('double') or
-              Self.NullableType.ToLower.Equals('currency') or
-              Self.NullableType.ToLower.Equals('real') or
-              Self.NullableType.ToLower.Equals('extended') or
-              Self.NullableType.ToLower.Equals('single')
+      Self.NullableType.ToLower.Equals('currency') or
+      Self.NullableType.ToLower.Equals('real') or
+      Self.NullableType.ToLower.Equals('extended') or
+      Self.NullableType.ToLower.Equals('single')
   else
-    Result := (Self.PropertyType.TypeKind = tkFloat) and (not IsDateTime) and (not IsDate) and (not IsTime);
+    Result := (Self.PropertyType.TypeKind = tkFloat) and
+      (not IsDateTime) and (not IsDate) and (not IsTime);
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsInteger: Boolean;
 begin
   if Self.IsNullable then
     Result := Self.NullableType.ToLower.Equals('integer') or
-              Self.NullableType.ToLower.Equals('int64') or
-              Self.NullableType.ToLower.Equals('word') or
-              Self.NullableType.ToLower.Equals('dword') or
-              Self.NullableType.ToLower.Equals('byte') or
-              Self.NullableType.ToLower.Equals('longint') or
-              Self.NullableType.ToLower.Equals('smallint')
+      Self.NullableType.ToLower.Equals('int64') or
+      Self.NullableType.ToLower.Equals('word') or
+      Self.NullableType.ToLower.Equals('dword') or
+      Self.NullableType.ToLower.Equals('byte') or
+      Self.NullableType.ToLower.Equals('longint') or
+      Self.NullableType.ToLower.Equals('smallint')
   else
-    result := Self.PropertyType.TypeKind in [tkInt64, tkInteger];
+    Result := Self.PropertyType.TypeKind in [tkInt64, tkInteger];
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsList: Boolean;
@@ -379,7 +373,7 @@ end;
 
 function TGBSwaggerRTTIPropertyHelper.IsObject: Boolean;
 begin
-  result := (not IsList) and (Self.PropertyType.TypeKind = tkClass);
+  Result := (not IsList) and (Self.PropertyType.TypeKind = tkClass);
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsString: Boolean;
@@ -387,78 +381,74 @@ begin
   if Self.IsNullable then
     Result := Self.NullableType.ToLower.Equals('string')
   else
-    result := Self.PropertyType.TypeKind in [tkChar,
-                                             tkString,
-                                             tkWChar,
-                                             tkLString,
-                                             tkWString,
-                                             tkUString];
+    Result := Self.PropertyType.TypeKind in [tkChar,
+      tkString, tkWChar, tkLString, tkWString, tkUString];
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsSwaggerArray: Boolean;
 begin
-  result := (IsArray) or (IsList);
+  Result := (IsArray) or (IsList);
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsSwaggerIgnore(AClass: TClass): Boolean;
 var
-  ignoreFields: TArray<String>;
-  i: Integer;
+  LIgnoreFields: TArray<string>;
+  I: Integer;
 begin
-  ignoreFields := AClass.SwaggerIgnoreFields;
-  for i := 0 to Pred(Length(ignoreFields)) do
+  LIgnoreFields := AClass.SwaggerIgnoreFields;
+  for I := 0 to Pred(Length(LIgnoreFields)) do
   begin
-    if Name.ToLower.Equals(ignoreFields[i].ToLower) then
+    if Name.ToLower.Equals(LIgnoreFields[I].ToLower) then
       Exit(True);
   end;
 
-  result := Self.GetAttribute<SwagIgnore> <> nil;
+  Result := Self.GetAttribute<SwagIgnore> <> nil;
   if not Result then
   begin
     if AClass.InheritsFrom(TInterfacedObject) then
-      result := Self.Name.ToLower.Equals('refcount');
+      Result := Self.Name.ToLower.Equals('refcount');
   end;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsSwaggerReadOnly: Boolean;
 var
-  swaggerProp: SwagProp;
+  LSwaggerProp: SwagProp;
 begin
-  result := False;
-  swaggerProp := GetAttribute<SwagProp>;
-  if (Assigned(swaggerProp)) and (swaggerProp.readOnly) then
-    result := True;
+  Result := False;
+  LSwaggerProp := GetAttribute<SwagProp>;
+  if (Assigned(LSwaggerProp)) and (LSwaggerProp.readOnly) then
+    Result := True;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsTime: Boolean;
 var
-  Ltype : string;
+  Ltype: string;
 begin
   if Self.IsNullable then
     Ltype := Self.NullableType.ToLower
   else
     Ltype := Self.PropertyType.ToString.ToLower;
 
-  result := (Ltype.Equals('ttime'));
+  Result := (Ltype.Equals('ttime'));
 end;
 
 function TGBSwaggerRTTIPropertyHelper.ListType: string;
 var
-  baseType: string;
+  LBaseType: string;
 begin
-  result := EmptyStr;
+  Result := EmptyStr;
   if IsList then
   begin
     if Assigned(PropertyType.BaseType) then
     begin
-      baseType := PropertyType.Name;
-      baseType := Copy(baseType, 1, Pos('<', baseType));
+      LBaseType := PropertyType.Name;
+      LBaseType := Copy(LBaseType, 1, Pos('<', LBaseType));
     end;
     Result := PropertyType.ToString
-                .Replace('TObjectList<', EmptyStr)
-                .Replace('TList<', EmptyStr)
-                .Replace(baseType, EmptyStr)
-                .Replace('>', EmptyStr);
+      .Replace('TObjectList<', EmptyStr)
+      .Replace('TList<', EmptyStr)
+      .Replace(LBaseType, EmptyStr)
+      .Replace('>', EmptyStr);
   end;
 end;
 
@@ -473,7 +463,7 @@ end;
 
 function TGBSwaggerRTTIPropertyHelper.NullableType: string;
 var
-  LNullableType : string;
+  LNullableType: string;
 begin
   Result := '';
   if not IsNullable then
@@ -487,45 +477,45 @@ end;
 
 function TGBSwaggerRTTIPropertyHelper.SwagDescription: string;
 var
-  swaggerProp: SwagProp;
+  LSwaggerProp: SwagProp;
 begin
-  result := EmptyStr;
-  swaggerProp := Self.GetAttribute<SwagProp>;
-  if Assigned(swaggerProp) then
-    result := swaggerProp.description;
+  Result := EmptyStr;
+  LSwaggerProp := Self.GetAttribute<SwagProp>;
+  if Assigned(LSwaggerProp) then
+    Result := LSwaggerProp.description;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.SwagMaxLength: Integer;
 var
-  swaggerString: SwagString;
+  LSwaggerString: SwagString;
 begin
-  result := 0;
-  swaggerString := Self.GetAttribute<SwagString>;
-  if Assigned(swaggerString) then
-    result := swaggerString.maxLength;
+  Result := 0;
+  LSwaggerString := Self.GetAttribute<SwagString>;
+  if Assigned(LSwaggerString) then
+    Result := LSwaggerString.maxLength;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.SwagMinLength: Integer;
 var
-  swaggerString: SwagString;
+  LSwaggerString: SwagString;
 begin
-  result := 0;
-  swaggerString := Self.GetAttribute<SwagString>;
-  if Assigned(swaggerString) then
-    result := swaggerString.minLength;
+  Result := 0;
+  LSwaggerString := Self.GetAttribute<SwagString>;
+  if Assigned(LSwaggerString) then
+    Result := LSwaggerString.minLength;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.SwagName: string;
 var
-  SwaggerProp: SwagProp;
+  LSwaggerProp: SwagProp;
 begin
-  result := EmptyStr;
-  swaggerProp := Self.GetAttribute<SwagProp>;
-  if Assigned(swaggerProp) then
-    result := swaggerProp.name;
+  Result := EmptyStr;
+  LSwaggerProp := Self.GetAttribute<SwagProp>;
+  if Assigned(LSwaggerProp) then
+    Result := LSwaggerProp.name;
 
-  if result.Trim.IsEmpty then
-    result := Name;
+  if Result.Trim.IsEmpty then
+    Result := Name;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.SwagType: string;
@@ -573,67 +563,66 @@ end;
 
 class function TGBSwaggerObjectHelper.GetAttribute<T>: T;
 var
-  i: Integer;
-  rType: TRttiType;
+  I: Integer;
+  LType: TRttiType;
 begin
-  result := nil;
-  rType  := TGBSwaggerRTTI.GetInstance.GetType(Self);
-
-  for i := 0 to Pred(Length(rType.GetAttributes)) do
-    if rType.GetAttributes[i].ClassNameIs(T.className) then
-      Exit(T( rType.GetAttributes[i]));
+  Result := nil;
+  LType := TGBSwaggerRTTI.GetInstance.GetType(Self);
+  for I := 0 to Pred(Length(LType.GetAttributes)) do
+    if LType.GetAttributes[I].ClassNameIs(T.className) then
+      Exit(T( LType.GetAttributes[I]));
 end;
 
 class function TGBSwaggerObjectHelper.GetAttributes: TArray<TCustomAttribute>;
 var
-  rType: TRttiType;
+  LType: TRttiType;
 begin
-  result := nil;
-  rType  := TGBSwaggerRTTI.GetInstance.GetType(Self);
-  result := rType.GetAttributes;
+  Result := nil;
+  LType := TGBSwaggerRTTI.GetInstance.GetType(Self);
+  Result := LType.GetAttributes;
 end;
 
 class function TGBSwaggerObjectHelper.GetAttributes<T>: TArray<T>;
 var
-  i : Integer;
-  attr: TArray<TCustomAttribute>;
+  I: Integer;
+  LAttr: TArray<TCustomAttribute>;
 begin
-  attr := Self.GetAttributes;
-  for i := 0 to Pred(Length(attr)) do
+  LAttr := Self.GetAttributes;
+  for i := 0 to Pred(Length(LAttr)) do
   begin
-    if attr[i].ClassNameIs(T.className) then
+    if LAttr[i].ClassNameIs(T.className) then
     begin
-      SetLength(Result, Length(result) + 1);
-      result[Length(result) - 1] := T( attr[i] );
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := T(LAttr[i] );
     end;
   end;
 end;
 
 class function TGBSwaggerObjectHelper.GetMethods: TArray<TRttiMethod>;
 begin
-  result := TGBSwaggerRTTI.GetInstance.GetType(Self).GetMethods;
+  Result := TGBSwaggerRTTI.GetInstance.GetType(Self).GetMethods;
 end;
 
 class function TGBSwaggerObjectHelper.GetObjectProperties: TArray<TClass>;
 var
-  i: Integer;
+  I: Integer;
 begin
-  for i := 0 to Pred(Length(Self.GetProperties)) do
+  for I := 0 to Pred(Length(Self.GetProperties)) do
   begin
-    if GetProperties[i].IsSwaggerIgnore(Self) then
+    if GetProperties[I].IsSwaggerIgnore(Self) then
       Continue;
 
-    if GetProperties[i].IsObject then
+    if GetProperties[I].IsObject then
     begin
-      SetLength(Result, Length(result) + 1);
-      result[Length(result) - 1] := GetProperties[i].GetClassType;
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := GetProperties[I].GetClassType;
       Continue;
     end;
 
-    if GetProperties[i].IsList then
+    if GetProperties[I].IsList then
     begin
-      SetLength(Result, Length(result) + 1);
-      result[Length(result) - 1] := GetProperties[i].ListTypeClass;
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := GetProperties[I].ListTypeClass;
       Continue;
     end;
   end;
@@ -641,20 +630,20 @@ end;
 
 class function TGBSwaggerObjectHelper.GetProperties: TArray<TRttiProperty>;
 begin
-  result := TGBSwaggerRTTI.GetInstance.GetType(Self).GetProperties;
+  Result := TGBSwaggerRTTI.GetInstance.GetType(Self).GetProperties;
 end;
 
-function TGBSwaggerObjectHelper.GetProperty(Name: String): TRttiProperty;
+function TGBSwaggerObjectHelper.GetProperty(AName: string): TRttiProperty;
 var
-  i : Integer;
-  properties: TArray<TRttiProperty>;
+  I: Integer;
+  LProperties: TArray<TRttiProperty>;
 begin
-  result := nil;
-  properties := Self.ClassType.GetProperties;
+  Result := nil;
+  LProperties := Self.ClassType.GetProperties;
 
-  for i := 0 to Pred(Length(properties)) do
-    if properties[i].Name.ToLower.Equals(Name.ToLower) then
-      Exit(properties[i]);
+  for I := 0 to Pred(Length(LProperties)) do
+    if LProperties[I].Name.ToLower.Equals(AName.ToLower) then
+      Exit(LProperties[I]);
 end;
 
 class function TGBSwaggerObjectHelper.GetSwagClass: SwagClass;
@@ -664,102 +653,96 @@ end;
 
 class function TGBSwaggerObjectHelper.GetSwagParamsFormData: TArray<SwagParamFormData>;
 begin
-  result := Self.GetAttributes<SwagParamFormData>;
+  Result := Self.GetAttributes<SwagParamFormData>;
 end;
 
 class function TGBSwaggerObjectHelper.GetSwagParamHeaders: TArray<SwagParamHeader>;
 begin
-  result := Self.GetAttributes<SwagParamHeader>;
+  Result := Self.GetAttributes<SwagParamHeader>;
 end;
 
 class function TGBSwaggerObjectHelper.GetSwagParamPaths: TArray<SwagParamPath>;
 begin
-  result := Self.GetAttributes<SwagParamPath>;
+  Result := Self.GetAttributes<SwagParamPath>;
 end;
 
 class function TGBSwaggerObjectHelper.GetSwagParamQueries: TArray<SwagParamQuery>;
 begin
-  result := Self.GetAttributes<SwagParamQuery>;
+  Result := Self.GetAttributes<SwagParamQuery>;
 end;
 
 class function TGBSwaggerObjectHelper.GetSwagPath: SwagPath;
 begin
-  result := Self.GetAttribute<SwagPath>;
+  Result := Self.GetAttribute<SwagPath>;
 end;
 
-function TGBSwaggerObjectHelper.invokeMethod(const MethodName: string; const Parameters: array of TValue): TValue;
+function TGBSwaggerObjectHelper.InvokeMethod(const AMethodName: string; const AParameters: array of TValue): TValue;
 var
-  rttiType: TRttiType;
-  method  : TRttiMethod;
+  LRttiType: TRttiType;
+  LMethod: TRttiMethod;
 begin
-  rttiType := TGBSwaggerRTTI.GetInstance.GetType(Self.ClassType);
-  method   := rttiType.GetMethod(MethodName);
-
-  if not Assigned(method) then
-    raise ENotImplemented.CreateFmt('Cannot find method %s in %s', [MethodName, Self.ClassName]);
-
-  result := method.Invoke(Self, Parameters);
+  LRttiType := TGBSwaggerRTTI.GetInstance.GetType(Self.ClassType);
+  LMethod := LRttiType.GetMethod(AMethodName);
+  if not Assigned(LMethod) then
+    raise ENotImplemented.CreateFmt('Cannot find method %s in %s', [AMethodName, Self.ClassName]);
+  Result := LMethod.Invoke(Self, AParameters);
 end;
 
 class function TGBSwaggerObjectHelper.SwagDescription(ASwagger: IGBSwagger): string;
 var
-  swag: SwagClass;
-  i   : Integer;
+  LSwag: SwagClass;
+  I: Integer;
 begin
-  result := EmptyStr;
-  swag   := GetSwagClass;
-
-  if swag <> nil then
-    result := swag.description
+  Result := EmptyStr;
+  LSwag := GetSwagClass;
+  if LSwag <> nil then
+    Result := LSwag.description
   else
   begin
-    result := Self.ClassName;
-
-    for i := 0 to Pred(Length(ASwagger.Config.ClassPrefixes)) do
+    Result := Self.ClassName;
+    for I := 0 to Pred(Length(ASwagger.Config.ClassPrefixes)) do
     begin
-      if not ASwagger.Config.ClassPrefixes[i].IsEmpty then
+      if not ASwagger.Config.ClassPrefixes[I].IsEmpty then
       begin
-        if Result.StartsWith(ASwagger.Config.ClassPrefixes[i]) then
-          result := Copy(Result, ASwagger.Config.ClassPrefixes[i].Length + 1, result.Length).Trim;
+        if Result.StartsWith(ASwagger.Config.ClassPrefixes[I]) then
+          Result := Copy(Result, ASwagger.Config.ClassPrefixes[I].Length + 1, Result.Length).Trim;
       end;
     end;
   end;
 end;
 
-class function TGBSwaggerObjectHelper.SwaggerIgnoreFields: TArray<String>;
+class function TGBSwaggerObjectHelper.SwaggerIgnoreFields: TArray<string>;
 var
-  swaggerIgnore: SwagIgnore;
+  LSwaggerIgnore: SwagIgnore;
 begin
-  result := [];
-  swaggerIgnore := GetAttribute<SwagIgnore>;
-
-  if Assigned(swaggerIgnore) then
-    result := swaggerIgnore.IgnoreProperties;
+  Result := [];
+  LSwaggerIgnore := GetAttribute<SwagIgnore>;
+  if Assigned(LSwaggerIgnore) then
+    Result := LSwaggerIgnore.IgnoreProperties;
 end;
 
-class function TGBSwaggerObjectHelper.SwaggerRequiredFields: TArray<String>;
+class function TGBSwaggerObjectHelper.SwaggerRequiredFields: TArray<string>;
 var
-  swaggerRequired: SwagRequired;
-  swaggerProp    : SwagProp;
-  rProp: TRttiProperty;
+  LSwaggerRequired: SwagRequired;
+  LSwaggerProp: SwagProp;
+  LProp: TRttiProperty;
 begin
-  result := [];
-
-  for rProp in Self.GetProperties do
+  Result := [];
+  for LProp in Self.GetProperties do
   begin
-    swaggerRequired := rProp.GetAttribute<SwagRequired>;
-    if (Assigned(swaggerRequired)) then
+    LSwaggerRequired := LProp.GetAttribute<SwagRequired>;
+    if (Assigned(LSwaggerRequired)) then
     begin
-      SetLength(result, Length(result) + 1);
-      result[Length(result) - 1] := rProp.Name;
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := LProp.Name;
       Continue;
     end;
 
-    swaggerProp := rProp.GetAttribute<SwagProp>;
-    if (Assigned(swaggerProp)) and (swaggerProp.required) then
+    LSwaggerProp := LProp.GetAttribute<SwagProp>;
+    if (Assigned(LSwaggerProp)) and (LSwaggerProp.required) then
     begin
-      SetLength(result, Length(result) + 1);
-      result[Length(result) - 1] := rProp.SwagName;
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := LProp.SwagName;
       Continue;
     end;
   end;
@@ -767,135 +750,135 @@ end;
 
 { TGBSwaggerMethodHelper }
 
-function TGBSwaggerMethodHelper.GetSwagProduces: TArray<String>;
+function TGBSwaggerMethodHelper.GetSwagProduces: TArray<string>;
 var
-  swaggerProduces: SwagProduces;
-  i : Integer;
+  LSwaggerProduces: SwagProduces;
+  I: Integer;
 begin
-  result := [];
-  for i := 0 to Pred(Length(GetAttributes)) do
+  Result := [];
+  for I := 0 to Pred(Length(GetAttributes)) do
   begin
-    if GetAttributes[i].ClassNameIs(SwagProduces.ClassName) then
+    if GetAttributes[I].ClassNameIs(SwagProduces.ClassName) then
     begin
-      swaggerProduces := SwagProduces(GetAttributes[i]);
-      SetLength(Result, Length(result) + 1);
-      result[Length(result) - 1] := swaggerProduces.Accept;
+      LSwaggerProduces := SwagProduces(GetAttributes[I]);
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := LSwaggerProduces.Accept;
     end;
   end;
 end;
 
-function TGBSwaggerMethodHelper.GetSwagConsumes: TArray<String>;
+function TGBSwaggerMethodHelper.GetSwagConsumes: TArray<string>;
 var
-  swaggerConsumes: SwagConsumes;
-  i : Integer;
+  LSwaggerConsumes: SwagConsumes;
+  I: Integer;
 begin
-  result := [];
-  for i := 0 to Pred(Length(GetAttributes)) do
+  Result := [];
+  for I := 0 to Pred(Length(GetAttributes)) do
   begin
-    if GetAttributes[i].ClassNameIs(SwagConsumes.ClassName) then
+    if GetAttributes[I].ClassNameIs(SwagConsumes.ClassName) then
     begin
-      swaggerConsumes := SwagConsumes(GetAttributes[i]);
-      SetLength(Result, Length(result) + 1);
-      result[Length(result) - 1] := swaggerConsumes.ContentType;
+      LSwaggerConsumes := SwagConsumes(GetAttributes[I]);
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := LSwaggerConsumes.ContentType;
     end;
   end;
 end;
 
 function TGBSwaggerMethodHelper.GetSwagEndPoint: SwagEndPoint;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := nil;
-  for i := 0 to Pred(Length(GetAttributes)) do
+  Result := nil;
+  for I := 0 to Pred(Length(GetAttributes)) do
   begin
-    if GetAttributes[i].InheritsFrom(SwagEndPoint) then
-      Exit(SwagEndPoint(GetAttributes[i]));
+    if GetAttributes[I].InheritsFrom(SwagEndPoint) then
+      Exit(SwagEndPoint(GetAttributes[I]));
   end;
 end;
 
 function TGBSwaggerMethodHelper.GetSwagParamBody: SwagParamBody;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := nil;
-  for i := 0 to Pred(Length(GetAttributes)) do
+  Result := nil;
+  for I := 0 to Pred(Length(GetAttributes)) do
   begin
-    if GetAttributes[i].ClassNameIs(SwagParamBody.ClassName) then
-      Exit(SwagParamBody(GetAttributes[i]));
+    if GetAttributes[I].ClassNameIs(SwagParamBody.ClassName) then
+      Exit(SwagParamBody(GetAttributes[I]));
   end;
 end;
 
 function TGBSwaggerMethodHelper.GetSwagParamFormData: TArray<SwagParamFormData>;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := [];
-  for i := 0 to Pred(Length(GetAttributes)) do
+  Result := [];
+  for I := 0 to Pred(Length(GetAttributes)) do
   begin
-    if GetAttributes[i].ClassNameIs(SwagParamFormData.ClassName) then
+    if GetAttributes[I].ClassNameIs(SwagParamFormData.ClassName) then
     begin
-      SetLength(Result, Length(result) + 1);
-      result[Length(Result) - 1] := SwagParamFormData(GetAttributes[i]);
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := SwagParamFormData(GetAttributes[I]);
     end;
   end;
 end;
 
 function TGBSwaggerMethodHelper.GetSwagParamHeader: TArray<SwagParamHeader>;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := [];
-  for i := 0 to Pred(Length(GetAttributes)) do
+  Result := [];
+  for I := 0 to Pred(Length(GetAttributes)) do
   begin
-    if GetAttributes[i].ClassNameIs(SwagParamHeader.ClassName) then
+    if GetAttributes[I].ClassNameIs(SwagParamHeader.ClassName) then
     begin
-      SetLength(Result, Length(result) + 1);
-      result[Length(Result) - 1] := SwagParamHeader(GetAttributes[i]);
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := SwagParamHeader(GetAttributes[I]);
     end;
   end;
 end;
 
 function TGBSwaggerMethodHelper.GetSwagParamPath: TArray<SwagParamPath>;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := [];
-  for i := 0 to Pred(Length(GetAttributes)) do
+  Result := [];
+  for I := 0 to Pred(Length(GetAttributes)) do
   begin
-    if GetAttributes[i].ClassNameIs(SwagParamPath.ClassName) then
+    if GetAttributes[I].ClassNameIs(SwagParamPath.ClassName) then
     begin
-      SetLength(Result, Length(result) + 1);
-      result[Length(Result) - 1] := SwagParamPath( GetAttributes[i] );
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := SwagParamPath( GetAttributes[I] );
     end;
   end;
 end;
 
 function TGBSwaggerMethodHelper.GetSwagParamQuery: TArray<SwagParamQuery>;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := [];
-  for i := 0 to Pred(Length(GetAttributes)) do
+  Result := [];
+  for I := 0 to Pred(Length(GetAttributes)) do
   begin
-    if GetAttributes[i].ClassNameIs(SwagParamQuery.ClassName) then
+    if GetAttributes[I].ClassNameIs(SwagParamQuery.ClassName) then
     begin
-      SetLength(Result, Length(result) + 1);
-      result[Length(Result) - 1] := SwagParamQuery(GetAttributes[i]);
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := SwagParamQuery(GetAttributes[I]);
     end;
   end;
 end;
 
 function TGBSwaggerMethodHelper.GetSwagResponse: TArray<SwagResponse>;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := [];
-  for i := 0 to Pred(Length(GetAttributes)) do
+  Result := [];
+  for I := 0 to Pred(Length(GetAttributes)) do
   begin
-    if GetAttributes[i].ClassNameIs(SwagResponse.ClassName) then
+    if GetAttributes[I].ClassNameIs(SwagResponse.ClassName) then
     begin
-      SetLength(Result, Length(result) + 1);
-      result[Length(Result) - 1] := SwagResponse( GetAttributes[i] );
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := SwagResponse( GetAttributes[I] );
     end;
   end;
 end;

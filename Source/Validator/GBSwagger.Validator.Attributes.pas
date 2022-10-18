@@ -5,35 +5,35 @@ interface
 uses
   System.Classes;
 
-type SwagValidateProperties = class(TCustomAttribute)
+type
+  SwagValidateProperties = class(TCustomAttribute)
   private
-    Fproperties: TArray<String>;
-
+    FProperties: TArray<string>;
   public
-    constructor create(AProperties: String);
-    property properties: TArray<String> read Fproperties;
-end;
+    constructor Create(AProperties: string);
+    property Properties: TArray<string> read FProperties;
+  end;
 
 implementation
 
 { SwagValidateProperties }
 
-constructor SwagValidateProperties.create(AProperties: String);
+constructor SwagValidateProperties.Create(AProperties: string);
 var
-  split: TStrings;
-  i: Integer;
+  LSplit: TStrings;
+  I: Integer;
 begin
-  split := TStringList.Create;
+  LSplit := TStringList.Create;
   try
-    split.Delimiter       := ',';
-    split.StrictDelimiter := True;
-    split.DelimitedText   := AProperties;
+    LSplit.Delimiter := ',';
+    LSplit.StrictDelimiter := True;
+    LSplit.DelimitedText := AProperties;
 
-    SetLength(Fproperties, split.Count);
-    for i := 0 to Pred(split.Count) do
-      Fproperties[i] := split[i];
+    SetLength(FProperties, LSplit.Count);
+    for I := 0 to Pred(LSplit.Count) do
+      FProperties[I] := LSplit[I];
   finally
-    split.Free;
+    LSplit.Free;
   end;
 end;
 

@@ -12,48 +12,48 @@ uses
   System.Variants,
   System.JSON;
 
-type TGBSwaggerJSONV2Parameter = class(TInterfacedObject, IGBSwaggerModelJSON)
-
+type
+  TGBSwaggerJSONV2Parameter = class(TInterfacedObject, IGBSwaggerModelJSON)
   private
     FSwaggerParameter: IGBSwaggerParameter;
 
     procedure ParamEnum(AJsonObject: TJSONObject);
   public
-    constructor create(SwaggerParameter: IGBSwaggerParameter);
-    class function New(SwaggerParameter: IGBSwaggerParameter): IGBSwaggerModelJSON;
+    constructor Create(ASwaggerParameter: IGBSwaggerParameter);
+    class function New(ASwaggerParameter: IGBSwaggerParameter): IGBSwaggerModelJSON;
 
     function ToJSON: TJSONValue;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerJSONV2Parameter }
 
-constructor TGBSwaggerJSONV2Parameter.create(SwaggerParameter: IGBSwaggerParameter);
+constructor TGBSwaggerJSONV2Parameter.Create(ASwaggerParameter: IGBSwaggerParameter);
 begin
-  FSwaggerParameter := SwaggerParameter;
+  FSwaggerParameter := ASwaggerParameter;
 end;
 
-class function TGBSwaggerJSONV2Parameter.New(SwaggerParameter: IGBSwaggerParameter): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2Parameter.New(ASwaggerParameter: IGBSwaggerParameter): IGBSwaggerModelJSON;
 begin
-  result := Self.create(SwaggerParameter);
+  Result := Self.Create(ASwaggerParameter);
 end;
 
 procedure TGBSwaggerJSONV2Parameter.ParamEnum(AJsonObject: TJSONObject);
 var
-  jsonArray: TJSONArray;
-  i        : Integer;
+  LJsonArray: TJSONArray;
+  I: Integer;
 begin
-  jsonArray := TJSONArray.Create;
-  for i := 0 to Pred(Length(FSwaggerParameter.EnumValues)) do
-    jsonArray.Add(VarToStr( FSwaggerParameter.EnumValues[i]));
+  LJsonArray := TJSONArray.Create;
+  for I := 0 to Pred(Length(FSwaggerParameter.EnumValues)) do
+    LJsonArray.Add(VarToStr( FSwaggerParameter.EnumValues[I]));
 
   AJsonObject
     .AddPair('type', 'array')
     .AddPair('items', TJSONObject.Create
-                        .AddPair('type', 'string')
-                        .AddPair('enum', jsonArray))
-                        .AddPair('default', VarToStr(FSwaggerParameter.EnumValues[0]));
+      .AddPair('type', 'string')
+      .AddPair('enum', LJsonArray))
+      .AddPair('default', VarToStr(FSwaggerParameter.EnumValues[0]));
 end;
 
 function TGBSwaggerJSONV2Parameter.ToJSON: TJSONValue;
@@ -62,13 +62,11 @@ var
   LSchema: string;
 begin
   LSchema := FSwaggerParameter.SchemaType;
-
   LJSON := TJSONObject.Create
-                  .AddPair('in', FSwaggerParameter.ParamType.toString)
-                  .AddPair('name', FSwaggerParameter.Name)
-                  .AddPair('description', FSwaggerParameter.Description)
-                  .AddPair('required', TJSONBool.Create(FSwaggerParameter.Required));
-
+    .AddPair('in', FSwaggerParameter.ParamType.toString)
+    .AddPair('name', FSwaggerParameter.Name)
+    .AddPair('description', FSwaggerParameter.Description)
+    .AddPair('required', TJSONBool.Create(FSwaggerParameter.Required));
 
   if not LSchema.IsEmpty then
     if FSwaggerParameter.IsArray then
@@ -80,14 +78,14 @@ begin
         if FSwaggerParameter.Schema <> nil then
         begin
           LJSON.AddPair('schema', TJSONObject.Create
-                                          .AddPair('type', 'array')
-                                          .AddPair('items', TJSONObject.Create
-                                              .AddPair('$ref', '#/definitions/' + LSchema)) );
+            .AddPair('type', 'array')
+            .AddPair('items', TJSONObject.Create
+                .AddPair('$ref', '#/definitions/' + LSchema)) );
         end
         else
-        LJSON
-          .AddPair('type', 'array')
-          .AddPair('items', TJSONObject.Create.AddPair('type', FSwaggerParameter.SchemaType));
+          LJSON
+            .AddPair('type', 'array')
+            .AddPair('items', TJSONObject.Create.AddPair('type', FSwaggerParameter.SchemaType));
       end;
     end
     else
@@ -104,7 +102,7 @@ begin
         LJSON.AddPair('type', LSchema);
     end;
 
-  result := LJSON;
+  Result := LJSON;
 end;
 
 end.

@@ -5,93 +5,90 @@ interface
 uses
   GBSwagger.Model.Interfaces;
 
-type TGBSwaggerModelConfig = class(TInterfacedObject, IGBSwaggerConfig)
-
+type
+  TGBSwaggerModelConfig = class(TInterfacedObject, IGBSwaggerConfig)
   private
     [Weak]
     FParent: IGBSwagger;
     FModuleName: string;
     FHTMLTitle: string;
     FDateFormat: string;
-    FLanguage: String;
-    FResourcePath: String;
+    FLanguage: string;
+    FResourcePath: string;
     FDocExpansion: TGBSwaggerConfigureDocExpansion;
-    FClassPrefixes: TArray<String>;
-
+    FClassPrefixes: TArray<string>;
   protected
-    function DateFormat(Value: String): IGBSwaggerConfig; overload;
+    function DateFormat(AValue: string): IGBSwaggerConfig; overload;
     function DateFormat: string; overload;
 
-    function ClassPrefixes(Value: String): IGBSwaggerConfig; overload;
-    function ClassPrefixes: TArray<String>; overload;
+    function ClassPrefixes(AValue: string): IGBSwaggerConfig; overload;
+    function ClassPrefixes: TArray<string>; overload;
 
-    function ModuleName(Value: String): IGBSwaggerConfig; overload;
-    function ModuleName: String; overload;
+    function ModuleName(AValue: string): IGBSwaggerConfig; overload;
+    function ModuleName: string; overload;
 
-    function Language(Value: String): IGBSwaggerConfig; overload;
-    function Language: String; overload;
+    function Language(AValue: string): IGBSwaggerConfig; overload;
+    function Language: string; overload;
 
     function ResourcePath(AValue: string): IGBSwaggerConfig; overload;
     function ResourcePath: string; overload;
 
     function DocExpansion(AValue: TGBSwaggerConfigureDocExpansion): IGBSwaggerConfig; overload;
     function DocExpansion: TGBSwaggerConfigureDocExpansion; overload;
-
     function &End: IGBSwagger;
   public
-    class function New(Parent: IGBSwagger): IGBSwaggerConfig;
-    constructor create(Parent: IGBSwagger);
+    class function New(AParent: IGBSwagger): IGBSwaggerConfig;
+    constructor Create(AParent: IGBSwagger);
 end;
 
 implementation
 
 { TGBSwaggerModelConfig }
 
-function TGBSwaggerModelConfig.ClassPrefixes( Value: String): IGBSwaggerConfig;
+function TGBSwaggerModelConfig.ClassPrefixes( AValue: string): IGBSwaggerConfig;
 begin
-  result := Self;
-
+  Result := Self;
   SetLength(FClassPrefixes, Length(FClassPrefixes) + 1);
-  FClassPrefixes[ Length(FClassPrefixes) - 1] := Value;
+  FClassPrefixes[ Length(FClassPrefixes) - 1] := AValue;
 end;
 
 function TGBSwaggerModelConfig.&End: IGBSwagger;
 begin
-  result := FParent;
+  Result := FParent;
 end;
 
-function TGBSwaggerModelConfig.Language: String;
+function TGBSwaggerModelConfig.Language: string;
 begin
-  result := FLanguage;
+  Result := FLanguage;
 end;
 
-function TGBSwaggerModelConfig.Language(Value: String): IGBSwaggerConfig;
+function TGBSwaggerModelConfig.Language(AValue: string): IGBSwaggerConfig;
 begin
-  result := Self;
-  FLanguage := Value;
+  Result := Self;
+  FLanguage := AValue;
 end;
 
-function TGBSwaggerModelConfig.ModuleName: String;
+function TGBSwaggerModelConfig.ModuleName: string;
 begin
-  result := FModuleName;
+  Result := FModuleName;
 end;
 
-function TGBSwaggerModelConfig.ModuleName(Value: String): IGBSwaggerConfig;
+function TGBSwaggerModelConfig.ModuleName(AValue: string): IGBSwaggerConfig;
 begin
-  result := Self;
-  FModuleName := Value;
+  Result := Self;
+  FModuleName := AValue;
 end;
 
-function TGBSwaggerModelConfig.ClassPrefixes: TArray<String>;
+function TGBSwaggerModelConfig.ClassPrefixes: TArray<string>;
 begin
-  result := FClassPrefixes;
-  if Length(result) = 0 then
-    result := ['T'];
+  Result := FClassPrefixes;
+  if Length(Result) = 0 then
+    Result := ['T'];
 end;
 
-constructor TGBSwaggerModelConfig.create(Parent: IGBSwagger);
+constructor TGBSwaggerModelConfig.Create(AParent: IGBSwagger);
 begin
-  FParent := Parent;
+  FParent := AParent;
   FHTMLTitle := 'GBSwagger';
   FLanguage := 'en-US';
   FDocExpansion := TGBSwaggerConfigureDocExpansion.gbList;
@@ -100,7 +97,7 @@ end;
 
 function TGBSwaggerModelConfig.DateFormat: string;
 begin
-  result := FDateFormat;
+  Result := FDateFormat;
 end;
 
 function TGBSwaggerModelConfig.DocExpansion: TGBSwaggerConfigureDocExpansion;
@@ -114,25 +111,25 @@ begin
   FDocExpansion := AValue;
 end;
 
-function TGBSwaggerModelConfig.DateFormat(Value: String): IGBSwaggerConfig;
+function TGBSwaggerModelConfig.DateFormat(AValue: string): IGBSwaggerConfig;
 begin
-  result := Self;
-  FDateFormat := Value;
+  Result := Self;
+  FDateFormat := AValue;
 end;
 
-class function TGBSwaggerModelConfig.New(Parent: IGBSwagger): IGBSwaggerConfig;
+class function TGBSwaggerModelConfig.New(AParent: IGBSwagger): IGBSwaggerConfig;
 begin
-  result := Self.create(Parent);
+  Result := Self.Create(AParent);
 end;
 
 function TGBSwaggerModelConfig.ResourcePath: string;
 begin
-  result := FResourcePath;
+  Result := FResourcePath;
 end;
 
 function TGBSwaggerModelConfig.ResourcePath(AValue: string): IGBSwaggerConfig;
 begin
-  result := Self;
+  Result := Self;
   FResourcePath := AValue;
 end;
 

@@ -5,24 +5,23 @@ interface
 uses
   Horse;
 
-type THorseGBSwagger = class
-
+type
+  THorseGBSwagger = class
   protected
     FRequest: THorseRequest;
     FResponse: THorseResponse;
-
   public
-    constructor create(Req: THorseRequest; Res: THorseResponse);
+    constructor Create(Req: THorseRequest; Res: THorseResponse);
 end;
 
 implementation
 
 { THorseGBSwagger }
 
-constructor THorseGBSwagger.create(Req: THorseRequest; Res: THorseResponse);
+constructor THorseGBSwagger.Create(Req: THorseRequest; Res: THorseResponse);
 begin
   FRequest := Req;
-  FResponse:= Res;
+  FResponse := Res;
 end;
 
 end.

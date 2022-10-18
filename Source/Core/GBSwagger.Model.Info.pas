@@ -6,40 +6,36 @@ uses
   GBSwagger.Model.Interfaces,
   GBSwagger.Model.Contact;
 
-type TGBSwaggerModelInfo = class(TInterfacedObject, IGBSwaggerInfo)
-
+type
+  TGBSwaggerModelInfo = class(TInterfacedObject, IGBSwaggerInfo)
   private
     [Weak]
     FParent: IGBSwagger;
     FContact: IGBSwaggerContact;
     FLicense: IGBSwaggerContact;
     FTitle: string;
-    FDescription: String;
+    FDescription: string;
     FTermsOfService: string;
     FVersion: string;
-
   protected
-    function Title(Value: String): IGBSwaggerInfo; overload;
-    function TermsOfService(Value: String): IGBSwaggerInfo; overload;
-    function Description(Value: String): IGBSwaggerInfo; overload;
-    function Version(Value: String): IGBSwaggerInfo; overload;
+    function Title(AValue: string): IGBSwaggerInfo; overload;
+    function TermsOfService(AValue: string): IGBSwaggerInfo; overload;
+    function Description(AValue: string): IGBSwaggerInfo; overload;
+    function Version(AValue: string): IGBSwaggerInfo; overload;
 
     function Title: string; overload;
-    function Description: String; overload;
+    function Description: string; overload;
     function TermsOfService: string; overload;
     function Version: string; overload;
 
     function Contact: IGBSwaggerContact;
     function License: IGBSwaggerContact;
-
     function &End: IGBSwagger;
-
   public
-    class function New(Parent: IGBSwagger): IGBSwaggerInfo;
-    constructor create(Parent: IGBSwagger);
-    destructor  Destroy; override;
-
-end;
+    class function New(AParent: IGBSwagger): IGBSwaggerInfo;
+    constructor Create(AParent: IGBSwagger);
+    destructor Destroy; override;
+  end;
 
 implementation
 
@@ -49,28 +45,26 @@ function TGBSwaggerModelInfo.Contact: IGBSwaggerContact;
 begin
   if not Assigned(FContact) then
     FContact := TGBSwaggerModelContact.New(Self);
-  result := FContact;
+  Result := FContact;
 end;
 
-constructor TGBSwaggerModelInfo.create(Parent: IGBSwagger);
+constructor TGBSwaggerModelInfo.Create(AParent: IGBSwagger);
 begin
-  FParent         := Parent;
-  FVersion        := '1.0.0';
+  FParent := AParent;
+  FVersion := '1.0.0';
   FTermsOfService := 'http://www.apache.org/licenses/LICENSE-2.0.txt';
 
-  License
-    .Name('Apache License - Version 2.0, January 2004')
+  License.Name('Apache License - Version 2.0, January 2004')
     .URL('http://www.apache.org/licenses/LICENSE-2.0');
 end;
 
-function TGBSwaggerModelInfo.Description: String;
+function TGBSwaggerModelInfo.Description: string;
 begin
-  result := FDescription;
+  Result := FDescription;
 end;
 
 destructor TGBSwaggerModelInfo.Destroy;
 begin
-
   inherited;
 end;
 
@@ -78,56 +72,56 @@ function TGBSwaggerModelInfo.License: IGBSwaggerContact;
 begin
   if not Assigned(FLicense) then
     FLicense := TGBSwaggerModelContact.New(Self);
-  result := FLicense;
+  Result := FLicense;
 end;
 
-function TGBSwaggerModelInfo.Description(Value: String): IGBSwaggerInfo;
+function TGBSwaggerModelInfo.Description(AValue: string): IGBSwaggerInfo;
 begin
-  result := Self;
-  FDescription := Value;
+  Result := Self;
+  FDescription := AValue;
 end;
 
-class function TGBSwaggerModelInfo.New(Parent: IGBSwagger): IGBSwaggerInfo;
+class function TGBSwaggerModelInfo.New(AParent: IGBSwagger): IGBSwaggerInfo;
 begin
-  Result := Self.Create(Parent);
+  Result := Self.Create(AParent);
 end;
 
 function TGBSwaggerModelInfo.&End: IGBSwagger;
 begin
-  result := FParent;
+  Result := FParent;
 end;
 
-function TGBSwaggerModelInfo.TermsOfService(Value: String): IGBSwaggerInfo;
+function TGBSwaggerModelInfo.TermsOfService(AValue: string): IGBSwaggerInfo;
 begin
   Result := Self;
-  FTermsOfService := Value;
+  FTermsOfService := AValue;
 end;
 
 function TGBSwaggerModelInfo.TermsOfService: string;
 begin
-  result := FTermsOfService;
+  Result := FTermsOfService;
 end;
 
 function TGBSwaggerModelInfo.Title: string;
 begin
-  result := FTitle;
+  Result := FTitle;
 end;
 
-function TGBSwaggerModelInfo.Title(Value: String): IGBSwaggerInfo;
+function TGBSwaggerModelInfo.Title(AValue: string): IGBSwaggerInfo;
 begin
-  result := Self;
-  FTitle := Value;
+  Result := Self;
+  FTitle := AValue;
 end;
 
 function TGBSwaggerModelInfo.Version: string;
 begin
-  result := FVersion;
+  Result := FVersion;
 end;
 
-function TGBSwaggerModelInfo.Version(Value: String): IGBSwaggerInfo;
+function TGBSwaggerModelInfo.Version(AValue: string): IGBSwaggerInfo;
 begin
-  result := Self;
-  FVersion := Value;
+  Result := Self;
+  FVersion := AValue;
 end;
 
 end.

@@ -8,38 +8,37 @@ uses
   GBSwagger.Model.Types,
   System.JSON;
 
-type TGBSwaggerJSONV2Contact = class(TInterfacedObject, IGBSwaggerModelJSON)
-
+type
+  TGBSwaggerJSONV2Contact = class(TInterfacedObject, IGBSwaggerModelJSON)
   private
     FSwaggerContact: IGBSwaggerContact;
-
   public
-    constructor create(SwaggerContact: IGBSwaggerContact);
-    class function New(SwaggerContact: IGBSwaggerContact): IGBSwaggerModelJSON;
+    constructor Create(ASwaggerContact: IGBSwaggerContact);
+    class function New(ASwaggerContact: IGBSwaggerContact): IGBSwaggerModelJSON;
 
     function ToJSON: TJSONValue;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerJSONV2Contact }
 
-constructor TGBSwaggerJSONV2Contact.create(SwaggerContact: IGBSwaggerContact);
+constructor TGBSwaggerJSONV2Contact.Create(ASwaggerContact: IGBSwaggerContact);
 begin
-  FSwaggerContact := SwaggerContact;
+  FSwaggerContact := ASwaggerContact;
 end;
 
-class function TGBSwaggerJSONV2Contact.New(SwaggerContact: IGBSwaggerContact): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2Contact.New(ASwaggerContact: IGBSwaggerContact): IGBSwaggerModelJSON;
 begin
-  result := Self.create(SwaggerContact);
+  Result := Self.Create(ASwaggerContact);
 end;
 
 function TGBSwaggerJSONV2Contact.ToJSON: TJSONValue;
 begin
   Result := TJSONObject.Create
-              .AddPair('name', FSwaggerContact.Name)
-              .AddPair('email', FSwaggerContact.Email)
-              .AddPair('url', FSwaggerContact.URL);
+    .AddPair('name', FSwaggerContact.Name)
+    .AddPair('email', FSwaggerContact.Email)
+    .AddPair('url', FSwaggerContact.URL);
 end;
 
 end.

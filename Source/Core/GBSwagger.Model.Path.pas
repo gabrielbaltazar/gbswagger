@@ -8,65 +8,61 @@ uses
   Web.HTTPApp,
   System.Generics.Collections;
 
-type TGBSwaggerModelPath = class(TInterfacedObject, IGBSwaggerPath)
-
+type
+  TGBSwaggerModelPath = class(TInterfacedObject, IGBSwaggerPath)
   private
     [Weak]
     FParent: IGBSwagger;
     FName: string;
-    FTags: TList<String>;
+    FTags: TList<string>;
     FMethods: TList<IGBSwaggerPathMethod>;
 
-    function AddMethod(Summary, Description: String): IGBSwaggerPathMethod;
-
+    function AddMethod(ASummary, ADescription: string): IGBSwaggerPathMethod;
   protected
-    function Name(Value: String): IGBSwaggerPath; overload;
+    function Name(AValue: string): IGBSwaggerPath; overload;
     function Name: string; overload;
 
-    function Tag(Value: String): IGBSwaggerPath;
-    function Tags: TArray<String>;
+    function Tag(AValue: string): IGBSwaggerPath;
+    function Tags: TArray<string>;
 
-    function GET(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
-    function POST(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
-    function PUT(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
-    function DELETE(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
-    function PATCH(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
+    function GET(ASummary: string = ''; ADescription: string = ''): IGBSwaggerPathMethod;
+    function POST(ASummary: string = ''; ADescription: string = ''): IGBSwaggerPathMethod;
+    function PUT(ASummary: string = ''; ADescription: string = ''): IGBSwaggerPathMethod;
+    function DELETE(ASummary: string = ''; ADescription: string = ''): IGBSwaggerPathMethod;
+    function PATCH(ASummary: string = ''; ADescription: string = ''): IGBSwaggerPathMethod;
 
     function Methods: TArray<IGBSwaggerPathMethod>;
-
     function &End: IGBSwagger;
-
   public
-    constructor create(Parent: IGBSwagger);
-    class function New(Parent: IGBSwagger): IGBSwaggerPath;
+    constructor Create(AParent: IGBSwagger);
+    class function New(AParent: IGBSwagger): IGBSwaggerPath;
     destructor Destroy; override;
-
-end;
+  end;
 
 implementation
 
 { TGBSwaggerModelPath }
 
-function TGBSwaggerModelPath.AddMethod(Summary, Description: String): IGBSwaggerPathMethod;
+function TGBSwaggerModelPath.AddMethod(ASummary, ADescription: string): IGBSwaggerPathMethod;
 begin
-  result := TGBSwaggerModelPathMethod.New(Self)
-              .Summary(Summary)
-              .Description(Description);
+  Result := TGBSwaggerModelPathMethod.New(Self)
+    .Summary(ASummary)
+    .Description(ADescription);
 
-  FMethods.Add(result);
+  FMethods.Add(Result);
 end;
 
-constructor TGBSwaggerModelPath.create(Parent: IGBSwagger);
+constructor TGBSwaggerModelPath.Create(AParent: IGBSwagger);
 begin
-  FParent  := Parent;
-  FTags    := TList<String>.create;
+  FParent := AParent;
+  FTags := TList<string>.Create;
   FMethods := TList<IGBSwaggerPathMethod>.Create;
 end;
 
-function TGBSwaggerModelPath.DELETE(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
+function TGBSwaggerModelPath.DELETE(ASummary: string = ''; ADescription: string = ''): IGBSwaggerPathMethod;
 begin
-  result := AddMethod(Summary, Description)
-              .MethodType(mtDelete);
+  Result := AddMethod(ASummary, ADescription)
+    .MethodType(mtDelete);
 end;
 
 destructor TGBSwaggerModelPath.Destroy;
@@ -78,13 +74,13 @@ end;
 
 function TGBSwaggerModelPath.&End: IGBSwagger;
 begin
-  result := FParent;
+  Result := FParent;
 end;
 
-function TGBSwaggerModelPath.GET(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
+function TGBSwaggerModelPath.GET(ASummary: string = ''; ADescription: string = ''): IGBSwaggerPathMethod;
 begin
-  result := AddMethod(Summary, Description)
-              .MethodType(mtGet);
+  Result := AddMethod(ASummary, ADescription)
+    .MethodType(mtGet);
 end;
 
 function TGBSwaggerModelPath.Methods: TArray<IGBSwaggerPathMethod>;
@@ -94,46 +90,46 @@ end;
 
 function TGBSwaggerModelPath.Name: string;
 begin
-  result := FName;
+  Result := FName;
 end;
 
-function TGBSwaggerModelPath.Name(Value: String): IGBSwaggerPath;
+function TGBSwaggerModelPath.Name(AValue: string): IGBSwaggerPath;
 begin
   Result := Self;
-  FName  := Value;
+  FName := AValue;
 end;
 
-class function TGBSwaggerModelPath.New(Parent: IGBSwagger): IGBSwaggerPath;
+class function TGBSwaggerModelPath.New(AParent: IGBSwagger): IGBSwaggerPath;
 begin
-  result := Self.create(Parent);
+  Result := Self.Create(AParent);
 end;
 
-function TGBSwaggerModelPath.PATCH(Summary, Description: string): IGBSwaggerPathMethod;
+function TGBSwaggerModelPath.PATCH(ASummary, ADescription: string): IGBSwaggerPathMethod;
 begin
-  result := AddMethod(Summary, Description)
-              .MethodType(mtPatch);
+  Result := AddMethod(ASummary, ADescription)
+    .MethodType(mtPatch);
 end;
 
-function TGBSwaggerModelPath.POST(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
+function TGBSwaggerModelPath.POST(ASummary: string = ''; ADescription: string = ''): IGBSwaggerPathMethod;
 begin
-  result := AddMethod(Summary, Description)
-              .MethodType(mtPost);
+  Result := AddMethod(ASummary, ADescription)
+    .MethodType(mtPost);
 end;
 
-function TGBSwaggerModelPath.PUT(Summary: string = ''; Description: string = ''): IGBSwaggerPathMethod;
+function TGBSwaggerModelPath.PUT(ASummary: string = ''; ADescription: string = ''): IGBSwaggerPathMethod;
 begin
-  result := AddMethod(Summary, Description)
-              .MethodType(mtPUT);
+  Result := AddMethod(ASummary, ADescription)
+    .MethodType(mtPUT);
 end;
 
-function TGBSwaggerModelPath.Tag(Value: String): IGBSwaggerPath;
+function TGBSwaggerModelPath.Tag(AValue: string): IGBSwaggerPath;
 begin
-  result := Self;
-  if not FTags.Contains(Value) then
-    FTags.Add(Value);
+  Result := Self;
+  if not FTags.Contains(AValue) then
+    FTags.Add(AValue);
 end;
 
-function TGBSwaggerModelPath.Tags: TArray<String>;
+function TGBSwaggerModelPath.Tags: TArray<string>;
 begin
   Result := FTags.ToArray;
 end;

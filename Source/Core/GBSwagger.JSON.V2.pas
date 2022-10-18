@@ -17,8 +17,8 @@ uses
   System.Generics.Defaults,
   System.JSON;
 
-type TGBSwaggerJSONV2 = class(TGBSwaggerModel, IGBSwaggerModelJSON)
-
+type
+  TGBSwaggerJSONV2 = class(TGBSwaggerModel, IGBSwaggerModelJSON)
   private
     [Weak]
     FSwagger: IGBSwagger;
@@ -29,131 +29,125 @@ type TGBSwaggerJSONV2 = class(TGBSwaggerModel, IGBSwaggerModelJSON)
     function JSONPath: TJSONObject;
     function JSONSchemes: TJSONArray;
     function JSONDefinitions: TJSONObject;
-    function JSONContentTypes(Value: TArray<String>): TJSONArray;
+    function JSONContentTypes(AValue: TArray<string>): TJSONArray;
   public
-    constructor create(Swagger: IGBSwagger);
+    constructor Create(ASwagger: IGBSwagger);
     destructor Destroy; override;
-    class function New(Swagger: IGBSwagger): IGBSwaggerModelJSON;
+    class function New(ASwagger: IGBSwagger): IGBSwaggerModelJSON;
 
     function ToJSON: TJSONValue;
-
-end;
+  end;
 
 implementation
 
 { TGBSwaggerJSONV2 }
 
-constructor TGBSwaggerJSONV2.create(Swagger: IGBSwagger);
+constructor TGBSwaggerJSONV2.Create(ASwagger: IGBSwagger);
 begin
-  FSwagger := Swagger;
+  FSwagger := ASwagger;
 end;
 
 destructor TGBSwaggerJSONV2.Destroy;
 begin
-
   inherited;
 end;
 
-function TGBSwaggerJSONV2.JSONContentTypes(Value: TArray<String>): TJSONArray;
+function TGBSwaggerJSONV2.JSONContentTypes(AValue: TArray<string>): TJSONArray;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := TJSONArray.Create;
-  for i := 0 to Pred(Length(Value)) do
-    Result.Add(Value[i]);
+  Result := TJSONArray.Create;
+  for I := 0 to Pred(Length(AValue)) do
+    Result.Add(AValue[I]);
 end;
 
 function TGBSwaggerJSONV2.JSONDefinitions: TJSONObject;
 var
-  i: Integer;
-  swaggerSchema: TArray<IGBSwaggerSchema>;
+  I: Integer;
+  LSwaggerSchema: TArray<IGBSwaggerSchema>;
 begin
-  result := TJSONObject.Create;
-  swaggerSchema := FSwagger.Schemas;
+  Result := TJSONObject.Create;
+  LSwaggerSchema := FSwagger.Schemas;
 
-  TArray.Sort<IGBSwaggerSchema>(swaggerSchema,
+  TArray.Sort<IGBSwaggerSchema>(LSwaggerSchema,
     TComparer<IGBSwaggerSchema>.Construct(
       function (const Left, Right: IGBSwaggerSchema): Integer
       begin
-        result := Left.Name.CompareTo(Right.Name);
+        Result := Left.Name.CompareTo(Right.Name);
       end));
 
-  for i := 0 to Pred(Length(swaggerSchema)) do
+  for I := 0 to Pred(Length(LSwaggerSchema)) do
   begin
-    result.AddPair(
-      swaggerSchema[i].Name,
-      TGBSwaggerJSONV2Schema.New(swaggerSchema[i]).ToJSON
-    );
+    Result.AddPair(
+      LSwaggerSchema[I].Name,
+      TGBSwaggerJSONV2Schema.New(LSwaggerSchema[I]).ToJSON);
   end;
 end;
 
 function TGBSwaggerJSONV2.JSONPath: TJSONObject;
 var
-  i: Integer;
-  path: string;
-  swaggerPaths: TArray<IGBSwaggerPath>;
+  I: Integer;
+  LPath: string;
+  LSwaggerPaths: TArray<IGBSwaggerPath>;
 begin
-  result := TJSONObject.create;
-  swaggerPaths := FSwagger.Paths;
+  Result := TJSONObject.create;
+  LSwaggerPaths := FSwagger.Paths;
 
-  TArray.Sort<IGBSwaggerPath>(swaggerPaths,
+  TArray.Sort<IGBSwaggerPath>(LSwaggerPaths,
     TComparer<IGBSwaggerPath>.construct( function(const Left, Right: IGBSwaggerPath): Integer
     begin
-      result := Left.Tags[0].CompareTo(Right.Tags[0]);
+      Result := Left.Tags[0].CompareTo(Right.Tags[0]);
     end));
 
-  for i := 0 to Pred(Length(swaggerPaths)) do
+  for I := 0 to Pred(Length(LSwaggerPaths)) do
   begin
-    path := swaggerPaths[i].Name;
-    if not path.StartsWith('/') then
-      path := '/' + path;
+    LPath := LSwaggerPaths[I].Name;
+    if not LPath.StartsWith('/') then
+      LPath := '/' + LPath;
 
-    Result.AddPair(path, TGBSwaggerJSONV2Path.New(swaggerPaths[i]).ToJSON);
+    Result.AddPair(LPath, TGBSwaggerJSONV2Path.New(LSwaggerPaths[I]).ToJSON);
   end;
 end;
 
 function TGBSwaggerJSONV2.JSONSchemes: TJSONArray;
 var
-  i        : Integer;
-  protocols: TArray<TGBSwaggerProtocol>;
+  I: Integer;
+  LProtocols: TArray<TGBSwaggerProtocol>;
 begin
-  result    := TJSONArray.Create;
-  protocols := FSwagger.Protocols;
-
-  for i := 0 to Pred(Length(protocols)) do
-    Result.Add(protocols[i].toString);
+  Result := TJSONArray.Create;
+  LProtocols := FSwagger.Protocols;
+  for I := 0 to Pred(Length(LProtocols)) do
+    Result.Add(LProtocols[I].toString);
 end;
 
 function TGBSwaggerJSONV2.JSONSecurity: TJSONObject;
 var
-  i: Integer;
-  securities: TArray<IGBSwaggerSecurity>;
+  I: Integer;
+  LSecurities: TArray<IGBSwaggerSecurity>;
 begin
-  result     := TJSONObject.Create;
-  securities := FSwagger.Securities;
-
-  for i := 0 to Pred(Length(securities)) do
-    Result.AddPair(securities[i].Description, TGBSwaggerJSONV2Security.New(securities[i]).ToJSON);
+  Result := TJSONObject.Create;
+  LSecurities := FSwagger.Securities;
+  for I := 0 to Pred(Length(LSecurities)) do
+    Result.AddPair(LSecurities[I].Description, TGBSwaggerJSONV2Security.New(LSecurities[I]).ToJSON);
 end;
 
-class function TGBSwaggerJSONV2.New(Swagger: IGBSwagger): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2.New(ASwagger: IGBSwagger): IGBSwaggerModelJSON;
 begin
-  result := SElf.create(Swagger);
+  Result := Self.Create(ASwagger);
 end;
 
 procedure TGBSwaggerJSONV2.ProcessOptions(AJsonObject: TJSOnObject);
 var
   LPair: TJSONPair;
   LItem: TObject;
-  i: Integer;
-
+  I: Integer;
 begin
   if not assigned(AJsonObject) then
     Exit;
 
-  for i := AJsonObject.Count -1 downto 0  do
+  for I := AJsonObject.Count -1 downto 0  do
   begin
-    LPair := TJSONPair(AJsonObject.Pairs[i]);
+    LPair := TJSONPair(AJsonObject.Pairs[I]);
     if LPair.JsonValue is TJSOnObject then
     begin
       ProcessOptions(TJSOnObject(LPair.JsonValue));
@@ -188,19 +182,19 @@ end;
 
 function TGBSwaggerJSONV2.ToJSON: TJSONValue;
 begin
-  result := TJSONObject.Create
-              .AddPair('swagger', FSwagger.Version)
-              .AddPair('info', TGBSwaggerJSONV2Info.New(FSwagger.Info).ToJSON)
-              .AddPair('host', FSwagger.Host)
-              .AddPair('basePath', FSwagger.BasePath)
-              .AddPair('schemes', JSONSchemes)
-              .AddPair('consumes', JSONContentTypes(FSwagger.Consumes))
-              .AddPair('produces', JSONContentTypes(FSwagger.Produces))
-              .AddPair('securityDefinitions', JSONSecurity)
-              .AddPair('paths', JSONPath)
-              .AddPair('definitions', JSONDefinitions);
+  Result := TJSONObject.Create
+    .AddPair('swagger', FSwagger.Version)
+    .AddPair('info', TGBSwaggerJSONV2Info.New(FSwagger.Info).ToJSON)
+    .AddPair('host', FSwagger.Host)
+    .AddPair('basePath', FSwagger.BasePath)
+    .AddPair('schemes', JSONSchemes)
+    .AddPair('consumes', JSONContentTypes(FSwagger.Consumes))
+    .AddPair('produces', JSONContentTypes(FSwagger.Produces))
+    .AddPair('securityDefinitions', JSONSecurity)
+    .AddPair('paths', JSONPath)
+    .AddPair('definitions', JSONDefinitions);
 
-  ProcessOptions(TJSONObject(result));
+  ProcessOptions(TJSONObject(Result));
 end;
 
 end.

@@ -6,14 +6,14 @@ uses
   GBSwagger.Validator.Messages.Interfaces,
   System.SysUtils;
 
-type TGBSwaggerValidatorMessagesBase = class(TInterfacedObject, IGBSwaggerValidatorMessages)
-
+type
+  TGBSwaggerValidatorMessagesBase = class(TInterfacedObject, IGBSwaggerValidatorMessages)
   protected
     FLanguage: string;
-    FRequiredMessage: String;
-    FMinimumLengthMessage: String;
-    FMaximumLengthMessage: String;
-    FMinimumValueMessage: String;
+    FRequiredMessage: string;
+    FMinimumLengthMessage: string;
+    FMaximumLengthMessage: string;
+    FMinimumValueMessage: string;
     FMaximumValueMessage: string;
     FPositiveMessage: string;
     FEnumValueMessage: string;
@@ -24,9 +24,8 @@ type TGBSwaggerValidatorMessagesBase = class(TInterfacedObject, IGBSwaggerValida
     function MinimumValueMessage: string;
     function MaximumValueMessage: string;
     function PositiveMessage: string;
-    function RequiredMessage: String;
-
-end;
+    function RequiredMessage: string;
+  end;
 
 implementation
 
@@ -34,37 +33,37 @@ implementation
 
 function TGBSwaggerValidatorMessagesBase.EnumValueMessage: string;
 begin
-  result := FEnumValueMessage;
+  Result := FEnumValueMessage;
 end;
 
 function TGBSwaggerValidatorMessagesBase.MaximumLengthMessage: string;
 begin
-  result := FMaximumLengthMessage;
+  Result := FMaximumLengthMessage;
 end;
 
 function TGBSwaggerValidatorMessagesBase.MaximumValueMessage: string;
 begin
-  result := FMaximumValueMessage;
+  Result := FMaximumValueMessage;
 end;
 
 function TGBSwaggerValidatorMessagesBase.MinimumLengthMessage: string;
 begin
-  result := FMinimumLengthMessage;
+  Result := FMinimumLengthMessage;
 end;
 
 function TGBSwaggerValidatorMessagesBase.MinimumValueMessage: string;
 begin
-  result := FMinimumValueMessage;
+  Result := FMinimumValueMessage;
 end;
 
 function TGBSwaggerValidatorMessagesBase.PositiveMessage: string;
 begin
-  result := FPositiveMessage;
+  Result := FPositiveMessage;
 end;
 
-function TGBSwaggerValidatorMessagesBase.RequiredMessage: String;
+function TGBSwaggerValidatorMessagesBase.RequiredMessage: string;
 begin
-  result := FRequiredMessage;
+  Result := FRequiredMessage;
 end;
 
 end.

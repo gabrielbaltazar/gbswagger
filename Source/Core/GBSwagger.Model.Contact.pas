@@ -5,88 +5,84 @@ interface
 uses
   GBSwagger.Model.Interfaces;
 
-type TGBSwaggerModelContact = class(TInterfacedObject, IGBSwaggerContact)
-
+type
+  TGBSwaggerModelContact = class(TInterfacedObject, IGBSwaggerContact)
   private
     [Weak]
     FParent: IGBSwaggerInfo;
-    FName: String;
+    FName: string;
     FEmail: string;
     FURL: string;
-
   protected
-    function Name(Value: String): IGBSwaggerContact; overload;
-    function Email(Value: string): IGBSwaggerContact; overload;
-    function URL(Value: String): IGBSwaggerContact; overload;
+    function Name(AValue: string): IGBSwaggerContact; overload;
+    function Email(AValue: string): IGBSwaggerContact; overload;
+    function URL(AValue: string): IGBSwaggerContact; overload;
 
-    function Name: String; overload;
+    function Name: string; overload;
     function Email: string; overload;
     function URL: string; overload;
-
     function &End: IGBSwaggerInfo;
-
   public
-    constructor create(Parent: IGBSwaggerInfo);
-    class function New(Parent: IGBSwaggerInfo): IGBSwaggerContact;
+    constructor Create(AParent: IGBSwaggerInfo);
+    class function New(AParent: IGBSwaggerInfo): IGBSwaggerContact;
     destructor Destroy; override;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerModelContact }
 
-constructor TGBSwaggerModelContact.create(Parent: IGBSwaggerInfo);
+constructor TGBSwaggerModelContact.Create(AParent: IGBSwaggerInfo);
 begin
-  FParent := Parent;
+  FParent := AParent;
 end;
 
 destructor TGBSwaggerModelContact.Destroy;
 begin
-
   inherited;
 end;
 
 function TGBSwaggerModelContact.Email: string;
 begin
-  result := FEmail;
+  Result := FEmail;
 end;
 
-function TGBSwaggerModelContact.Email(Value: string): IGBSwaggerContact;
-begin
-  result := Self;
-  FEmail := Value;
-end;
-
-function TGBSwaggerModelContact.Name(Value: String): IGBSwaggerContact;
+function TGBSwaggerModelContact.Email(AValue: string): IGBSwaggerContact;
 begin
   Result := Self;
-  FName := Value;
+  FEmail := AValue;
 end;
 
-function TGBSwaggerModelContact.Name: String;
+function TGBSwaggerModelContact.Name(AValue: string): IGBSwaggerContact;
+begin
+  Result := Self;
+  FName := AValue;
+end;
+
+function TGBSwaggerModelContact.Name: string;
 begin
   Result := FName;
 end;
 
-class function TGBSwaggerModelContact.New(Parent: IGBSwaggerInfo): IGBSwaggerContact;
+class function TGBSwaggerModelContact.New(AParent: IGBSwaggerInfo): IGBSwaggerContact;
 begin
-  result := Self.create(Parent);
+  Result := Self.Create(AParent);
 end;
 
 function TGBSwaggerModelContact.&End: IGBSwaggerInfo;
 begin
-  result := FParent;
+  Result := FParent;
 end;
 
-function TGBSwaggerModelContact.URL(Value: String): IGBSwaggerContact;
+function TGBSwaggerModelContact.URL(AValue: string): IGBSwaggerContact;
 begin
-  result := Self;
-  FURL   := Value;
+  Result := Self;
+  FURL := AValue;
 end;
 
 function TGBSwaggerModelContact.URL: string;
 begin
-  result := FURL;
+  Result := FURL;
 end;
 
 end.

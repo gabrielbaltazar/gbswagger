@@ -17,18 +17,17 @@ uses
   Web.HTTPApp;
 
 const
-  SWAG_STRING  = GBSwagger.Model.Types.SWAG_STRING;
+  SWAG_STRING = GBSwagger.Model.Types.SWAG_STRING;
   SWAG_INTEGER = GBSwagger.Model.Types.SWAG_INTEGER;
-
   PATH_HTML = '/swagger/doc/html';
   PATH_JSON = '/swagger/doc/json';
 
 type
-  TGBSwaggerContentType   = GBSwagger.Model.Types.TGBSwaggerContentType;
-  TGBSwaggerProtocol      = GBSwagger.Model.Types.TGBSwaggerProtocol;
-  TGBSwaggerParamType     = GBSwagger.Model.Types.TGBSwaggerParamType;
+  TGBSwaggerContentType = GBSwagger.Model.Types.TGBSwaggerContentType;
+  TGBSwaggerProtocol = GBSwagger.Model.Types.TGBSwaggerProtocol;
+  TGBSwaggerParamType = GBSwagger.Model.Types.TGBSwaggerParamType;
   THorseGBSwaggerRegister = Horse.GBSwagger.Register.THorseGBSwaggerRegister;
-  THorseGBSwagger         = Horse.GBSwagger.Controller.THorseGBSwagger;
+  THorseGBSwagger = Horse.GBSwagger.Controller.THorseGBSwagger;
 
 function HorseSwagger: THorseCallback; overload;
 function HorseSwagger(APathHtml: String; APathJSON: string = ''): THorseCallback; overload;
@@ -36,35 +35,31 @@ function HorseSwagger(APathHtml: String; APathJSON: string = ''): THorseCallback
 procedure SwaggerHTML(ARequest: THorseRequest; AResponse: THorseResponse; ANext: TProc);
 procedure SwaggerJSON(ARequest: THorseRequest; AResponse: THorseResponse; ANext: TProc);
 
-//function RequestHost(ARequest: THorseRequest): string;
-//procedure UpdateSwaggerHost(ARequest: THorseRequest);
-
 var
   HTMLSwagger: string;
   JSONSwagger: string;
-  JSONPath   : string;
-  Swagger    : IGBSwagger;
+  JSONPath: string;
+  Swagger: IGBSwagger;
 
 implementation
 
 function HorseSwagger(APathHtml: String; APathJSON: string = ''): THorseCallback;
 var
-  horseHtmlPath: string;
-  horseJsonPath: string;
+  LHorseHtmlPath: string;
+  LHorseJsonPath: string;
 begin
-  horseJsonPath := IfThen(APathJSON.IsEmpty, PATH_JSON, APathJSON);
-  horseHtmlPath := IfThen(APathHtml.IsEmpty, PATH_HTML, APathHtml);
+  LHorseJsonPath := IfThen(APathJSON.IsEmpty, PATH_JSON, APathJSON);
+  LHorseHtmlPath := IfThen(APathHtml.IsEmpty, PATH_HTML, APathHtml);
+  JSONPath := LHorseJsonPath;
 
-  JSONPath := horseJsonPath;
+  THorse.GetInstance.Get(LHorseHtmlPath, SwaggerHTML);
+  THorse.GetInstance.Get(LHorseJsonPath, SwaggerJSON);
 
-  THorse.GetInstance.Get(horseHtmlPath, SwaggerHTML);
-  THorse.GetInstance.Get(horseJsonPath, SwaggerJSON);
-
-  result :=
-    procedure(ARequest: THorseRequest; AResponse: THorseResponse; ANext: TProc)
+  Result :=
+    procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
     begin
       try
-        ANext();
+        Next();
       finally
       end;
     end;
@@ -72,51 +67,47 @@ end;
 
 function HorseSwagger: THorseCallback;
 begin
-  result := HorseSwagger(PATH_HTML, PATH_JSON);
+  Result := HorseSwagger(PATH_HTML, PATH_JSON);
 end;
 
 procedure SwaggerHTML(ARequest: THorseRequest; AResponse: THorseResponse; ANext: TProc);
 var
-  pathJSON: String;
-  basePath: string;
+  LPathJSON: string;
+  LBasePath: string;
 begin
   if HTMLSwagger.IsEmpty then
   begin
-    basePath := EmptyStr;
-    pathJSON := JSONPath;
-    if not pathJSON.StartsWith('/') then
-      pathJSON := '/' + pathJSON;
+    LBasePath := EmptyStr;
+    LPathJSON := JSONPath;
+    if not LPathJSON.StartsWith('/') then
+      LPathJSON := '/' + LPathJSON;
     {$IF Defined(HORSE_ISAPI) or Defined(HORSE_APACHE)}
     // Ajuda do Paulo Monteiro para compatibilidade com ISAPI
-    basePath := '/' + Swagger.Config.ModuleName;
+    LBasePath := '/' + Swagger.Config.ModuleName;
     {$ENDIF}
 
-    pathJSON := basePath + pathJSON;
-
-    HTMLSwagger := SwaggerDocument(pathJSON);
+    LPathJSON := LBasePath + LPathJSON;
+    HTMLSwagger := SwaggerDocument(LPathJSON);
   end;
-
   AResponse.Send(HTMLSwagger);
 end;
 
 procedure SwaggerJSON(ARequest: THorseRequest; AResponse: THorseResponse; ANext: TProc);
 var
-  LWebResponse : TWebResponse;
+  LWebResponse: TWebResponse;
 begin
   if JSONSwagger.IsEmpty then
     JSONSwagger := SwaggerJSONString(Swagger);
 
   LWebResponse := AResponse.RawWebResponse;
   LWebResponse.ContentType := 'application/json';
-  LWebResponse.ContentStream := TStringStream.Create(JSONSwagger,TEncoding.UTF8);
+  LWebResponse.ContentStream := TStringStream.Create(JSONSwagger, TEncoding.UTF8);
   LWebResponse.SendResponse;
-
-//  AResponse.Send(JSONSwagger);
 end;
 
 initialization
   JSONSwagger := EmptyStr;
   HTMLSwagger := EmptyStr;
-  Swagger     := GBSwagger.Model.Interfaces.Swagger;
+  Swagger := GBSwagger.Model.Interfaces.Swagger;
 
 end.

@@ -12,273 +12,261 @@ uses
   System.SysUtils,
   System.TypInfo;
 
-type TGBSwaggerValidator = class(TInterfacedObject, IGBSwaggerValidator)
-
+type
+  TGBSwaggerValidator = class(TInterfacedObject, IGBSwaggerValidator)
   private
     FMessages: IGBSwaggerValidatorMessages;
-    function GetPropertyName(AProp: TRttiProperty; AInstanceName: String): string;
+    function GetPropertyName(AProp: TRttiProperty; AInstanceName: string): string;
 
-    procedure validateRequiredProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
-    procedure validateNumberProperty  (Value: TObject; AProp: TRttiProperty; AInstanceName: string);
+    procedure ValidateRequiredProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
+    procedure ValidateNumberProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
+    procedure ValidateProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
 
-    procedure validateProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
-
-    procedure validateStringProperty  (Value: TObject; AProp: TRttiProperty; AInstanceName: string);
-    procedure validateIntegerProperty (Value: TObject; AProp: TRttiProperty; AInstanceName: string);
-    procedure validateDoubleProperty  (Value: TObject; AProp: TRttiProperty; AInstanceName: string);
-    procedure validateListProperty    (Value: TObject; AProp: TRttiProperty; AInstanceName: string);
-    procedure validateEnumProperty    (Value: TObject; AProp: TRttiProperty; AInstanceName: string);
-    procedure validateObjectProperty  (Value: TObject; AProp: TRttiProperty; AInstanceName: string);
-    procedure validateObjectListProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
-
+    procedure ValidateStringProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
+    procedure ValidateIntegerProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
+    procedure ValidateDoubleProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
+    procedure ValidateListProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
+    procedure ValidateEnumProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
+    procedure ValidateObjectProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
+    procedure ValidateObjectListProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
   protected
-    procedure validate(Value: TObject; AInstanceName: String = '');
-
+    procedure Validate(AValue: TObject; AInstanceName: string = '');
   public
     class function New: IGBSwaggerValidator;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerValidator }
 
-function TGBSwaggerValidator.GetPropertyName(AProp: TRttiProperty; AInstanceName: String): string;
+function TGBSwaggerValidator.GetPropertyName(AProp: TRttiProperty; AInstanceName: string): string;
 begin
-  result := AProp.SwagName;
+  Result := AProp.SwagName;
   if not AInstanceName.Trim.IsEmpty then
-    result := AInstanceName + '.' + result;
+    Result := AInstanceName + '.' + Result;
 end;
 
 class function TGBSwaggerValidator.New: IGBSwaggerValidator;
 begin
-  result := Self.Create;
+  Result := Self.Create;
 end;
 
-procedure TGBSwaggerValidator.validate(Value: TObject; AInstanceName: String = '');
+procedure TGBSwaggerValidator.Validate(AValue: TObject; AInstanceName: string = '');
 var
-  i: Integer;
-  properties : TArray<TRttiProperty>;
+  I: Integer;
+  LProperties: TArray<TRttiProperty>;
 begin
   FMessages := GetValidatorMessage;
-  if not Assigned(Value) then
+  if not Assigned(AValue) then
     Exit;
 
-  properties := Value.GetProperties;
-  for i := 0 to Pred(Length(properties)) do
+  LProperties := AValue.GetProperties;
+  for I := 0 to Pred(Length(LProperties)) do
   begin
-    if properties[i].IsSwaggerReadOnly then
+    if LProperties[I].IsSwaggerReadOnly then
       Continue;
-
-    validateProperty(Value, properties[i], AInstanceName);
+    ValidateProperty(AValue, LProperties[I], AInstanceName);
   end;
 end;
 
-procedure TGBSwaggerValidator.validateDoubleProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
+procedure TGBSwaggerValidator.ValidateDoubleProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
 begin
-  validateNumberProperty(Value, AProp, AInstanceName);
+  ValidateNumberProperty(AValue, AProp, AInstanceName);
 end;
 
-procedure TGBSwaggerValidator.validateEnumProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
+procedure TGBSwaggerValidator.ValidateEnumProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
 var
-  enumValue: Int64;
-  enumNames: TArray<String>;
+  LEnumValue: Int64;
+  LEnumNames: TArray<string>;
 
-  function splitEnumNames: string;
+  function SplitEnumNames: string;
   var
-    i: Integer;
+    I: Integer;
   begin
-    for i := 0 to Pred(Length(enumNames)) do
+    for I := 0 to Pred(Length(LEnumNames)) do
     begin
-      if i = 0 then
-        result := enumNames[i]
+      if I = 0 then
+        Result := LEnumNames[I]
       else
-        result := result + ', ' + enumNames[i];
+        Result := Result + ', ' + LEnumNames[I];
     end;
   end;
 begin
-  enumValue := AProp.GetValue(Value).AsOrdinal;
-  enumNames := AProp.GetEnumNames;
-  if (enumValue < 0) or (enumValue > Pred(Length(enumNames))) then
-    raise Exception.CreateFmt(FMessages.EnumValueMessage, [GetPropertyName(AProp, AInstanceName), splitEnumNames]);
+  LEnumValue := AProp.GetValue(AValue).AsOrdinal;
+  LEnumNames := AProp.GetEnumNames;
+  if (LEnumValue < 0) or (LEnumValue > Pred(Length(LEnumNames))) then
+    raise Exception.CreateFmt(FMessages.EnumValueMessage, [GetPropertyName(AProp, AInstanceName), SplitEnumNames]);
 end;
 
-procedure TGBSwaggerValidator.validateIntegerProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
+procedure TGBSwaggerValidator.ValidateIntegerProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
 begin
-  validateNumberProperty(Value, AProp, AInstanceName);
+  ValidateNumberProperty(AValue, AProp, AInstanceName);
 end;
 
-procedure TGBSwaggerValidator.validateListProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
+procedure TGBSwaggerValidator.ValidateListProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
 var
-  rttiType: TRttiType;
-  method  : TRttiMethod;
-  listValue : TValue;
-  i       : Integer;
+  LType: TRttiType;
+  LMethod: TRttiMethod;
+  LListValue: TValue;
+  I: Integer;
 begin
-  listValue := AProp.GetValue(Value);
-
-  if listValue.AsObject = nil then
+  LListValue := AProp.GetValue(AValue);
+  if LListValue.AsObject = nil then
     Exit;
 
-  rttiType := TGBSwaggerRTTI.GetInstance.GetType(listValue.AsObject.ClassType);
-
-  method    := rttiType.GetMethod('ToArray');
-  listValue := method.Invoke(listValue.AsObject, []);
-
-  if listValue.GetArrayLength = 0 then
+  LType := TGBSwaggerRTTI.GetInstance.GetType(LListValue.AsObject.ClassType);
+  LMethod := LType.GetMethod('ToArray');
+  LListValue := LMethod.Invoke(LListValue.AsObject, []);
+  if LListValue.GetArrayLength = 0 then
     Exit;
 
-  for i := 0 to listValue.GetArrayLength - 1 do
-    validateObjectListProperty(listValue.GetArrayElement(i).AsObject, AProp, AInstanceName);
+  for I := 0 to LListValue.GetArrayLength - 1 do
+    ValidateObjectListProperty(LListValue.GetArrayElement(I).AsObject, AProp, AInstanceName);
 end;
 
-procedure TGBSwaggerValidator.validateNumberProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
+procedure TGBSwaggerValidator.ValidateNumberProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
 var
-  propValue: Double;
-  number: SwagNumber;
-  positive: SwagPositive;
+  LPropValue: Double;
+  LNumber: SwagNumber;
+  LPositive: SwagPositive;
 begin
-  propValue := AProp.GetValue(Value).AsExtended;
-  number := AProp.GetAttribute<SwagNumber>;
-  positive := AProp.GetAttribute<SwagPositive>;
+  LPropValue := AProp.GetValue(AValue).AsExtended;
+  LNumber := AProp.GetAttribute<SwagNumber>;
+  LPositive := AProp.GetAttribute<SwagPositive>;
 
-  if Assigned(number) then
+  if Assigned(LNumber) then
   begin
-    if (number.minimum <> 0) and (propValue < number.minimum) then
-      raise Exception.CreateFmt(FMessages.MinimumValueMessage, [GetPropertyName(AProp, AInstanceName), number.minimum.ToString]);
+    if (LNumber.minimum <> 0) and (LPropValue < LNumber.minimum) then
+      raise Exception.CreateFmt(FMessages.MinimumValueMessage, [GetPropertyName(AProp, AInstanceName), LNumber.minimum.ToString]);
 
-    if (number.maximum <> 0) and (propValue > number.maximum) then
-      raise Exception.CreateFmt(FMessages.MaximumValueMessage, [GetPropertyName(AProp, AInstanceName), number.maximum.ToString]);
+    if (LNumber.maximum <> 0) and (LPropValue > LNumber.maximum) then
+      raise Exception.CreateFmt(FMessages.MaximumValueMessage, [GetPropertyName(AProp, AInstanceName), LNumber.maximum.ToString]);
   end;
 
-  if (Assigned(positive)) and (propValue < 0) then
+  if (Assigned(LPositive)) and (LPropValue < 0) then
     raise Exception.CreateFmt(FMessages.PositiveMessage, [GetPropertyName(AProp, AInstanceName)]);
 end;
 
-procedure TGBSwaggerValidator.validateObjectListProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
+procedure TGBSwaggerValidator.ValidateObjectListProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
 var
-  propertiesToValidate : TArray<String>;
-  SwagProps            : SwagValidateProperties;
-  i                    : Integer;
-  rProperty            : TRttiProperty;
+  LPropertiesToValidate: TArray<string>;
+  LProps: SwagValidateProperties;
+  I: Integer;
+  LProperty: TRttiProperty;
 begin
-  SwagProps := AProp.GetAttribute<SwagValidateProperties>;
-
-  if not Assigned(SwagProps) then
+  LProps := AProp.GetAttribute<SwagValidateProperties>;
+  if not Assigned(LProps) then
   begin
-    validate(Value, GetPropertyName(AProp, AInstanceName));
+    Validate(AValue, GetPropertyName(AProp, AInstanceName));
     Exit;
   end;
 
-  propertiesToValidate := SwagProps.properties;
-
-  for i := 0 to Pred(Length(propertiesToValidate)) do
+  LPropertiesToValidate := LProps.Properties;
+  for I := 0 to Pred(Length(LPropertiesToValidate)) do
   begin
-    rProperty := Value.GetProperty(propertiesToValidate[i]);
-    if Assigned(rProperty) then
-      validateProperty(Value, rProperty, GetPropertyName(rProperty, AInstanceName));
+    LProperty := AValue.GetProperty(LPropertiesToValidate[I]);
+    if Assigned(LProperty) then
+      ValidateProperty(AValue, LProperty, GetPropertyName(LProperty, AInstanceName));
   end;
 end;
 
-procedure TGBSwaggerValidator.validateObjectProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
+procedure TGBSwaggerValidator.ValidateObjectProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
 var
-  propertiesToValidate: TArray<String>;
-  SwagProps: SwagValidateProperties;
-  prop: TRttiProperty;
+  LPropertiesToValidate: TArray<string>;
+  LProps: SwagValidateProperties;
+  LProp: TRttiProperty;
   AObject: TObject;
-  i: Integer;
+  I: Integer;
 begin
-  SwagProps := AProp.GetAttribute<SwagValidateProperties>;
-  AObject := AProp.GetValue(Value).AsObject;
-
-  if not Assigned(SwagProps) then
+  LProps := AProp.GetAttribute<SwagValidateProperties>;
+  AObject := AProp.GetValue(AValue).AsObject;
+  if not Assigned(LProps) then
   begin
-    validate(AObject, GetPropertyName(AProp, AInstanceName));
+    Validate(AObject, GetPropertyName(AProp, AInstanceName));
     Exit;
   end;
 
-  propertiesToValidate := SwagProps.properties;
-
-  for i := 0 to Pred(Length(propertiesToValidate)) do
+  LPropertiesToValidate := LProps.Properties;
+  for I := 0 to Pred(Length(LPropertiesToValidate)) do
   begin
-    prop := AObject.GetProperty(propertiesToValidate[i]);
-    if Assigned(prop) then
-      validateProperty(AObject, prop, GetPropertyName(prop, AInstanceName));
+    LProp := AObject.GetProperty(LPropertiesToValidate[I]);
+    if Assigned(LProp) then
+      ValidateProperty(AObject, LProp, GetPropertyName(LProp, AInstanceName));
   end;
 end;
 
-procedure TGBSwaggerValidator.validateProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
+procedure TGBSwaggerValidator.ValidateProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
 begin
-  validateRequiredProperty(Value, AProp, AInstanceName);
-
+  ValidateRequiredProperty(AValue, AProp, AInstanceName);
   if AProp.IsString then
   begin
-    validateStringProperty(Value, AProp, AInstanceName);
+    ValidateStringProperty(AValue, AProp, AInstanceName);
     Exit;
   end;
 
   if AProp.IsInteger then
   begin
-    validateIntegerProperty(Value, AProp, AInstanceName);
+    ValidateIntegerProperty(AValue, AProp, AInstanceName);
     Exit;
   end;
 
   if AProp.IsFloat then
   begin
-    validateDoubleProperty(Value, AProp, AInstanceName);
+    ValidateDoubleProperty(AValue, AProp, AInstanceName);
     Exit;
   end;
 
   if AProp.IsObject then
   begin
-    validateObjectProperty(Value, AProp, AInstanceName);
+    ValidateObjectProperty(AValue, AProp, AInstanceName);
     Exit;
   end;
 
   if AProp.IsList then
   begin
-    validateListProperty(Value, AProp, AInstanceName);
+    ValidateListProperty(AValue, AProp, AInstanceName);
     Exit;
   end;
 
   if AProp.IsEnum then
   begin
-    validateEnumProperty(Value, AProp, AInstanceName);
+    ValidateEnumProperty(AValue, AProp, AInstanceName);
     Exit;
   end;
 end;
 
-procedure TGBSwaggerValidator.validateRequiredProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
+procedure TGBSwaggerValidator.ValidateRequiredProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
 var
-  required: SwagRequired;
-  swaggerProp: SwagProp;
+  LRequired: SwagRequired;
+  LProp: SwagProp;
 begin
-  required := AProp.GetAttribute<SwagRequired>;
-  if (Assigned(required)) and (AProp.IsEmptyValue(Value)) then
+  LRequired := AProp.GetAttribute<SwagRequired>;
+  if (Assigned(LRequired)) and (AProp.IsEmptyValue(AValue)) then
     raise Exception.CreateFmt(FMessages.RequiredMessage, [GetPropertyName(AProp, AInstanceName)]);
 
-  swaggerProp := AProp.GetAttribute<SwagProp>;
-  if (Assigned(swaggerProp)) and (swaggerProp.required) and (AProp.IsEmptyValue(Value)) then
+  LProp := AProp.GetAttribute<SwagProp>;
+  if (Assigned(LProp)) and (LProp.required) and (AProp.IsEmptyValue(AValue)) then
     raise Exception.CreateFmt(FMessages.RequiredMessage, [GetPropertyName(AProp, AInstanceName)]);
 end;
 
-procedure TGBSwaggerValidator.validateStringProperty(Value: TObject; AProp: TRttiProperty; AInstanceName: string);
+procedure TGBSwaggerValidator.ValidateStringProperty(AValue: TObject; AProp: TRttiProperty; AInstanceName: string);
 var
-  str: SwagString;
-  propValue: string;
+  LStr: SwagString;
+  LPropValue: string;
 begin
-  str := AProp.GetAttribute<SwagString>;
-  if Assigned(str) then
+  LStr := AProp.GetAttribute<SwagString>;
+  if Assigned(LStr) then
   begin
-    propValue := AProp.GetValue(Value).AsString;
+    LPropValue := AProp.GetValue(AValue).AsString;
 
-    if propValue.IsEmpty then
+    if LPropValue.IsEmpty then
       Exit;
 
-    if (str.minLength > 0) and (propValue.Length < str.minLength) then
-      raise Exception.CreateFmt(FMessages.MinimumLengthMessage, [GetPropertyName(AProp, AInstanceName), str.minLength]);
+    if (LStr.minLength > 0) and (LPropValue.Length < LStr.minLength) then
+      raise Exception.CreateFmt(FMessages.MinimumLengthMessage, [GetPropertyName(AProp, AInstanceName), LStr.minLength]);
 
-    if (str.maxLength > 0) and (propValue.Length > str.maxLength) then
-      raise Exception.CreateFmt(FMessages.MaximumLengthMessage, [GetPropertyName(AProp, AInstanceName), str.maxLength]);
+    if (LStr.maxLength > 0) and (LPropValue.Length > LStr.maxLength) then
+      raise Exception.CreateFmt(FMessages.MaximumLengthMessage, [GetPropertyName(AProp, AInstanceName), LStr.maxLength]);
   end;
 end;
 

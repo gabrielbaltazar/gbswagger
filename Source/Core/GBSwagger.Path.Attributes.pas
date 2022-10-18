@@ -10,46 +10,42 @@ type
   SwagApp = class(TCustomAttribute)
   private
     FTitle: string;
-    FVersion: String;
+    FVersion: string;
     FHost: string;
-
   public
-    property title: String read FTitle;
-    property version: string read FVersion;
-    property host: string read FHost;
-
-    constructor create(ATitle, AVersion: string; AHost: String = ''); overload;
-    constructor create(ATitle: String); overload;
+    constructor Create(ATitle, AVersion: string; AHost: string = ''); overload;
+    constructor Create(ATitle: string); overload;
+    property Title: string read FTitle;
+    property Version: string read FVersion;
+    property Host: string read FHost;
   end;
 
   SwagContact = class(TCustomAttribute)
   private
-    Fname: String;
-    Femail: String;
-    Fsite: String;
-
+    FName: string;
+    FEmail: string;
+    FSite: string;
   public
-    property name: String read Fname;
-    property email: String read Femail;
-    property site: String read Fsite;
-
-    constructor create(AName: string; AEmail: String = ''; ASite: string = '');
+    constructor Create(AName: string; AEmail: string = ''; ASite: string = '');
+    property Name: string read FName;
+    property Email: string read FEmail;
+    property Site: string read FSite;
   end;
 
   SwagBasePath = class(TCustomAttribute)
   private
     FValue: string;
   public
-    constructor create(Value: String);
-    property value: String read FValue;
+    constructor Create(Value: string);
+    property Value: string read FValue;
   end;
 
   SwagAppDescription = class(TCustomAttribute)
   private
     FDescription: string;
   public
-    constructor create(ADescription: String);
-    property description: string read FDescription;
+    constructor Create(ADescription: string);
+    property Description: string read FDescription;
   end;
 
   SwagSecurityBearer = class(TCustomAttribute)
@@ -60,97 +56,84 @@ type
 
   SwagPath = class(TCustomAttribute)
   private
-    Fname: string;
-    Ftag: String;
+    FName: string;
+    FTag: string;
   public
-    property name: string read Fname;
-    property tag: String read Ftag write Ftag;
-
-    constructor create(ATag: String); overload;
-    constructor create(AName, ATag: string); overload;
+    constructor Create(ATag: string); overload;
+    constructor Create(AName, ATag: string); overload;
+    property Name: string read FName;
+    property Tag: string read FTag write FTag;
   end;
 
   SwagParam = class(TCustomAttribute)
   private
-    Fname: String;
-    Fdescription: String;
-    Frequired: Boolean;
-    FisArray: Boolean;
-    Fschema: String;
-    FEnumValues: String;
+    FName: string;
+    FDescription: string;
+    FRequired: Boolean;
+    FIsArray: Boolean;
+    FSchema: string;
+    FEnumValues: string;
     function GetEnumValues: TArray<Variant>;
   public
-    property name: String read Fname;
-    property description: String read Fdescription;
-    property required: Boolean read Frequired;
-    property isArray: Boolean read FisArray;
-    property schema: String read Fschema write Fschema;
-    property enumValues: TArray<Variant> read GetEnumValues;
-
-    function isEnum: Boolean;
+    function IsEnum: Boolean;
+    property Name: string read FName;
+    property Description: string read FDescription;
+    property Required: Boolean read FRequired;
+    property IsArray: Boolean read FIsArray;
+    property Schema: string read FSchema write FSchema;
+    property EnumValues: TArray<Variant> read GetEnumValues;
   end;
 
   SwagParamPath = class(SwagParam)
   public
-    constructor create(AName: String; ADescription: string = ''; bIsNumber: Boolean = False); overload;
-    constructor create(AName, ADescription, AEnumValues: String; bIsNumber: Boolean = False); overload;
+    constructor Create(AName: string; ADescription: string = '';
+      AIsNumber: Boolean = False); overload;
+
+    constructor Create(AName, ADescription, AEnumValues: string;
+      AIsNumber: Boolean = False); overload;
   end;
 
   SwagParamHeader = class(SwagParam)
-    constructor create(AName: String;
-                       ADescription: string = '';
-                       bRequired: Boolean = True;
-                       bIsNumber: Boolean = False); overload;
+  public
+    constructor Create(AName: string; ADescription: string = '';
+      ARequired: Boolean = True; AIsNumber: Boolean = False); overload;
 
-    constructor create(AName: String;
-                       ADescription: string;
-                       AEnumValues: String;
-                       bRequired: Boolean = True;
-                       bIsNumber: Boolean = False); overload;
+    constructor Create(AName: string; ADescription: string;
+      AEnumValues: string; ARequired: Boolean = True;
+      AIsNumber: Boolean = False); overload;
   end;
 
   SwagParamQuery = class(SwagParam)
-    constructor create(AName: String;
-                       ADescription: string = '';
-                       bRequired: Boolean = False;
-                       bIsNumber: Boolean = False); overload;
+  public
+    constructor Create(AName: string; ADescription: string = '';
+      ARequired: Boolean = False; AIsNumber: Boolean = False); overload;
 
-    constructor create(AName: string;
-                       ADescription: String;
-                       AEnumValues: String;
-                       bRequired: Boolean = False;
-                       bIsNumber: Boolean = False); overload;
+    constructor Create(AName: string; ADescription: string;
+      AEnumValues: string; ARequired: Boolean = False;
+      AIsNumber: Boolean = False); overload;
   end;
 
   SwagParamBody = class(SwagParam)
   private
-    FclassType: TClass;
+    FClassType: TClass;
   public
-    function classType: TClass;
+    constructor Create(AName: string; AClassType: TClass;
+      ADescription: string; AIsArray: Boolean = False;
+      ARequired: Boolean = True); overload;
 
-    constructor create(AName: string;
-                       AClassType: TClass;
-                       ADescription: string;
-                       bIsArray: Boolean = False;
-                       bRequired: Boolean = True); overload;
+    constructor Create(AName: string; ASchema: string;
+      ADescription: string; AIsArray: Boolean = False;
+      ARequired: Boolean = True); overload;
 
-    constructor create(AName: string;
-                       ASchema: String;
-                       ADescription: string;
-                       bIsArray: Boolean = False;
-                       bRequired: Boolean = True); overload;
+    constructor Create(AName: string; AClassType: TClass;
+      AIsArray: Boolean = False; ADescription: string = '';
+      ARequired: Boolean = True); overload;
 
-    constructor create(AName: string;
-                       AClassType: TClass;
-                       bIsArray: Boolean = False;
-                       ADescription: string = '';
-                       bRequired: Boolean = True); overload;
+    constructor Create(AName: string; ASchema: string;
+      AIsArray: Boolean = False; ADescription: string = '';
+      ARequired: Boolean = True); overload;
 
-    constructor create(AName: string;
-                       ASchema: String;
-                       bIsArray: Boolean = False;
-                       ADescription: string = '';
-                       bRequired: Boolean = True); overload;
+    function ClassType: TClass;
   end;
 
   SwagParamFormData = class(SwagParam)
@@ -158,46 +141,50 @@ type
     FIsFile: Boolean;
     function GetIsFile: Boolean;
   public
-    property IsFile: Boolean read GetIsFile;
+    constructor Create(AName: string; ADescription: string = '';
+      AFile: Boolean = False; ARequired: Boolean = True); overload;
 
-    constructor create(AName: string; ADescription: string = ''; AFile: Boolean = False; ARequired: Boolean = True); overload;
-    constructor create(AName: string; AFile: Boolean; ADescription: string = ''; ARequired: Boolean = True); overload;
+    constructor Create(AName: string; AFile: Boolean; ADescription: string = '';
+      ARequired: Boolean = True); overload;
+
+    property IsFile: Boolean read GetIsFile;
   end;
 
   SwagEndPoint = class(TCustomAttribute)
   private
-    Fsummary: string;
-    Fdescription: string;
-    Fpath: string;
-    Fpublic: Boolean;
+    FSummary: string;
+    FDescription: string;
+    FPath: string;
+    FPublic: Boolean;
   public
-    property path: string read Fpath;
-    property summary: string read Fsummary;
-    property description: string read Fdescription;
-    property isPublic: Boolean read Fpublic;
+    constructor Create(ASummary: string; APublic: Boolean = False;
+      ADescription: string = ''); overload;
 
-    constructor create(ASummary: String; APublic: Boolean = False; ADescription: String = ''); overload;
-    constructor create(APath: String; ASummary: String; APublic: Boolean = False; ADescription: String = ''); overload;
+    constructor Create(APath: string; ASummary: string;
+      APublic: Boolean = False; ADescription: string = ''); overload;
+
+    property Path: string read FPath;
+    property Summary: string read FSummary;
+    property Description: string read FDescription;
+    property IsPublic: Boolean read FPublic;
   end;
 
   SwagConsumes = class(TCustomAttribute)
   private
-    FContentType: String;
+    FContentType: string;
   public
-    constructor create(Value: TGBSwaggerContentType); overload;
-    constructor create(Value: String); overload;
-
-    property ContentType: String read FContentType;
+    property ContentType: string read FContentType;
+    constructor Create(AValue: TGBSwaggerContentType); overload;
+    constructor Create(AValue: string); overload;
   end;
 
   SwagProduces = class(TCustomAttribute)
   private
-    FAccept: String;
+    FAccept: string;
   public
-    constructor create(Value: TGBSwaggerContentType); overload;
-    constructor create(Value: String); overload;
-
-    property Accept: String read FAccept;
+    property Accept: string read FAccept;
+    constructor Create(AValue: TGBSwaggerContentType); overload;
+    constructor Create(AValue: string); overload;
   end;
 
   SwagGET = class(SwagEndPoint)
@@ -217,338 +204,323 @@ type
 
   SwagResponse = class(TCustomAttribute)
   private
-    FhttpCode: Integer;
-    Fdescription: string;
-    Fschema: string;
-    FclassType: TClass;
-    FisArray: Boolean;
+    FHttpCode: Integer;
+    FDescription: string;
+    FSchema: string;
+    FClassType: TClass;
+    FIsArray: Boolean;
   public
-    property httpCode: Integer read FhttpCode;
-    property description: string read Fdescription;
-    property schema: string read Fschema;
-    property isArray: Boolean read FisArray;
+    constructor Create(AHttpCode: Integer; AClassType: TClass;
+      ADescription: string = ''; AIsArray: Boolean = False); overload;
 
-    function classType: TClass; reintroduce;
+    constructor Create(AHttpCode: Integer; AClassType: TClass;
+      AIsArray: Boolean; ADescription: string = ''); overload;
 
-    constructor create(AHttpCode    : Integer;
-                       AClassType   : TClass;
-                       ADescription : String = '';
-                       bIsArray     : Boolean = False); overload;
+    constructor Create(AHttpCode: Integer; ASchema: string;
+      AIsArray: Boolean; ADescription: string = ''); overload;
 
-    constructor create(AHttpCode    : Integer;
-                       AClassType   : TClass;
-                       bIsArray     : Boolean;
-                       ADescription : String = ''); overload;
+    constructor Create(AHttpCode: Integer; ASchema: string;
+      ADescription: string = ''; AIsArray: Boolean = False); overload;
 
-    constructor create(AHttpCode    : Integer;
-                       ASchema      : String;
-                       bIsArray     : Boolean;
-                       ADescription : String = ''); overload;
+    constructor Create(AHttpCode: Integer); overload;
 
-    constructor create(AHttpCode    : Integer;
-                       ASchema      : String;
-                       ADescription : String = '';
-                       bIsArray     : Boolean = False); overload;
+    function ClassType: TClass; reintroduce;
 
-    constructor create(AHttpCode: Integer); overload;
+    property HttpCode: Integer read FHttpCode;
+    property Description: string read FDescription;
+    property Schema: string read FSchema;
+    property IsArray: Boolean read FIsArray;
   end;
 
 implementation
 
 { SwagPath }
 
-constructor SwagPath.create(ATag: String);
+constructor SwagPath.Create(ATag: string);
 begin
-  Fname := EmptyStr;
-  Ftag  := ATag;
+  FName := EmptyStr;
+  FTag := ATag;
 end;
 
-constructor SwagPath.create(AName, ATag: string);
+constructor SwagPath.Create(AName, ATag: string);
 begin
-  Fname := AName;
-  Ftag  := ATag;
+  FName := AName;
+  FTag := ATag;
 end;
 
 { SwagEndPoint }
 
-constructor SwagEndPoint.create(ASummary: String; APublic: Boolean = False; ADescription: String = '');
+constructor SwagEndPoint.Create(ASummary: string; APublic: Boolean = False; ADescription: string = '');
 begin
-  Fsummary     := ASummary;
-  Fdescription := ADescription;
-  Fpath        := EmptyStr;
-  Fpublic      := APublic;
+  FSummary := ASummary;
+  FDescription := ADescription;
+  FPath := EmptyStr;
+  FPublic := APublic;
 end;
 
-constructor SwagEndPoint.create(APath, ASummary: String; APublic: Boolean; ADescription: String);
+constructor SwagEndPoint.Create(APath, ASummary: string; APublic: Boolean; ADescription: string);
 begin
-  Fsummary     := ASummary;
-  Fdescription := ADescription;
-  Fpath        := APath;
-  Fpublic      := APublic;
+  FSummary := ASummary;
+  FDescription := ADescription;
+  FPath := APath;
+  FPublic := APublic;
 end;
 
 { SwagParam }
 
 function SwagParam.GetEnumValues: TArray<Variant>;
 var
-  splitter: TArray<String>;
-  i       : Integer;
+  LSplitter: TArray<string>;
+  I: Integer;
 begin
-  splitter := FEnumValues.Split([',']);
-
-  SetLength(result, Length(splitter));
-  for i := 0 to Pred(Length(splitter)) do
-    result[i] := splitter[i];
+  LSplitter := FEnumValues.Split([',']);
+  SetLength(Result, Length(LSplitter));
+  for I := 0 to Pred(Length(LSplitter)) do
+    Result[I] := LSplitter[I];
 end;
 
-function SwagParam.isEnum: Boolean;
+function SwagParam.IsEnum: Boolean;
 begin
-  result := Length(FEnumValues) > 0;
+  Result := Length(FEnumValues) > 0;
 end;
 
 { SwagParamBody }
 
-function SwagParamBody.classType: TClass;
+function SwagParamBody.ClassType: TClass;
 begin
-  result := FclassType;
+  Result := FClassType;
 end;
 
-constructor SwagParamBody.create(AName: string; AClassType: TClass; bIsArray: Boolean; ADescription: string; bRequired: Boolean);
+constructor SwagParamBody.Create(AName: string; AClassType: TClass; AIsArray: Boolean; ADescription: string; ARequired: Boolean);
 begin
-  Fname        := AName;
-  FclassType   := AClassType;
-  FisArray     := bIsArray;
-  Fdescription := ADescription;
-  Frequired    := bRequired;
+  FName := AName;
+  FClassType := AClassType;
+  FIsArray := AIsArray;
+  FDescription := ADescription;
+  FRequired := ARequired;
 end;
 
-constructor SwagParamBody.create(AName: string; AClassType: TClass; ADescription: string; bIsArray, bRequired: Boolean);
+constructor SwagParamBody.Create(AName: string; AClassType: TClass; ADescription: string; AIsArray, ARequired: Boolean);
 begin
-  create(AName, AClassType, bIsArray, ADescription, bRequired);
+  Create(AName, AClassType, AIsArray, ADescription, ARequired);
 end;
 
-constructor SwagParamBody.create(AName, ASchema: String; bIsArray: Boolean; ADescription: string; bRequired: Boolean);
+constructor SwagParamBody.Create(AName, ASchema: string; AIsArray: Boolean; ADescription: string; ARequired: Boolean);
 begin
-  Fname        := AName;
-  FSchema      := ASchema;
-  FisArray     := bIsArray;
-  Fdescription := ADescription;
-  Frequired    := bRequired;
+  FName := AName;
+  FSchema := ASchema;
+  FIsArray := AIsArray;
+  FDescription := ADescription;
+  FRequired := ARequired;
 end;
 
-constructor SwagParamBody.create(AName, ASchema, ADescription: string; bIsArray, bRequired: Boolean);
+constructor SwagParamBody.Create(AName, ASchema, ADescription: string; AIsArray, ARequired: Boolean);
 begin
-  Fname        := AName;
-  FSchema      := ASchema;
-  FisArray     := bIsArray;
-  Fdescription := ADescription;
-  Frequired    := bRequired;
+  FName := AName;
+  FSchema := ASchema;
+  FIsArray := AIsArray;
+  FDescription := ADescription;
+  FRequired := ARequired;
 end;
 
 { SwagResponse }
 
-constructor SwagResponse.create(AHttpCode: Integer; AClassType: TClass; bIsArray: Boolean; ADescription: String);
+constructor SwagResponse.Create(AHttpCode: Integer; AClassType: TClass; AIsArray: Boolean; ADescription: string);
 begin
-  FhttpCode    := AHttpCode;
-  FclassType   := AClassType;
-  Fdescription := ADescription;
-  FisArray     := bIsArray;
+  FHttpCode := AHttpCode;
+  FClassType := AClassType;
+  FDescription := ADescription;
+  FIsArray := AIsArray;
 end;
 
-constructor SwagResponse.create(AHttpCode: Integer; ASchema, ADescription: String; bIsArray: Boolean);
+constructor SwagResponse.Create(AHttpCode: Integer; ASchema, ADescription: string; AIsArray: Boolean);
 begin
-  FhttpCode    := AHttpCode;
-  Fschema      := ASchema;
-  Fdescription := ADescription;
-  FisArray     := bIsArray;
+  FHttpCode := AHttpCode;
+  FSchema := ASchema;
+  FDescription := ADescription;
+  FIsArray := AIsArray;
 end;
 
-constructor SwagResponse.create(AHttpCode: Integer; AClassType: TClass; ADescription: String; bIsArray: Boolean);
+constructor SwagResponse.Create(AHttpCode: Integer; AClassType: TClass; ADescription: string; AIsArray: Boolean);
 begin
-  FhttpCode    := AHttpCode;
-  FclassType   := AClassType;
-  Fdescription := ADescription;
-  FisArray     := bIsArray;
+  FHttpCode := AHttpCode;
+  FClassType := AClassType;
+  FDescription := ADescription;
+  FIsArray := AIsArray;
 end;
 
-function SwagResponse.classType: TClass;
+function SwagResponse.ClassType: TClass;
 begin
-  result := FclassType;
+  Result := FClassType;
 end;
 
-constructor SwagResponse.create(AHttpCode: Integer);
+constructor SwagResponse.Create(AHttpCode: Integer);
 begin
-  FhttpCode:= AHttpCode;
+  FHttpCode:= AHttpCode;
 end;
 
-constructor SwagResponse.create(AHttpCode: Integer; ASchema: String; bIsArray: Boolean; ADescription: String);
+constructor SwagResponse.Create(AHttpCode: Integer; ASchema: string; AIsArray: Boolean; ADescription: string);
 begin
-  FhttpCode    := AHttpCode;
-  Fschema      := ASchema;
-  Fdescription := ADescription;
-  FisArray     := bIsArray;
+  FHttpCode := AHttpCode;
+  FSchema := ASchema;
+  FDescription := ADescription;
+  FIsArray := AIsArray;
 end;
 
 { SwaggerApp }
 
-constructor SwagApp.create(ATitle, AVersion, AHost: String);
+constructor SwagApp.Create(ATitle, AVersion, AHost: string);
 begin
-  FTitle   := ATitle;
+  FTitle := ATitle;
   FVersion := AVersion;
-  FHost    := AHost;
+  FHost := AHost;
 end;
 
-constructor SwagApp.create(ATitle: String);
+constructor SwagApp.Create(ATitle: string);
 begin
-  create(ATitle, EmptyStr, EmptyStr);
+  Create(ATitle, EmptyStr, EmptyStr);
 end;
 
 { SwagAppDescription }
 
-constructor SwagAppDescription.create(ADescription: String);
+constructor SwagAppDescription.Create(ADescription: string);
 begin
   FDescription := ADescription;
 end;
 
 { SwagBasePath }
 
-constructor SwagBasePath.create(Value: String);
+constructor SwagBasePath.Create(Value: string);
 begin
   FValue := Value;
 end;
 
 { SwagParamPath }
 
-constructor SwagParamPath.create(AName, ADescription, AEnumValues: String; bIsNumber: Boolean = False);
+constructor SwagParamPath.Create(AName, ADescription, AEnumValues: string; AIsNumber: Boolean = False);
 begin
-  Fname        := AName;
-  Fdescription := ADescription;
-  Fschema      := SWAG_STRING;
-  FisArray     := False;
-  Frequired    := True;
-  FEnumValues  := AEnumValues;
-
-  if bIsNumber then
+  FName := AName;
+  FDescription := ADescription;
+  FSchema := SWAG_STRING;
+  FIsArray := False;
+  FRequired := True;
+  FEnumValues := AEnumValues;
+  if AIsNumber then
     FSchema := SWAG_INTEGER;
 end;
 
-constructor SwagParamPath.create(AName, ADescription: String; bIsNumber: Boolean);
+constructor SwagParamPath.Create(AName, ADescription: string; AIsNumber: Boolean);
 begin
-  Fname        := AName;
-  Fdescription := ADescription;
-  Fschema      := SWAG_STRING;
-  FisArray     := False;
-  Frequired    := True;
-
-  if bIsNumber then
+  FName := AName;
+  FDescription := ADescription;
+  FSchema := SWAG_STRING;
+  FIsArray := False;
+  FRequired := True;
+  if AIsNumber then
     FSchema := SWAG_INTEGER;
 end;
 
 { SwagParamHeader }
 
-constructor SwagParamHeader.create(AName, ADescription, AEnumValues: String; bRequired: Boolean; bIsNumber: Boolean);
+constructor SwagParamHeader.Create(AName, ADescription, AEnumValues: string; ARequired: Boolean; AIsNumber: Boolean);
 begin
-  Fname        := AName;
-  Fdescription := ADescription;
-  Fschema      := SWAG_STRING;
-  FisArray     := False;
-  Frequired    := bRequired;
-  FEnumValues  := AEnumValues;
-
-  if bIsNumber then
+  FName := AName;
+  FDescription := ADescription;
+  FSchema := SWAG_STRING;
+  FIsArray := False;
+  FRequired := ARequired;
+  FEnumValues := AEnumValues;
+  if AIsNumber then
     FSchema := SWAG_INTEGER;
 end;
 
-constructor SwagParamHeader.create(AName, ADescription: string; bRequired: Boolean; bIsNumber: Boolean);
+constructor SwagParamHeader.Create(AName, ADescription: string; ARequired: Boolean; AIsNumber: Boolean);
 begin
-  Fname        := AName;
-  Fdescription := ADescription;
-  Fschema      := SWAG_STRING;
-  FisArray     := False;
-  Frequired    := bRequired;
-
-  if bIsNumber then
+  FName := AName;
+  FDescription := ADescription;
+  FSchema := SWAG_STRING;
+  FIsArray := False;
+  FRequired := ARequired;
+  if AIsNumber then
     FSchema := SWAG_INTEGER;
 end;
 
 { SwagParamQuery }
 
-constructor SwagParamQuery.create(AName, ADescription, AEnumValues: String; bRequired: Boolean; bIsNumber: Boolean);
+constructor SwagParamQuery.Create(AName, ADescription, AEnumValues: string; ARequired: Boolean; AIsNumber: Boolean);
 begin
-  Fname        := AName;
-  Fdescription := ADescription;
-  Fschema      := SWAG_STRING;
-  FisArray     := False;
-  Frequired    := bRequired;
-  FEnumValues  := AEnumValues;
-
-  if bIsNumber then
+  FName := AName;
+  FDescription := ADescription;
+  FSchema := SWAG_STRING;
+  FIsArray := False;
+  FRequired := ARequired;
+  FEnumValues := AEnumValues;
+  if AIsNumber then
     FSchema := SWAG_INTEGER;
 end;
 
-constructor SwagParamQuery.create(AName, ADescription: string; bRequired: Boolean; bIsNumber: Boolean);
+constructor SwagParamQuery.Create(AName, ADescription: string; ARequired: Boolean; AIsNumber: Boolean);
 begin
-  Fname        := AName;
-  Fdescription := ADescription;
-  Fschema      := SWAG_STRING;
-  FisArray     := False;
-  Frequired    := bRequired;
-
-  if bIsNumber then
+  FName := AName;
+  FDescription := ADescription;
+  FSchema := SWAG_STRING;
+  FIsArray := False;
+  FRequired := ARequired;
+  if AIsNumber then
     FSchema := SWAG_INTEGER;
 end;
 
 { SwagContact }
 
-constructor SwagContact.create(AName, AEmail, ASite: string);
+constructor SwagContact.Create(AName, AEmail, ASite: string);
 begin
-  Fname := AName;
-  Femail:= AEmail;
-  Fsite := ASite;
+  FName := AName;
+  FEmail := AEmail;
+  FSite := ASite;
 end;
 
 { SwagContentType }
 
-constructor SwagConsumes.create(Value: String);
+constructor SwagConsumes.Create(AValue: string);
 begin
-  FContentType := Value;
+  FContentType := AValue;
 end;
 
-constructor SwagConsumes.create(Value: TGBSwaggerContentType);
+constructor SwagConsumes.Create(AValue: TGBSwaggerContentType);
 begin
-  FContentType := Value.toString;
+  FContentType := AValue.toString;
 end;
 
 { SwagAccept }
 
-constructor SwagProduces.create(Value: String);
+constructor SwagProduces.Create(AValue: string);
 begin
-  FAccept := Value;
+  FAccept := AValue;
 end;
 
-constructor SwagProduces.create(Value: TGBSwaggerContentType);
+constructor SwagProduces.Create(AValue: TGBSwaggerContentType);
 begin
-  FAccept := Value.toString;
+  FAccept := AValue.toString;
 end;
 
 { SwagParamFormData }
 
-constructor SwagParamFormData.create(AName, ADescription: string; AFile, ARequired: Boolean);
+constructor SwagParamFormData.Create(AName, ADescription: string; AFile, ARequired: Boolean);
 begin
-  Fname := AName;
-  Fdescription := ADescription;
+  FName := AName;
+  FDescription := ADescription;
   FIsFile := AFile;
-  Frequired := ARequired;
+  FRequired := ARequired;
 end;
 
-constructor SwagParamFormData.create(AName: string; AFile: Boolean; ADescription: string; ARequired: Boolean);
+constructor SwagParamFormData.Create(AName: string; AFile: Boolean; ADescription: string; ARequired: Boolean);
 begin
-  create(AName, ADescription, AFile, ARequired);
+  Create(AName, ADescription, AFile, ARequired);
 end;
 
 function SwagParamFormData.GetIsFile: Boolean;
 begin
-  result := FIsFile;
+  Result := FIsFile;
 end;
 
 end.

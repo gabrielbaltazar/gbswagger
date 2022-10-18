@@ -10,33 +10,32 @@ uses
   GBSwagger.RTTI,
   GBSwagger.Model.Types;
 
-type TGBSwaggerModelParameter = class(TInterfacedObject, IGBSwaggerParameter)
-
+type
+  TGBSwaggerModelParameter = class(TInterfacedObject, IGBSwaggerParameter)
   private
     [Weak]
     FParent: IGBSwaggerPathMethod;
     FParamType: TGBSwaggerParamType;
     FName: string;
-    FDescription: String;
+    FDescription: string;
     FSchemaStr: string;
     FSchema: TClass;
     FRequired: Boolean;
     FIsArray: Boolean;
     FEnumValues: TArray<Variant>;
-
   protected
-    function ParamType(Value: TGBSwaggerParamType): IGBSwaggerParameter; overload;
-    function Name(Value: string): IGBSwaggerParameter; overload;
-    function Description(Value: String): IGBSwaggerParameter; overload;
-    function Schema(Value: String): IGBSwaggerParameter; overload;
-    function Schema(Value: TClass): IGBSwaggerParameter; overload;
-    function Required(Value: Boolean): IGBSwaggerParameter; overload;
-    function IsArray(Value: Boolean): IGBSwaggerParameter; overload;
-    function EnumValues(Value: TArray<Variant>): IGBSwaggerParameter; overload;
+    function ParamType(AValue: TGBSwaggerParamType): IGBSwaggerParameter; overload;
+    function Name(AValue: string): IGBSwaggerParameter; overload;
+    function Description(AValue: string): IGBSwaggerParameter; overload;
+    function Schema(AValue: string): IGBSwaggerParameter; overload;
+    function Schema(AValue: TClass): IGBSwaggerParameter; overload;
+    function Required(AValue: Boolean): IGBSwaggerParameter; overload;
+    function IsArray(AValue: Boolean): IGBSwaggerParameter; overload;
+    function EnumValues(AValue: TArray<Variant>): IGBSwaggerParameter; overload;
 
     function ParamType: TGBSwaggerParamType; overload;
     function Name: string; overload;
-    function Description: String; overload;
+    function Description: string; overload;
     function Schema: TClass; overload;
     function Required: Boolean; overload;
     function IsArray: Boolean; overload;
@@ -44,66 +43,63 @@ type TGBSwaggerModelParameter = class(TInterfacedObject, IGBSwaggerParameter)
     function IsEnum: Boolean;
     function EnumValues: TArray<Variant>; overload;
     function SchemaType: string;
-
     function &End: IGBSwaggerPathMethod;
-
   public
-    constructor create(Parent: IGBSwaggerPathMethod);
-    class function New(Parent: IGBSwaggerPathMethod): IGBSwaggerParameter;
+    constructor Create(AParent: IGBSwaggerPathMethod);
+    class function New(AParent: IGBSwaggerPathMethod): IGBSwaggerParameter;
     destructor Destroy; override;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerModelParameter }
 
-function TGBSwaggerModelParameter.Description(Value: String): IGBSwaggerParameter;
+function TGBSwaggerModelParameter.Description(AValue: string): IGBSwaggerParameter;
 begin
-  result := Self;
-  FDescription := Value;
+  Result := Self;
+  FDescription := AValue;
 end;
 
-constructor TGBSwaggerModelParameter.create(Parent: IGBSwaggerPathMethod);
+constructor TGBSwaggerModelParameter.Create(AParent: IGBSwaggerPathMethod);
 begin
-  FParent := Parent;
+  FParent := AParent;
 end;
 
-function TGBSwaggerModelParameter.Description: String;
+function TGBSwaggerModelParameter.Description: string;
 begin
-  result := FDescription;
+  Result := FDescription;
 end;
 
 destructor TGBSwaggerModelParameter.Destroy;
 begin
-
   inherited;
 end;
 
 function TGBSwaggerModelParameter.&End: IGBSwaggerPathMethod;
 begin
-  result := FParent;
+  Result := FParent;
 end;
 
 function TGBSwaggerModelParameter.EnumValues: TArray<Variant>;
 begin
-  result := FEnumValues;
+  Result := FEnumValues;
 end;
 
-function TGBSwaggerModelParameter.EnumValues(Value: TArray<Variant>): IGBSwaggerParameter;
+function TGBSwaggerModelParameter.EnumValues(AValue: TArray<Variant>): IGBSwaggerParameter;
 begin
-  result := Self;
-  FEnumValues := Value;
+  Result := Self;
+  FEnumValues := AValue;
 end;
 
-function TGBSwaggerModelParameter.IsArray(Value: Boolean): IGBSwaggerParameter;
+function TGBSwaggerModelParameter.IsArray(AValue: Boolean): IGBSwaggerParameter;
 begin
-  result := Self;
-  FIsArray := Value;
+  Result := Self;
+  FIsArray := AValue;
 end;
 
 function TGBSwaggerModelParameter.IsArray: Boolean;
 begin
-  result := FIsArray;
+  Result := FIsArray;
 end;
 
 function TGBSwaggerModelParameter.IsEnum: Boolean;
@@ -113,84 +109,79 @@ end;
 
 function TGBSwaggerModelParameter.IsObject: Boolean;
 begin
-  result := (Assigned(Self.FSchema) and (not IsArray));
+  Result := (Assigned(Self.FSchema) and (not IsArray));
 end;
 
 function TGBSwaggerModelParameter.Name: string;
 begin
-  result := FName;
+  Result := FName;
 end;
 
-class function TGBSwaggerModelParameter.New(Parent: IGBSwaggerPathMethod): IGBSwaggerParameter;
+class function TGBSwaggerModelParameter.New(AParent: IGBSwaggerPathMethod): IGBSwaggerParameter;
 begin
-  result := Self.create(Parent);
+  Result := Self.Create(AParent);
 end;
 
-function TGBSwaggerModelParameter.Name(Value: string): IGBSwaggerParameter;
+function TGBSwaggerModelParameter.Name(AValue: string): IGBSwaggerParameter;
 begin
-  result := Self;
-  FName  := Value;
+  Result := Self;
+  FName := AValue;
 end;
 
 function TGBSwaggerModelParameter.ParamType: TGBSwaggerParamType;
 begin
-  result := FParamType;
+  Result := FParamType;
 end;
 
-function TGBSwaggerModelParameter.ParamType(Value: TGBSwaggerParamType): IGBSwaggerParameter;
+function TGBSwaggerModelParameter.ParamType(AValue: TGBSwaggerParamType): IGBSwaggerParameter;
 begin
-  result := Self;
-  FParamType := Value;
+  Result := Self;
+  FParamType := AValue;
 end;
 
 function TGBSwaggerModelParameter.Required: Boolean;
 begin
-  result := FRequired;
+  Result := FRequired;
 end;
 
-function TGBSwaggerModelParameter.Required(Value: Boolean): IGBSwaggerParameter;
+function TGBSwaggerModelParameter.Required(AValue: Boolean): IGBSwaggerParameter;
 begin
-  result := Self;
-  FRequired := Value;
+  Result := Self;
+  FRequired := AValue;
 end;
 
-function TGBSwaggerModelParameter.Schema(Value: String): IGBSwaggerParameter;
+function TGBSwaggerModelParameter.Schema(AValue: string): IGBSwaggerParameter;
 begin
-  result     := Self;
-  FSchemaStr := Value;
+  Result := Self;
+  FSchemaStr := AValue;
 end;
 
-function TGBSwaggerModelParameter.Schema(Value: TClass): IGBSwaggerParameter;
+function TGBSwaggerModelParameter.Schema(AValue: TClass): IGBSwaggerParameter;
 begin
-  result  := Self;
-  FSchema := Value;
-
+  Result := Self;
+  FSchema := AValue;
   if not Name.IsEmpty then
-    FParent
-      .&End
-      .&End
-      .AddModel(Value);
+    FParent.&End.&End.AddModel(AValue);
 end;
 
 function TGBSwaggerModelParameter.Schema: TClass;
 begin
-  result := nil;
-  if Assigned( FSchema ) then
+  Result := nil;
+  if Assigned(FSchema) then
     Exit(FSchema);
-
 //  FSchema := TRttiInstanceType( TGBSwaggerRTTI.GetInstance.FindType(FSchemaStr)).MetaclassType;
-//  result  := FSchema;
+//  Result  := FSchema;
 end;
 
 function TGBSwaggerModelParameter.SchemaType: string;
 begin
   if (FSchemaStr.IsEmpty) and (Assigned(FSchema)) then
-    Exit ( FParent.&End.&End.SchemaName(FSchema));
+    Exit(FParent.&End.&End.SchemaName(FSchema));
 
   if IsEnum then
     Exit('array');
 
-  result := IfThen( FSchemaStr.IsEmpty, SWAG_STRING, FSchemaStr);
+  Result := IfThen(FSchemaStr.IsEmpty, SWAG_STRING, FSchemaStr);
 end;
 
 end.
