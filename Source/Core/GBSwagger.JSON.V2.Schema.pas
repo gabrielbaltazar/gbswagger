@@ -13,8 +13,8 @@ uses
   System.StrUtils,
   GBSwagger.Model.Attributes;
 
-type TGBSwaggerJSONV2Schema = class(TInterfacedObject, IGBSwaggerModelJSON)
-
+type
+  TGBSwaggerJSONV2Schema = class(TInterfacedObject, IGBSwaggerModelJSON)
   private
     FSchema: IGBSwaggerSchema;
 
@@ -27,91 +27,88 @@ type TGBSwaggerJSONV2Schema = class(TInterfacedObject, IGBSwaggerModelJSON)
     function JSONPropertyPairList(AProperty: TRttiProperty): TJSONPair;
     function JSONPropertyPairEnum(AProperty: TRttiProperty): TJSONPair;
     function JSONPropertyPairObject(AProperty: TRttiProperty): TJSONPair;
-
     function PropertyDateTimeFormat(AProperty: TRttiProperty): string;
   public
+    constructor Create(ASchema: IGBSwaggerSchema);
+    class function New(ASchema: IGBSwaggerSchema): IGBSwaggerModelJSON;
+    destructor Destroy; override;
     function ToJSON: TJSONValue;
-
-    constructor create(Schema: IGBSwaggerSchema);
-    class function New(Schema: IGBSwaggerSchema): IGBSwaggerModelJSON;
-    destructor  Destroy; override;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerJSONV2Schema }
 
-constructor TGBSwaggerJSONV2Schema.create(Schema: IGBSwaggerSchema);
+constructor TGBSwaggerJSONV2Schema.Create(ASchema: IGBSwaggerSchema);
 begin
-  FSchema := Schema;
+  FSchema := ASchema;
 end;
 
 destructor TGBSwaggerJSONV2Schema.Destroy;
 begin
-
   inherited;
 end;
 
 function TGBSwaggerJSONV2Schema.JSONProperties: TJSONObject;
 var
-  rttiProperty: TRttiProperty;
-  pair: TJSONPair;
+  LProperty: TRttiProperty;
+  LPair: TJSONPair;
 begin
-  result := TJSONObject.Create;
-  for rttiProperty in FSchema.ClassType.GetProperties do
+  Result := TJSONObject.Create;
+  for LProperty in FSchema.ClassType.GetProperties do
   begin
-    if not rttiProperty.IsSwaggerIgnore(FSchema.ClassType) then
-      if Result.Get(rttiProperty.SwagName) = nil then
-        Result.AddPair(rttiProperty.SwagName, JSONProperty(rttiProperty))
+    if not LProperty.IsSwaggerIgnore(FSchema.ClassType) then
+      if Result.Get(LProperty.SwagName) = nil then
+        Result.AddPair(LProperty.SwagName, JSONProperty(LProperty))
   end;
 
   // Excluir Swagger Ignore em caso de herança
-  for rttiProperty in FSchema.ClassType.GetProperties do
-    if rttiProperty.IsSwaggerIgnore(FSchema.ClassType) then
+  for LProperty in FSchema.ClassType.GetProperties do
+    if LProperty.IsSwaggerIgnore(FSchema.ClassType) then
     begin
-      pair := Result.RemovePair(rttiProperty.SwagName);
-      pair.Free;
+      LPair := Result.RemovePair(LProperty.SwagName);
+      LPair.Free;
     end;
 end;
 
 function TGBSwaggerJSONV2Schema.JSONProperty(AProperty: TRttiProperty): TJSONObject;
 var
-  attSwagNumber: SwagNumber;
+  LAttSwagNumber: SwagNumber;
 begin
-  result := TJSONObject.Create
-              .AddPair('type', AProperty.SwagType)
-              .AddPair('description', AProperty.SwagDescription)
-              .AddPair('minLength', TJSONNumber.Create(AProperty.SwagMinLength))
-              .AddPair('maxLength', TJSONNumber.Create(AProperty.SwagMaxLength));
+  Result := TJSONObject.Create
+    .AddPair('type', AProperty.SwagType)
+    .AddPair('description', AProperty.SwagDescription)
+    .AddPair('minLength', TJSONNumber.Create(AProperty.SwagMinLength))
+    .AddPair('maxLength', TJSONNumber.Create(AProperty.SwagMaxLength));
 
   if AProperty.IsSwaggerReadOnly then
     Result.AddPair('readOnly', TJSONBool.Create(True));
 
   if (AProperty.IsInteger) or (AProperty.IsFloat) then
   begin
-    attSwagNumber := AProperty.GetSwagNumber;
-    if Assigned(attSwagNumber) then
+    LAttSwagNumber := AProperty.GetSwagNumber;
+    if Assigned(LAttSwagNumber) then
     begin
-      Result.AddPair('minimum', TJSONNumber.Create(attSwagNumber.minimum))
-            .AddPair('maximum', TJSONNumber.Create(attSwagNumber.maximum));
+      Result.AddPair('minimum', TJSONNumber.Create(LAttSwagNumber.Minimum))
+        .AddPair('maximum', TJSONNumber.Create(LAttSwagNumber.Maximum));
     end;
   end;
 
   if AProperty.IsDateTime then
   begin
-    result.AddPair('format', PropertyDateTimeFormat(AProperty));
+    Result.AddPair('format', PropertyDateTimeFormat(AProperty));
     Exit;
   end;
 
   if AProperty.IsDate then
   begin
-    result.AddPair('format', PropertyDateTimeFormat(AProperty));
+    Result.AddPair('format', PropertyDateTimeFormat(AProperty));
     Exit;
   end;
 
   if AProperty.IsTime then
   begin
-    result.AddPair('format', PropertyDateTimeFormat(AProperty));
+    Result.AddPair('format', PropertyDateTimeFormat(AProperty));
     Exit;
   end;
 
@@ -143,108 +140,99 @@ end;
 
 function TGBSwaggerJSONV2Schema.JSONPropertyPairArray(AProperty: TRttiProperty): TJSONPair;
 begin
-  Result := TJSONPair.Create(
-        'items', TJSONObject.Create
-                    .AddPair('type', AProperty.ArrayType)
-    );
+  Result := TJSONPair.Create('items', TJSONObject.Create
+    .AddPair('type', AProperty.ArrayType));
 end;
 
 function TGBSwaggerJSONV2Schema.JSONPropertyPairEnum(AProperty: TRttiProperty): TJSONPair;
 var
-  enumNames: TArray<String>;
-  jsonArray: TJSONArray;
-  i: Integer;
+  LEnumNames: TArray<string>;
+  LJsonArray: TJSONArray;
+  I: Integer;
 begin
-  enumNames := AProperty.GetEnumNames;
-  jsonArray := TJSONArray.Create;
-
-  for i := 0 to Length(enumNames) - 1 do
-    jsonArray.Add(enumNames[i]);
-
-  result := TJSONPair.Create('enum', jsonArray);
+  LEnumNames := AProperty.GetEnumNames;
+  LJsonArray := TJSONArray.Create;
+  for I := 0 to Length(LEnumNames) - 1 do
+    LJsonArray.Add(LEnumNames[I]);
+  Result := TJSONPair.Create('enum', LJsonArray);
 end;
 
 function TGBSwaggerJSONV2Schema.JSONPropertyPairList(AProperty: TRttiProperty): TJSONPair;
 var
-  classType: TClass;
-  className: string;
+  LClassType: TClass;
+  LClassName: string;
 begin
-  classType := AProperty.ListTypeClass;
-  className := FSchema.&End.SchemaName(classType);
-  Result    := TJSONPair.Create(
-        'items', TJSONObject.Create
-                   .AddPair('$ref', '#/definitions/' + className)
-  );
+  LClassType := AProperty.ListTypeClass;
+  LClassName := FSchema.&End.SchemaName(LClassType);
+  Result := TJSONPair.Create('items', TJSONObject.Create
+    .AddPair('$ref', '#/definitions/' + LClassName));
 end;
 
 function TGBSwaggerJSONV2Schema.JSONPropertyPairObject(AProperty: TRttiProperty): TJSONPair;
 var
-  classType: TClass;
-  className: string;
-  jsonArray: TJSONArray;
+  LClassType: TClass;
+  LClassName: string;
+  LJsonArray: TJSONArray;
 begin
-  classType := AProperty.GetClassType;
-  className := FSchema.&End.SchemaName(classType);
+  LClassType := AProperty.GetClassType;
+  LClassName := FSchema.&End.SchemaName(LClassType);
 
-  jsonArray := TJSONArray.Create;
-  jsonArray.AddElement(TJsonObject.Create
-                          .AddPair('$ref', '#/definitions/' + className));
+  LJsonArray := TJSONArray.Create;
+  LJsonArray.AddElement(TJsonObject.Create
+    .AddPair('$ref', '#/definitions/' + LClassName));
 
-  Result := TJSONPair.Create('allOf', jsonArray);
+  Result := TJSONPair.Create('allOf', LJsonArray);
 //  Result := TJSONPair.Create('$ref', '#/definitions/' + className);
 end;
 
 function TGBSwaggerJSONV2Schema.JSONRequired: TJSONArray;
 var
-  i : Integer;
-  requiredFields: TArray<String>;
+  I: Integer;
+  LRequiredFields: TArray<String>;
 begin
-  requiredFields := FSchema.ClassType.SwaggerRequiredFields;
-
-  result := TJSONArray.Create;
-  for i := 0 to Pred(Length(requiredFields)) do
-    result.Add(requiredFields[i]);
+  LRequiredFields := FSchema.ClassType.SwaggerRequiredFields;
+  Result := TJSONArray.Create;
+  for I := 0 to Pred(Length(LRequiredFields)) do
+    Result.Add(LRequiredFields[I]);
 end;
 
 function TGBSwaggerJSONV2Schema.JSONSchema: TJSONObject;
 begin
-  result := TJSONObject.Create
-              .AddPair('type', 'object')
-              .AddPair('description', FSchema.ClassType.SwagDescription(FSchema.&End));
+  Result := TJSONObject.Create
+    .AddPair('type', 'object')
+    .AddPair('description', FSchema.ClassType.SwagDescription(FSchema.&End));
 
   if Length(FSchema.ClassType.SwaggerRequiredFields) > 0 then
-    result.AddPair('required', JSONRequired);
-
-  result.AddPair('properties', JSONProperties);
+    Result.AddPair('required', JSONRequired);
+  Result.AddPair('properties', JSONProperties);
 end;
 
-class function TGBSwaggerJSONV2Schema.New(Schema: IGBSwaggerSchema): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2Schema.New(ASchema: IGBSwaggerSchema): IGBSwaggerModelJSON;
 begin
-  result := Self.create(Schema);
+  Result := Self.Create(ASchema);
 end;
 
 function TGBSwaggerJSONV2Schema.PropertyDateTimeFormat(AProperty: TRttiProperty): string;
 var
-  swDate: SwagDate;
+  LSwagDate: SwagDate;
 begin
-  result := EmptyStr;
+  Result := EmptyStr;
+  LSwagDate := AProperty.GetAttribute<SwagDate>;
+  if Assigned(LSwagDate) then
+    Result := LSwagDate.dateFormat;
 
-  swDate := AProperty.GetAttribute<SwagDate>;
-  if Assigned(swDate) then
-    result := swDate.dateFormat;
+  if Result.IsEmpty then
+    Result := FSchema.&End.Config.DateFormat;
 
-  if result.IsEmpty then
-    result := FSchema.&End.Config.DateFormat;
-
-  if result.IsEmpty then
+  if Result.IsEmpty then
   begin
     if AProperty.IsDate then
-      result := 'date'
+      Result := 'date'
     else
     if AProperty.IsTime then
-      result := 'time'
+      Result := 'time'
     else
-      result := 'date-time';
+      Result := 'date-time';
   end;
 end;
 

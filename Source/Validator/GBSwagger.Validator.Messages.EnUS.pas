@@ -6,18 +6,18 @@ uses
   GBSwagger.Validator.Messages.Interfaces,
   GBSwagger.Validator.Messages.Base;
 
-type TGBSwaggerValidatorMessagesEnUS = class(TGBSwaggerValidatorMessagesBase, IGBSwaggerValidatorMessages)
-
+type
+  TGBSwaggerValidatorMessagesEnUS = class(TGBSwaggerValidatorMessagesBase, IGBSwaggerValidatorMessages)
   public
-    constructor create;
+    constructor Create;
     class function New: IGBSwaggerValidatorMessages;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerValidatorMessagesEnUS }
 
-constructor TGBSwaggerValidatorMessagesEnUS.create;
+constructor TGBSwaggerValidatorMessagesEnUS.Create;
 begin
   FEnumValueMessage := 'The property %s must be in [%s]';
   FRequiredMessage := 'The property %s is required.';
@@ -30,7 +30,7 @@ end;
 
 class function TGBSwaggerValidatorMessagesEnUS.New: IGBSwaggerValidatorMessages;
 begin
-  result := Self.create;
+  Result := Self.Create;
 end;
 
 end.

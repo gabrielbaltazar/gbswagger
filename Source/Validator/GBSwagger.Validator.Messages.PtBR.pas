@@ -6,18 +6,18 @@ uses
   GBSwagger.Validator.Messages.Interfaces,
   GBSwagger.Validator.Messages.Base;
 
-type TGBSwaggerValidatorMessagesPtBR = class(TGBSwaggerValidatorMessagesBase, IGBSwaggerValidatorMessages)
-
+type
+  TGBSwaggerValidatorMessagesPtBR = class(TGBSwaggerValidatorMessagesBase, IGBSwaggerValidatorMessages)
   public
-    constructor create;
+    constructor Create;
     class function New: IGBSwaggerValidatorMessages;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerValidatorMessagesPtBR }
 
-constructor TGBSwaggerValidatorMessagesPtBR.create;
+constructor TGBSwaggerValidatorMessagesPtBR.Create;
 begin
   inherited;
   FEnumValueMessage := 'Os valores aceitos da propriedade %s são [%s]';
@@ -31,7 +31,7 @@ end;
 
 class function TGBSwaggerValidatorMessagesPtBR.New: IGBSwaggerValidatorMessages;
 begin
-  result := Self.create;
+  Result := Self.Create;
 end;
 
 end.

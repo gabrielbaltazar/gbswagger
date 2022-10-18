@@ -9,11 +9,12 @@ uses
 
 type
   IGBSwaggerModelJSON = interface
+    ['{ADE6FCAC-D20E-4C53-A0A2-1E42D6B8C481}']
     function ToJSON: TJSONValue;
   end;
 
 function SwaggerJSON(ASwagger: IGBSwagger): TJSONValue;
-function SwaggerJSONString(ASwagger: IGBSwagger): String;
+function SwaggerJSONString(ASwagger: IGBSwagger): string;
 
 implementation
 
@@ -22,25 +23,24 @@ uses
 
 function SwaggerJSON(ASwagger: IGBSwagger): TJSONValue;
 begin
-  result := TGBSwaggerJSONV2.New(ASwagger)
-              .ToJSON;
+  Result := TGBSwaggerJSONV2.New(ASwagger)
+    .ToJSON;
 end;
 
-function SwaggerJSONString(ASwagger: IGBSwagger): String;
+function SwaggerJSONString(ASwagger: IGBSwagger): string;
 var
-  json: TJSONValue;
+  LJson: TJSONValue;
 begin
-  json := SwaggerJSON(ASwagger);
+  LJson := SwaggerJSON(ASwagger);
   try
     {$IF CompilerVersion > 32.0}
-    Result := json.Format;
+    Result := LJson.Format;
     {$ELSE}
-    Result := TJson.Format(json);
+    Result := TJson.Format(LJson);
     {$ENDIF}
   finally
-    json.Free;
+    LJson.Free;
   end;
 end;
-
 
 end.

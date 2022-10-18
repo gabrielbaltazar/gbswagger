@@ -12,46 +12,41 @@ uses
   System.StrUtils,
   System.JSON;
 
-type TGBSwaggerJSONV2Path = class(TInterfacedObject, IGBSwaggerModelJSON)
-
+type
+  TGBSwaggerJSONV2Path = class(TInterfacedObject, IGBSwaggerModelJSON)
   private
     FSwaggerPath: IGBSwaggerPath;
-
   public
-    constructor create(SwaggerPath: IGBSwaggerPath);
-    class function New(SwaggerPath: IGBSwaggerPath): IGBSwaggerModelJSON;
-
+    constructor Create(ASwaggerPath: IGBSwaggerPath);
+    class function New(ASwaggerPath: IGBSwaggerPath): IGBSwaggerModelJSON;
     function ToJSON: TJSONValue;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerJSONV2Path }
 
-constructor TGBSwaggerJSONV2Path.create(SwaggerPath: IGBSwaggerPath);
+constructor TGBSwaggerJSONV2Path.Create(ASwaggerPath: IGBSwaggerPath);
 begin
-  FSwaggerPath := SwaggerPath;
+  FSwaggerPath := ASwaggerPath;
 end;
 
-class function TGBSwaggerJSONV2Path.New(SwaggerPath: IGBSwaggerPath): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2Path.New(ASwaggerPath: IGBSwaggerPath): IGBSwaggerModelJSON;
 begin
-  result := Self.create(SwaggerPath);
+  Result := Self.Create(ASwaggerPath);
 end;
 
 function TGBSwaggerJSONV2Path.ToJSON: TJSONValue;
 var
-  jsonObject: TJSONObject;
-  i         : Integer;
+  LJsonObject: TJSONObject;
+  I: Integer;
 begin
-  jsonObject := TJSONObject.Create;
-
-  for i := 0 to Pred(Length(FSwaggerPath.Methods)) do
-    jsonObject.AddPair(
-        FSwaggerPath.Methods[i].MethodType.toString,
-        TGBSwaggerJSONV2PathMethod.New(FSwaggerPath.Methods[i]).ToJSON
-    );
-
-  Result := jsonObject;
+  LJsonObject := TJSONObject.Create;
+  for I := 0 to Pred(Length(FSwaggerPath.Methods)) do
+    LJsonObject.AddPair(
+        FSwaggerPath.Methods[I].MethodType.toString,
+        TGBSwaggerJSONV2PathMethod.New(FSwaggerPath.Methods[I]).ToJSON);
+  Result := LJsonObject;
 end;
 
 end.

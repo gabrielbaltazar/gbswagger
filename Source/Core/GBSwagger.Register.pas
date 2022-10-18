@@ -4,11 +4,10 @@ interface
 
 uses
   GBSwagger.Model.Interfaces,
-  GBSwagger.Register.Interfaces,
   System.Generics.Collections;
 
-type TGBSwaggerRegister = class(TInterfacedObject, IGBSwaggerRegister)
-
+type
+  TGBSwaggerRegister = class(TInterfacedObject, IGBSwaggerRegister)
   protected
     [Weak]
     FParent: IGBSwagger;
@@ -16,16 +15,15 @@ type TGBSwaggerRegister = class(TInterfacedObject, IGBSwaggerRegister)
     FSchemaOnError: TClass;
     FListResponses: TList<Integer>;
 
-    function ResponseExists(StatusCode: Integer): Boolean;
-    function Response(StatusCode: Integer): IGBSwaggerRegisterResponse;
-    function SchemaOnError (Value: TClass): IGBSwaggerRegister;
-
+    function ResponseExists(AStatusCode: Integer): Boolean;
+    function Response(AStatusCode: Integer): IGBSwaggerRegisterResponse;
+    function SchemaOnError(AValue: TClass): IGBSwaggerRegister;
     function &End: IGBSwagger;
   public
-    constructor create(Parent: IGBSwagger);
-    class function New(Parent: IGBSwagger): IGBSwaggerRegister;
+    constructor Create(AParent: IGBSwagger);
+    class function New(AParent: IGBSwagger): IGBSwaggerRegister;
     destructor Destroy; override;
-end;
+  end;
 
 implementation
 
@@ -36,50 +34,49 @@ uses
 
 destructor TGBSwaggerRegister.Destroy;
 begin
-  FListResponses.free;
+  FListResponses.Free;
   inherited;
 end;
 
 function TGBSwaggerRegister.&End: IGBSwagger;
 begin
-  result := FParent;
+  Result := FParent;
 end;
 
-constructor TGBSwaggerRegister.create(Parent: IGBSwagger);
+constructor TGBSwaggerRegister.Create(AParent: IGBSwagger);
 begin
-  FParent       := Parent;
-  FResponse     := TGBSwaggerRegisterResponse.New(Self);
-  FListResponses:= TList<Integer>.create;
+  FParent := AParent;
+  FResponse := TGBSwaggerRegisterResponse.New(Self);
+  FListResponses := TList<Integer>.create;
 end;
 
-class function TGBSwaggerRegister.New(Parent: IGBSwagger): IGBSwaggerRegister;
+class function TGBSwaggerRegister.New(AParent: IGBSwagger): IGBSwaggerRegister;
 begin
-  Result := Self.create(Parent);
+  Result := Self.Create(AParent);
 end;
 
-function TGBSwaggerRegister.Response(StatusCode: Integer): IGBSwaggerRegisterResponse;
+function TGBSwaggerRegister.Response(AStatusCode: Integer): IGBSwaggerRegisterResponse;
 begin
-  result := FResponse.Register(StatusCode);
-  if not FListResponses.Contains(StatusCode) then
-    FListResponses.Add(StatusCode);
+  Result := FResponse.Register(AStatusCode);
+  if not FListResponses.Contains(AStatusCode) then
+    FListResponses.Add(AStatusCode);
 end;
 
-function TGBSwaggerRegister.ResponseExists(StatusCode: Integer): Boolean;
+function TGBSwaggerRegister.ResponseExists(AStatusCode: Integer): Boolean;
 begin
-  result := FListResponses.Contains(StatusCode);
+  Result := FListResponses.Contains(AStatusCode);
 end;
 
-function TGBSwaggerRegister.SchemaOnError(Value: TClass): IGBSwaggerRegister;
+function TGBSwaggerRegister.SchemaOnError(AValue: TClass): IGBSwaggerRegister;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := Self;
-  FSchemaOnError := Value;
-
-  for i := 0 to Pred(Self.FListResponses.Count) do
+  Result := Self;
+  FSchemaOnError := AValue;
+  for I := 0 to Pred(Self.FListResponses.Count) do
   begin
-    if FListResponses.Items[i] >= 400 then
-      Self.Response(FListResponses[i]).Schema(FSchemaOnError);
+    if FListResponses.Items[I] >= 400 then
+      Self.Response(FListResponses[I]).Schema(FSchemaOnError);
   end;
 end;
 

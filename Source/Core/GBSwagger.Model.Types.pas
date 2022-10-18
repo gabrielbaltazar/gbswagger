@@ -10,15 +10,17 @@ uses
   Web.HTTPApp;
 
 const
-  SWAG_STRING  = 'string';
+  SWAG_STRING = 'string';
   SWAG_INTEGER = 'integer';
 
 type
   TRouteCallback = {$IFNDEF DSNAP} Horse.THorseCallback {$ELSE} TObject {$ENDIF};
 
-  TGBSwaggerContentType = (gbAppJSON, gbAppXML, gbTextHtml, gbPlainText, gbMultiPartFormData, gbAppOctetStream);
-  TGBSwaggerProtocol    = (gbHttp, gbHttps);
-  TGBSwaggerParamType   = (gbHeader, gbBody, gbQuery, gbPath, gbFormData);
+  TGBSwaggerContentType = (gbAppJSON, gbAppXML, gbTextHtml, gbPlainText,
+    gbMultiPartFormData, gbAppOctetStream);
+
+  TGBSwaggerProtocol = (gbHttp, gbHttps);
+  TGBSwaggerParamType = (gbHeader, gbBody, gbQuery, gbPath, gbFormData);
   TGBSwaggerSecurityType = (gbBasic, gbApiKey, gbOAuth2);
   TGBSwaggerSecurityFlow = (gbImplicit, gbPassword, gbApplication, gbAccessCode);
   TGBSwaggerConfigureDocExpansion = (gbNone, gbList, gbFull);
@@ -89,120 +91,120 @@ type
     gbNetworkConnectTimeoutError);
 
   TGBSwaggerContentTypeHelper = record helper for TGBSwaggerContentType
-    public
-      function toString: string;
+  public
+    function ToString: string;
   end;
 
   TGBSwaggerProtocolHelper = record helper for TGBSwaggerProtocol
-    public
-      function toString: string;
+  public
+    function ToString: string;
   end;
 
   TGBSwaggerParamTypeHelper = record helper for TGBSwaggerParamType
-    public
-      function toString: string;
+  public
+    function ToString: string;
   end;
 
   TMethodTypeHelper = record helper for TMethodType
-    public
-      function toString: string;
+  public
+    function ToString: string;
   end;
 
   TGBSwaggerSecurityTypeHelper = record helper for TGBSwaggerSecurityType
-    public
-      function toString: string;
+  public
+    function ToString: string;
   end;
 
   TGBSwaggerSecurityFlowHelper = record helper for TGBSwaggerSecurityFlow
-    public
-      function toString: string;
+  public
+    function ToString: string;
   end;
 
   TGBSwaggerHTTPStatusHelper = record helper for TGBSwaggerHTTPStatus
   public
-    function httpCode: Integer;
-    function description: string;
+    function HttpCode: Integer;
+    function Description: string;
   end;
 
   TGBSwaggerConfigureDocExpansionHelper = record helper for TGBSwaggerConfigureDocExpansion
   public
-    function toString: String;
+    function ToString: string;
   end;
 
 implementation
 
 { TGBSwaggerProtocolHelper }
 
-function TGBSwaggerProtocolHelper.toString: string;
+function TGBSwaggerProtocolHelper.ToString: string;
 begin
   case Self of
-    gbHttp  : result := 'http';
-    gbHttps : Result := 'https';
+    gbHttp: Result := 'http';
+    gbHttps: Result := 'https';
   end;
 end;
 
 { TGBSwaggerContentTypeHelper }
 
-function TGBSwaggerContentTypeHelper.toString: string;
+function TGBSwaggerContentTypeHelper.ToString: string;
 begin
   case Self of
-    gbAppJSON           : result := 'application/json';
-    gbAppXML            : result := 'application/xml';
-    gbAppOctetStream    : result := 'application/octet-stream';
-    gbTextHtml          : result := 'text/html';
-    gbPlainText         : result := 'text/plain';
-    gbMultiPartFormData : result := 'multipart/form-data';
+    gbAppJSON: Result := 'application/json';
+    gbAppXML: Result := 'application/xml';
+    gbAppOctetStream: Result := 'application/octet-stream';
+    gbTextHtml: Result := 'text/html';
+    gbPlainText: Result := 'text/plain';
+    gbMultiPartFormData: Result := 'multipart/form-data';
   end;
 end;
 
 { TMethodTypeHelper }
 
-function TMethodTypeHelper.toString: string;
+function TMethodTypeHelper.ToString: string;
 begin
   case Self of
-    mtAny    : result := 'any';
-    mtGet    : result := 'get';
-    mtPut    : result := 'put';
-    mtPost   : result := 'post';
-    mtHead   : result := 'head';
-    mtDelete : result := 'delete';
-    mtPatch  : result := 'patch';
+    mtAny: Result := 'any';
+    mtGet: Result := 'get';
+    mtPut: Result := 'put';
+    mtPost: Result := 'post';
+    mtHead: Result := 'head';
+    mtDelete: Result := 'delete';
+    mtPatch: Result := 'patch';
   end;
 end;
 
 { TGBSwaggerParamTypeHelper }
 
-function TGBSwaggerParamTypeHelper.toString: string;
+function TGBSwaggerParamTypeHelper.ToString: string;
 begin
   case Self of
-    gbHeader   : Result := 'header';
-    gbBody     : Result := 'body';
-    gbQuery    : Result := 'query';
-    gbPath     : Result := 'path';
-    gbFormData : Result := 'formData';
+    gbHeader: Result := 'header';
+    gbBody: Result := 'body';
+    gbQuery: Result := 'query';
+    gbPath: Result := 'path';
+    gbFormData: Result := 'formData';
   end;
 end;
 
 { TGBSwaggerSecurityTypeHelper }
 
-function TGBSwaggerSecurityTypeHelper.toString: string;
+function TGBSwaggerSecurityTypeHelper.ToString: string;
 begin
   case Self of
-    gbBasic  : result := 'basic';
-    gbApiKey : result := 'apiKey';
-    gbOAuth2 : result := 'oauth2';
+    gbBasic: Result := 'basic';
+    gbApiKey: Result := 'apiKey';
+    gbOAuth2: Result := 'oauth2';
   end;
 end;
 
 { TGBSwaggerSecurityFlowHelper }
 
-function TGBSwaggerSecurityFlowHelper.toString: string;
+function TGBSwaggerSecurityFlowHelper.ToString: string;
 begin
   case Self of
-    gbImplicit    : result := 'implicit';
-    gbPassword    : result := 'password';
-    gbApplication : result := 'application';
-    gbAccessCode  : result := 'accessCode';
+    gbImplicit: Result := 'implicit';
+    gbPassword: Result := 'password';
+    gbApplication: Result := 'application';
+    gbAccessCode: Result := 'accessCode';
   end;
 end;
 
@@ -211,145 +213,145 @@ end;
 function TGBSwaggerHTTPStatusHelper.description: string;
 begin
   case Self of
-    gbContinue                        : result := 'Continue';
-    gbSwitchingProtocols              : result := 'Switching Protocols';
-    gbProcessing                      : result := 'Processing';
-    gbOK                              : result := 'OK';
-    gbCreated                         : result := 'Created';
-    gbAccepted                        : result := 'Accepted';
-    gbNonAuthoritativeInformation     : result := 'Non-Authoritative Information';
-    gbNoContent                       : result := 'No Content';
-    gbResetContent                    : result := 'Reset Content';
-    gbPartialContent                  : result := 'Partial Content';
-    gbMultiStatus                     : result := 'Multi-Status';
-    gbAlreadyReported                 : result := 'Already Reported';
-    gbIMUsed                          : result := 'IM Used';
-    gbMultipleChoices                 : result := 'Multiple Choices';
-    gbMovedPermanently                : result := 'Moved Permanently';
-    gbFound                           : result := 'Found';
-    gbSeeOther                        : result := 'See Other';
-    gbNotModified                     : result := 'Not Modified';
-    gbUseProxy                        : result := 'Use Proxy';
-    gbTemporaryRedirect               : result := 'Temporary Redirect';
-    gbPermanentRedirect               : result := 'Permanent Redirect';
-    gbBadRequest                      : result := 'Bad Request';
-    gbUnauthorized                    : result := 'Unauthorized';
-    gbPaymentRequired                 : result := 'Payment Required';
-    gbForbidden                       : result := 'Forbidden';
-    gbNotFound                        : result := 'Not Found';
-    gbMethodNotAllowed                : result := 'Method Not Allowed';
-    gbNotAcceptable                   : result := 'Method Not Acceptable';
-    gbProxyAuthenticationRequired     : result := 'Proxy Authentication Required';
-    gbRequestTimeout                  : result := 'Request Timeout';
-    gbConflict                        : result := 'Conflict';
-    gbGone                            : result := 'Gone';
-    gbLengthRequired                  : result := 'Length Required';
-    gbPreconditionFailed              : result := 'Precondition Failed';
-    gbPayloadTooLarge                 : result := 'Payload Too Large';
-    gbRequestURITooLong               : result := 'URI Too Long';
-    gbUnsupportedMediaType            : result := 'Unsupported Media Type';
-    gbRequestedRangeNotSatisfiable    : result := 'Range Not Satisfiable';
-    gbExpectationFailed               : result := 'Expectation Failed';
-    gbImateapot                       : result := 'I''m a Teapot ';
-    gbMisdirectedRequest              : result := 'Misdirected Request';
-    gbUnprocessableEntity             : result := 'Unprocessable Entity';
-    gbLocked                          : result := 'Locked';
-    gbFailedDependency                : result := 'Failed Dependency';
-    gbUpgradeRequired                 : result := 'Upgrade Required';
-    gbPreconditionRequired            : result := 'Precondition Required';
-    gbTooManyRequests                 : result := 'Too Many Requests';
-    gbRequestHeaderFieldsTooLarge     : result := 'Request Header Fields Too Large';
-    gbConnectionClosedWithoutResponse : result := 'Connection Closed Without Response';
-    gbUnavailableForLegalReasons      : result := 'Unavailable For Legal Reasons';
-    gbClientClosedRequest             : result := 'Client Closed Request';
-    gbInternalServerError             : result := 'Internal Server Error';
-    gbNotImplemented                  : result := 'Not Implemented';
-    gbBadGateway                      : result := 'Bad Gateway';
-    gbServiceUnavailable              : result := 'Service Unavailable';
-    gbGatewayTimeout                  : result := 'Gateway Timeout';
-    gbHTTPVersionNotSupported         : result := 'HTTP Version Not Supported';
-    gbVariantAlsoNegotiates           : result := 'Variant Also Negotiates';
-    gbInsufficientStorage             : result := 'Insufficient Storage';
-    gbLoopDetected                    : result := 'Loop Detected';
-    gbNotExtended                     : result := 'Not Extended';
-    gbNetworkAuthenticationRequired   : result := 'Network Authentication Required';
-    gbNetworkConnectTimeoutError      : result := 'Network Connect Timeout Error';
+    gbContinue: Result := 'Continue';
+    gbSwitchingProtocols: Result := 'Switching Protocols';
+    gbProcessing: Result := 'Processing';
+    gbOK: Result := 'OK';
+    gbCreated: Result := 'Created';
+    gbAccepted: Result := 'Accepted';
+    gbNonAuthoritativeInformation: Result := 'Non-Authoritative Information';
+    gbNoContent: Result := 'No Content';
+    gbResetContent: Result := 'Reset Content';
+    gbPartialContent: Result := 'Partial Content';
+    gbMultiStatus: Result := 'Multi-Status';
+    gbAlreadyReported: Result := 'Already Reported';
+    gbIMUsed: Result := 'IM Used';
+    gbMultipleChoices: Result := 'Multiple Choices';
+    gbMovedPermanently: Result := 'Moved Permanently';
+    gbFound: Result := 'Found';
+    gbSeeOther: Result := 'See Other';
+    gbNotModified: Result := 'Not Modified';
+    gbUseProxy: Result := 'Use Proxy';
+    gbTemporaryRedirect: Result := 'Temporary Redirect';
+    gbPermanentRedirect: Result := 'Permanent Redirect';
+    gbBadRequest: Result := 'Bad Request';
+    gbUnauthorized: Result := 'Unauthorized';
+    gbPaymentRequired: Result := 'Payment Required';
+    gbForbidden: Result := 'Forbidden';
+    gbNotFound: Result := 'Not Found';
+    gbMethodNotAllowed: Result := 'Method Not Allowed';
+    gbNotAcceptable: Result := 'Method Not Acceptable';
+    gbProxyAuthenticationRequired: Result := 'Proxy Authentication Required';
+    gbRequestTimeout: Result := 'Request Timeout';
+    gbConflict: Result := 'Conflict';
+    gbGone: Result := 'Gone';
+    gbLengthRequired: Result := 'Length Required';
+    gbPreconditionFailed: Result := 'Precondition Failed';
+    gbPayloadTooLarge: Result := 'Payload Too Large';
+    gbRequestURITooLong: Result := 'URI Too Long';
+    gbUnsupportedMediaType: Result := 'Unsupported Media Type';
+    gbRequestedRangeNotSatisfiable: Result := 'Range Not Satisfiable';
+    gbExpectationFailed: Result := 'Expectation Failed';
+    gbImateapot: Result := 'I''m a Teapot ';
+    gbMisdirectedRequest: Result := 'Misdirected Request';
+    gbUnprocessableEntity: Result := 'Unprocessable Entity';
+    gbLocked: Result := 'Locked';
+    gbFailedDependency: Result := 'Failed Dependency';
+    gbUpgradeRequired: Result := 'Upgrade Required';
+    gbPreconditionRequired: Result := 'Precondition Required';
+    gbTooManyRequests: Result := 'Too Many Requests';
+    gbRequestHeaderFieldsTooLarge: Result := 'Request Header Fields Too Large';
+    gbConnectionClosedWithoutResponse: Result := 'Connection Closed Without Response';
+    gbUnavailableForLegalReasons: Result := 'Unavailable For Legal Reasons';
+    gbClientClosedRequest: Result := 'Client Closed Request';
+    gbInternalServerError: Result := 'Internal Server Error';
+    gbNotImplemented: Result := 'Not Implemented';
+    gbBadGateway: Result := 'Bad Gateway';
+    gbServiceUnavailable: Result := 'Service Unavailable';
+    gbGatewayTimeout: Result := 'Gateway Timeout';
+    gbHTTPVersionNotSupported: Result := 'HTTP Version Not Supported';
+    gbVariantAlsoNegotiates: Result := 'Variant Also Negotiates';
+    gbInsufficientStorage: Result := 'Insufficient Storage';
+    gbLoopDetected: Result := 'Loop Detected';
+    gbNotExtended: Result := 'Not Extended';
+    gbNetworkAuthenticationRequired: Result := 'Network Authentication Required';
+    gbNetworkConnectTimeoutError: Result := 'Network Connect Timeout Error';
   end;
 end;
 
 function TGBSwaggerHTTPStatusHelper.httpCode: Integer;
 begin
-  result := 200;
+  Result := 200;
   case Self of
-    gbContinue                        : result := 100;
-    gbSwitchingProtocols              : result := 101;
-    gbProcessing                      : result := 102;
-  	gbOK                              : result := 200;
-    gbCreated                         : result := 201;
-    gbAccepted                        : result := 202;
-    gbNonAuthoritativeInformation     : result := 203;
-    gbNoContent                       : result := 204;
-    gbResetContent                    : result := 205;
-    gbPartialContent                  : result := 206;
-    gbMultiStatus                     : result := 207;
-    gbAlreadyReported                 : result := 208;
-    gbIMUsed                          : result := 226;
-    gbMultipleChoices                 : result := 300;
-    gbMovedPermanently                : result := 301;
-    gbFound                           : result := 302;
-    gbSeeOther                        : result := 303;
-    gbNotModified                     : result := 304;
-    gbUseProxy                        : result := 305;
-    gbTemporaryRedirect               : result := 307;
-    gbPermanentRedirect               : result := 308;
-    gbBadRequest                      : result := 400;
-    gbUnauthorized                    : result := 401;
-    gbPaymentRequired                 : result := 402;
-    gbForbidden                       : result := 403;
-    gbNotFound                        : result := 404;
-    gbMethodNotAllowed                : result := 405;
-    gbNotAcceptable                   : result := 406;
-    gbProxyAuthenticationRequired     : result := 407;
-    gbRequestTimeout                  : result := 408;
-    gbConflict                        : result := 409;
-    gbGone                            : result := 410;
-    gbLengthRequired                  : result := 411;
-    gbPreconditionFailed              : result := 412;
-    gbPayloadTooLarge                 : result := 413;
-    gbRequestURITooLong               : result := 414;
-    gbUnsupportedMediaType            : result := 415;
-    gbRequestedRangeNotSatisfiable    : result := 416;
-    gbExpectationFailed               : result := 417;
-    gbImateapot                       : result := 418;
-    gbMisdirectedRequest              : result := 421;
-    gbUnprocessableEntity             : result := 422;
-    gbLocked                          : result := 423;
-    gbFailedDependency                : result := 424;
-    gbUpgradeRequired                 : result := 426;
-    gbPreconditionRequired            : result := 428;
-    gbTooManyRequests                 : result := 429;
-    gbRequestHeaderFieldsTooLarge     : result := 431;
-    gbConnectionClosedWithoutResponse : result := 444;
-    gbUnavailableForLegalReasons      : result := 451;
-    gbClientClosedRequest             : result := 499;
-    gbInternalServerError             : result := 500;
-    gbNotImplemented                  : result := 501;
-    gbBadGateway                      : result := 502;
-    gbServiceUnavailable              : result := 503;
-    gbGatewayTimeout                  : result := 504;
-    gbHTTPVersionNotSupported         : result := 505;
-    gbVariantAlsoNegotiates           : result := 506;
-    gbInsufficientStorage             : result := 507;
-    gbLoopDetected                    : result := 508;
-    gbNotExtended                     : result := 510;
-    gbNetworkAuthenticationRequired   : result := 511;
-    gbNetworkConnectTimeoutError      : result := 599;
+    gbContinue: Result := 100;
+    gbSwitchingProtocols: Result := 101;
+    gbProcessing: Result := 102;
+  	gbOK: Result := 200;
+    gbCreated: Result := 201;
+    gbAccepted: Result := 202;
+    gbNonAuthoritativeInformation: Result := 203;
+    gbNoContent: Result := 204;
+    gbResetContent: Result := 205;
+    gbPartialContent: Result := 206;
+    gbMultiStatus: Result := 207;
+    gbAlreadyReported: Result := 208;
+    gbIMUsed: Result := 226;
+    gbMultipleChoices: Result := 300;
+    gbMovedPermanently: Result := 301;
+    gbFound: Result := 302;
+    gbSeeOther: Result := 303;
+    gbNotModified: Result := 304;
+    gbUseProxy: Result := 305;
+    gbTemporaryRedirect: Result := 307;
+    gbPermanentRedirect: Result := 308;
+    gbBadRequest: Result := 400;
+    gbUnauthorized: Result := 401;
+    gbPaymentRequired: Result := 402;
+    gbForbidden: Result := 403;
+    gbNotFound: Result := 404;
+    gbMethodNotAllowed: Result := 405;
+    gbNotAcceptable: Result := 406;
+    gbProxyAuthenticationRequired: Result := 407;
+    gbRequestTimeout: Result := 408;
+    gbConflict: Result := 409;
+    gbGone: Result := 410;
+    gbLengthRequired: Result := 411;
+    gbPreconditionFailed: Result := 412;
+    gbPayloadTooLarge: Result := 413;
+    gbRequestURITooLong: Result := 414;
+    gbUnsupportedMediaType: Result := 415;
+    gbRequestedRangeNotSatisfiable: Result := 416;
+    gbExpectationFailed: Result := 417;
+    gbImateapot: Result := 418;
+    gbMisdirectedRequest: Result := 421;
+    gbUnprocessableEntity: Result := 422;
+    gbLocked: Result := 423;
+    gbFailedDependency: Result := 424;
+    gbUpgradeRequired: Result := 426;
+    gbPreconditionRequired: Result := 428;
+    gbTooManyRequests: Result := 429;
+    gbRequestHeaderFieldsTooLarge: Result := 431;
+    gbConnectionClosedWithoutResponse: Result := 444;
+    gbUnavailableForLegalReasons: Result := 451;
+    gbClientClosedRequest: Result := 499;
+    gbInternalServerError: Result := 500;
+    gbNotImplemented: Result := 501;
+    gbBadGateway: Result := 502;
+    gbServiceUnavailable: Result := 503;
+    gbGatewayTimeout: Result := 504;
+    gbHTTPVersionNotSupported: Result := 505;
+    gbVariantAlsoNegotiates: Result := 506;
+    gbInsufficientStorage: Result := 507;
+    gbLoopDetected: Result := 508;
+    gbNotExtended: Result := 510;
+    gbNetworkAuthenticationRequired: Result := 511;
+    gbNetworkConnectTimeoutError: Result := 599;
   end;
 end;
 
 { TGBSwaggerConfigureDocExpansionHelper }
 
-function TGBSwaggerConfigureDocExpansionHelper.toString: String;
+function TGBSwaggerConfigureDocExpansionHelper.ToString: String;
 begin
   case Self of
     gbNone: Result := 'none';

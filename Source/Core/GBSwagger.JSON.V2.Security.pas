@@ -9,8 +9,8 @@ uses
   System.SysUtils,
   System.JSON;
 
-type TGBSwaggerJSONV2Security = class(TInterfacedObject, IGBSwaggerModelJSON)
-
+type
+  TGBSwaggerJSONV2Security = class(TInterfacedObject, IGBSwaggerModelJSON)
   private
     FSwaggerSecurity: IGBSwaggerSecurity;
 
@@ -18,56 +18,54 @@ type TGBSwaggerJSONV2Security = class(TInterfacedObject, IGBSwaggerModelJSON)
     function JSONAPIKey: TJSONObject;
     function JSONOAuth: TJSONObject;
   public
-    constructor create(SwaggerSecurity: IGBSwaggerSecurity);
-    class function New(SwaggerSecurity: IGBSwaggerSecurity): IGBSwaggerModelJSON;
-
+    constructor Create(ASwaggerSecurity: IGBSwaggerSecurity);
+    class function New(ASwaggerSecurity: IGBSwaggerSecurity): IGBSwaggerModelJSON;
     function ToJSON: TJSONValue;
-
-end;
+  end;
 
 implementation
 
 { TGBSwaggerJSONV2Security }
 
-constructor TGBSwaggerJSONV2Security.create(SwaggerSecurity: IGBSwaggerSecurity);
+constructor TGBSwaggerJSONV2Security.Create(ASwaggerSecurity: IGBSwaggerSecurity);
 begin
-  FSwaggerSecurity := SwaggerSecurity;
+  FSwaggerSecurity := ASwaggerSecurity;
 end;
 
 function TGBSwaggerJSONV2Security.JSONAPIKey: TJSONObject;
 begin
-  result := TJSONObject.Create
-                .AddPair('type', FSwaggerSecurity.&Type.toString)
-                .AddPair('name', FSwaggerSecurity.Name)
-                .AddPair('in', FSwaggerSecurity.&In.toString);
+  Result := TJSONObject.Create
+    .AddPair('type', FSwaggerSecurity.&Type.toString)
+    .AddPair('name', FSwaggerSecurity.Name)
+    .AddPair('in', FSwaggerSecurity.&In.toString);
 end;
 
 function TGBSwaggerJSONV2Security.JSONBasicAuth: TJSONObject;
 begin
-  result := TJSONObject.Create
-              .AddPair('type', FSwaggerSecurity.&Type.toString)
-              .AddPair('name', FSwaggerSecurity.Name);
+  Result := TJSONObject.Create
+    .AddPair('type', FSwaggerSecurity.&Type.toString)
+    .AddPair('name', FSwaggerSecurity.Name);
 end;
 
 function TGBSwaggerJSONV2Security.JSONOAuth: TJSONObject;
 begin
   Result := TJSONObject.Create
-              .AddPair('type', FSwaggerSecurity.&Type.toString)
-              .AddPair('authorizationUrl', FSwaggerSecurity.AuthorizationURL)
-              .AddPair('flow', FSwaggerSecurity.Flow.toString);
+    .AddPair('type', FSwaggerSecurity.&Type.toString)
+    .AddPair('authorizationUrl', FSwaggerSecurity.AuthorizationURL)
+    .AddPair('flow', FSwaggerSecurity.Flow.toString);
 end;
 
-class function TGBSwaggerJSONV2Security.New(SwaggerSecurity: IGBSwaggerSecurity): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2Security.New(ASwaggerSecurity: IGBSwaggerSecurity): IGBSwaggerModelJSON;
 begin
-  result := Self.create(SwaggerSecurity);
+  Result := Self.Create(ASwaggerSecurity);
 end;
 
 function TGBSwaggerJSONV2Security.ToJSON: TJSONValue;
 begin
   case FSwaggerSecurity.&Type of
-    gbBasic : result := JSONBasicAuth;
-    gbApiKey: result := JSONAPIKey;
-    gbOAuth2: result := JSONOAuth;
+    gbBasic : Result := JSONBasicAuth;
+    gbApiKey: Result := JSONAPIKey;
+    gbOAuth2: Result := JSONOAuth;
   else
     raise Exception.CreateFmt('Invalid Security Type', []);
   end;

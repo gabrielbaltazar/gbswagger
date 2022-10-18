@@ -6,51 +6,50 @@ uses
   System.JSON,
   GBSwagger.Model.Types;
 
-type TGBSwaggerModelJSONUtils = class
-
+type
+  TGBSwaggerModelJSONUtils = class
   public
-    class function JSONContentTypes(Value: TArray<String>): TJSONArray;
-    class function JSONProtocols(Value: TArray<TGBSwaggerProtocol>)   : TJSONArray;
+    class function JSONContentTypes(AValue: TArray<string>): TJSONArray;
+    class function JSONProtocols(AValue: TArray<TGBSwaggerProtocol>): TJSONArray;
 
-    class function JSONSchemaArray (SchemaName: string): TJSONObject;
-    class function JSONSchemaObject(SchemaName: string): TJSONObject;
-
-end;
+    class function JSONSchemaArray(ASchemaName: string): TJSONObject;
+    class function JSONSchemaObject(ASchemaName: string): TJSONObject;
+  end;
 
 implementation
 
 { TGBSwaggerModelJSONUtils }
 
-class function TGBSwaggerModelJSONUtils.JSONContentTypes(Value: TArray<String>): TJSONArray;
+class function TGBSwaggerModelJSONUtils.JSONContentTypes(AValue: TArray<string>): TJSONArray;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := TJSONArray.Create;
-  for i := 0 to Pred(Length(Value)) do
-    Result.Add(Value[i]);
+  Result := TJSONArray.Create;
+  for I := 0 to Pred(Length(AValue)) do
+    Result.Add(AValue[I]);
 end;
 
-class function TGBSwaggerModelJSONUtils.JSONProtocols(Value: TArray<TGBSwaggerProtocol>): TJSONArray;
+class function TGBSwaggerModelJSONUtils.JSONProtocols(AValue: TArray<TGBSwaggerProtocol>): TJSONArray;
 var
-  i: Integer;
+  I: Integer;
 begin
-  result := TJSONArray.Create;
-  for i := 0 to Pred(Length(Value)) do
-    Result.Add(Value[i].toString);
+  Result := TJSONArray.Create;
+  for I := 0 to Pred(Length(AValue)) do
+    Result.Add(AValue[I].toString);
 end;
 
-class function TGBSwaggerModelJSONUtils.JSONSchemaArray(SchemaName: string): TJSONObject;
+class function TGBSwaggerModelJSONUtils.JSONSchemaArray(ASchemaName: string): TJSONObject;
 begin
-  result := TJSONObject.Create
-              .AddPair('type', 'array')
-              .AddPair('items',
-                  TJSONObject.Create.AddPair('$ref', '#/definitions/' + SchemaName));
+  Result := TJSONObject.Create
+    .AddPair('type', 'array')
+    .AddPair('items', TJSONObject.Create
+      .AddPair('$ref', '#/definitions/' + ASchemaName));
 end;
 
-class function TGBSwaggerModelJSONUtils.JSONSchemaObject(SchemaName: string): TJSONObject;
+class function TGBSwaggerModelJSONUtils.JSONSchemaObject(ASchemaName: string): TJSONObject;
 begin
-  result := TJSONObject.Create
-                .AddPair('$ref', '#/definitions/' + SchemaName);
+  Result := TJSONObject.Create
+    .AddPair('$ref', '#/definitions/' + ASchemaName);
 end;
 
 end.

@@ -11,208 +11,201 @@ uses
   System.SysUtils,
   Web.HTTPApp;
 
-type TGBSwaggerModelPathMethod = class(TInterfacedObject, IGBSwaggerPathMethod)
-
+type
+  TGBSwaggerModelPathMethod = class(TInterfacedObject, IGBSwaggerPathMethod)
   private
     [Weak]
     FParent: IGBSwaggerPath;
     FMethodType: TMethodType;
-    FSummary: String;
+    FSummary: string;
     FDescription: string;
     FOperationId: string;
     FIsPublic: Boolean;
-    FConsumes: TList<String>;
-    FProduces: TList<String>;
+    FConsumes: TList<string>;
+    FProduces: TList<string>;
     FParameters: TList<IGBSwaggerParameter>;
     FResponses: TList<IGBSwaggerPathResponse>;
-    FSecurities: TList<String>;
-    FTags: TList<String>;
-
+    FSecurities: TList<string>;
+    FTags: TList<string>;
   protected
-    function MethodType(Value: TMethodType): IGBSwaggerPathMethod; overload;
-    function Summary(Value: String): IGBSwaggerPathMethod; overload;
-    function Description(Value: string): IGBSwaggerPathMethod; overload;
-    function OperationId(Value: string): IGBSwaggerPathMethod; overload;
-    function AddConsumes(Value: String): IGBSwaggerPathMethod; overload;
-    function AddConsumes(Value: TGBSwaggerContentType): IGBSwaggerPathMethod; overload;
-    function AddProduces(Value: String): IGBSwaggerPathMethod; overload;
-    function AddProduces(Value: TGBSwaggerContentType): IGBSwaggerPathMethod; overload;
-    function AddTag(Value: String): IGBSwaggerPathMethod; overload;
+    function MethodType(AValue: TMethodType): IGBSwaggerPathMethod; overload;
+    function Summary(AValue: string): IGBSwaggerPathMethod; overload;
+    function Description(AValue: string): IGBSwaggerPathMethod; overload;
+    function OperationId(AValue: string): IGBSwaggerPathMethod; overload;
+    function AddConsumes(AValue: string): IGBSwaggerPathMethod; overload;
+    function AddConsumes(AValue: TGBSwaggerContentType): IGBSwaggerPathMethod; overload;
+    function AddProduces(AValue: string): IGBSwaggerPathMethod; overload;
+    function AddProduces(AValue: TGBSwaggerContentType): IGBSwaggerPathMethod; overload;
+    function AddTag(AValue: string): IGBSwaggerPathMethod; overload;
 
     function MethodType: TMethodType; overload;
-    function Summary: String; overload;
+    function Summary: string; overload;
     function Description: string; overload;
     function OperationId: string; overload;
 
-    function AddParameter(Name: String = ''; Description: String = '') : IGBSwaggerParameter;
-    function AddParamHeader(Name: string = ''; Description: String = ''): IGBSwaggerParameter;
-    function AddParamBody(Name: string = ''; Description: String = ''): IGBSwaggerParameter;
-    function AddParamQuery(Name: string = ''; Description: String = ''): IGBSwaggerParameter;
-    function AddParamPath(Name: string = ''; Description: String = ''): IGBSwaggerParameter;
-    function AddParamFormData(Name: string = ''; Description: String = ''): IGBSwaggerParameter;
+    function AddParameter(AName: string = ''; ADescription: string = '') : IGBSwaggerParameter;
+    function AddParamHeader(AName: string = ''; ADescription: string = ''): IGBSwaggerParameter;
+    function AddParamBody(AName: string = ''; ADescription: string = ''): IGBSwaggerParameter;
+    function AddParamQuery(AName: string = ''; ADescription: string = ''): IGBSwaggerParameter;
+    function AddParamPath(AName: string = ''; ADescription: string = ''): IGBSwaggerParameter;
+    function AddParamFormData(AName: string = ''; ADescription: string = ''): IGBSwaggerParameter;
 
-    function AddResponse(HttpCode: Integer; Description: String = '')  : IGBSwaggerPathResponse; overload;
-    function AddSecurity(Description: String): IGBSwaggerPathMethod;
+    function AddResponse(AHttpCode: Integer; ADescription: string = ''): IGBSwaggerPathResponse; overload;
+    function AddSecurity(ADescription: string): IGBSwaggerPathMethod;
 
-    function IsPublic(Value: Boolean): IGBSwaggerPathMethod; overload;
+    function IsPublic(AValue: Boolean): IGBSwaggerPathMethod; overload;
     function IsPublic: Boolean; overload;
 
-    function Consumes: TArray<String>;
-    function Produces: TArray<String>;
+    function Consumes: TArray<string>;
+    function Produces: TArray<string>;
     function Parameters: TArray<IGBSwaggerParameter>;
     function Responses: TArray<IGBSwaggerPathResponse>;
-    function Tags: TArray<String>;
-    function Securities: TArray<String>;
-
+    function Tags: TArray<string>;
+    function Securities: TArray<string>;
     function &End: IGBSwaggerPath;
-
   public
-    constructor create(Parent: IGBSwaggerPath);
-    class function New(Parent: IGBSwaggerPath): IGBSwaggerPathMethod;
+    constructor Create(AParent: IGBSwaggerPath);
+    class function New(AParent: IGBSwaggerPath): IGBSwaggerPathMethod;
     destructor Destroy; override;
-
-end;
+  end;
 
 implementation
 
 { TGBSwaggerModelPathMethod }
 
-function TGBSwaggerModelPathMethod.AddConsumes(Value: TGBSwaggerContentType): IGBSwaggerPathMethod;
+function TGBSwaggerModelPathMethod.AddConsumes(AValue: TGBSwaggerContentType): IGBSwaggerPathMethod;
 begin
-  result := Self;
-  AddConsumes(Value.toString);
+  Result := Self;
+  AddConsumes(AValue.toString);
 end;
 
-function TGBSwaggerModelPathMethod.AddParameter(Name, Description: String) : IGBSwaggerParameter;
+function TGBSwaggerModelPathMethod.AddParameter(AName, ADescription: string) : IGBSwaggerParameter;
 begin
-  result := TGBSwaggerModelParameter.New(Self)
-              .Name(Name)
-              .Description(Description);
-
-  FParameters.Add(result);
+  Result := TGBSwaggerModelParameter.New(Self)
+    .Name(AName)
+    .Description(ADescription);
+  FParameters.Add(Result);
 end;
 
-function TGBSwaggerModelPathMethod.AddConsumes(Value: String): IGBSwaggerPathMethod;
+function TGBSwaggerModelPathMethod.AddConsumes(AValue: string): IGBSwaggerPathMethod;
 begin
-  result := Self;
-  if not FConsumes.Contains(Value) then
-    FConsumes.Add(Value);
+  Result := Self;
+  if not FConsumes.Contains(AValue) then
+    FConsumes.Add(AValue);
 end;
 
-function TGBSwaggerModelPathMethod.AddParamBody(Name, Description: String): IGBSwaggerParameter;
+function TGBSwaggerModelPathMethod.AddParamBody(AName, ADescription: string): IGBSwaggerParameter;
 begin
-  result := Self.AddParameter(Name, Description)
-                .ParamType(gbBody)
-                .Required(True);
+  Result := Self.AddParameter(AName, ADescription)
+    .ParamType(gbBody)
+    .Required(True);
 end;
 
-function TGBSwaggerModelPathMethod.AddParamFormData(Name, Description: String): IGBSwaggerParameter;
+function TGBSwaggerModelPathMethod.AddParamFormData(AName, ADescription: string): IGBSwaggerParameter;
 begin
-  result := Self.AddParameter(Name, Description)
-                .ParamType(gbFormData);
+  Result := Self.AddParameter(AName, ADescription)
+    .ParamType(gbFormData);
 end;
 
-function TGBSwaggerModelPathMethod.AddParamHeader(Name, Description: String): IGBSwaggerParameter;
+function TGBSwaggerModelPathMethod.AddParamHeader(AName, ADescription: string): IGBSwaggerParameter;
 begin
-  result := Self.AddParameter(Name, Description)
-                .ParamType(gbHeader)
-                .Schema(SWAG_STRING)
-                .Required(True);
+  Result := Self.AddParameter(AName, ADescription)
+    .ParamType(gbHeader)
+    .Schema(SWAG_STRING)
+    .Required(True);
 end;
 
-function TGBSwaggerModelPathMethod.AddParamPath(Name, Description: String): IGBSwaggerParameter;
+function TGBSwaggerModelPathMethod.AddParamPath(AName, ADescription: string): IGBSwaggerParameter;
 begin
-  result := Self.AddParameter(Name, Description)
-                .ParamType(gbPath)
-                .Schema(SWAG_STRING)
-                .Required(True);
+  Result := Self.AddParameter(AName, ADescription)
+    .ParamType(gbPath)
+    .Schema(SWAG_STRING)
+    .Required(True);
 end;
 
-function TGBSwaggerModelPathMethod.AddParamQuery(Name, Description: String): IGBSwaggerParameter;
+function TGBSwaggerModelPathMethod.AddParamQuery(AName, ADescription: string): IGBSwaggerParameter;
 begin
-  result := Self.AddParameter(Name, Description)
-                .ParamType(gbQuery)
-                .Schema(SWAG_STRING);
+  Result := Self.AddParameter(AName, ADescription)
+    .ParamType(gbQuery)
+    .Schema(SWAG_STRING);
 end;
 
-function TGBSwaggerModelPathMethod.AddProduces(Value: String): IGBSwaggerPathMethod;
+function TGBSwaggerModelPathMethod.AddProduces(AValue: string): IGBSwaggerPathMethod;
 begin
-  result := Self;
-  if not FProduces.Contains(Value) then
-    FProduces.Add(Value);
+  Result := Self;
+  if not FProduces.Contains(AValue) then
+    FProduces.Add(AValue);
 end;
 
-function TGBSwaggerModelPathMethod.AddProduces(Value: TGBSwaggerContentType): IGBSwaggerPathMethod;
+function TGBSwaggerModelPathMethod.AddProduces(AValue: TGBSwaggerContentType): IGBSwaggerPathMethod;
 begin
-  result := Self;
-  AddProduces(Value.toString);
+  Result := Self;
+  AddProduces(AValue.ToString);
 end;
 
-function TGBSwaggerModelPathMethod.AddResponse(HttpCode: Integer; Description: String = '')  : IGBSwaggerPathResponse;
+function TGBSwaggerModelPathMethod.AddResponse(AHttpCode: Integer; ADescription: string = '')  : IGBSwaggerPathResponse;
 var
-  Swagger : IGBSwagger;
-  response: IGBSwaggerPathResponse;
+  LSwagger: IGBSwagger;
+  LResponse: IGBSwaggerPathResponse;
 begin
-  Swagger := FParent.&End;
-  result  := TGBSwaggerModelPathResponse.New(Self).HttpCode(HttpCode);
+  LSwagger := FParent.&End;
+  Result := TGBSwaggerModelPathResponse.New(Self).HttpCode(AHttpCode);
 
-  if Swagger.Register.ResponseExists(HttpCode) then
+  if LSwagger.Register.ResponseExists(AHttpCode) then
   begin
-    response := Swagger.Register.response(HttpCode).PathResponse;
-    Result.Description(response.Description)
-          .Schema(response.&Type)
-          .Schema(response.Schema)
-          .IsArray(response.IsArray);
+    LResponse := LSwagger.Register.response(AHttpCode).PathResponse;
+    Result.Description(LResponse.Description)
+      .Schema(LResponse.&Type)
+      .Schema(LResponse.Schema)
+      .IsArray(LResponse.IsArray);
   end;
 
-  if not Description.IsEmpty then
-    Result.Description(Description);
-
-  FResponses.Add(result);
+  if not ADescription.IsEmpty then
+    Result.Description(ADescription);
+  FResponses.Add(Result);
 end;
 
-function TGBSwaggerModelPathMethod.AddSecurity(Description: String): IGBSwaggerPathMethod;
+function TGBSwaggerModelPathMethod.AddSecurity(ADescription: string): IGBSwaggerPathMethod;
 begin
-  result := Self;
-  if not FSecurities.Contains(Description) then
-    FSecurities.Add(Description);
+  Result := Self;
+  if not FSecurities.Contains(ADescription) then
+    FSecurities.Add(ADescription);
 end;
 
-function TGBSwaggerModelPathMethod.AddTag(Value: String): IGBSwaggerPathMethod;
+function TGBSwaggerModelPathMethod.AddTag(AValue: string): IGBSwaggerPathMethod;
 begin
-  result := Self;
-  FTags.Add(Value);
+  Result := Self;
+  FTags.Add(AValue);
 end;
 
-function TGBSwaggerModelPathMethod.Consumes: TArray<String>;
+function TGBSwaggerModelPathMethod.Consumes: TArray<string>;
 begin
-  result := FConsumes.ToArray;
-
-  if Length(result) = 0 then
-    result := FParent.&End.Consumes;
+  Result := FConsumes.ToArray;
+  if Length(Result) = 0 then
+    Result := FParent.&End.Consumes;
 end;
 
-constructor TGBSwaggerModelPathMethod.create(Parent: IGBSwaggerPath);
+constructor TGBSwaggerModelPathMethod.Create(AParent: IGBSwaggerPath);
 begin
-  FIsPublic   := False;
-  FParent     := Parent;
-  FConsumes   := TList<String>.Create;
-  FProduces   := TList<String>.Create;
-  FParameters := TList<IGBSwaggerParameter>.create;
-  FResponses  := TList<IGBSwaggerPathResponse>.create;
-  FTags       := TList<String>.create;
-  FSecurities := TList<String>.create;
+  FParent := AParent;
+  FIsPublic := False;
+  FConsumes := TList<string>.Create;
+  FProduces := TList<string>.Create;
+  FParameters := TList<IGBSwaggerParameter>.Create;
+  FResponses := TList<IGBSwaggerPathResponse>.Create;
+  FTags := TList<string>.Create;
+  FSecurities := TList<string>.Create;
 end;
 
-function TGBSwaggerModelPathMethod.Description(Value: string): IGBSwaggerPathMethod;
+function TGBSwaggerModelPathMethod.Description(AValue: string): IGBSwaggerPathMethod;
 begin
-  result := Self;
-  FDescription := Value;
+  Result := Self;
+  FDescription := AValue;
 end;
 
 function TGBSwaggerModelPathMethod.Description: string;
 begin
-  result := FDescription;
+  Result := FDescription;
 end;
 
 destructor TGBSwaggerModelPathMethod.Destroy;
@@ -228,93 +221,90 @@ end;
 
 function TGBSwaggerModelPathMethod.&End: IGBSwaggerPath;
 begin
-  result := FParent;
+  Result := FParent;
 end;
 
 function TGBSwaggerModelPathMethod.IsPublic: Boolean;
 begin
-  result := FIsPublic;
+  Result := FIsPublic;
 end;
 
-function TGBSwaggerModelPathMethod.IsPublic(Value: Boolean): IGBSwaggerPathMethod;
+function TGBSwaggerModelPathMethod.IsPublic(AValue: Boolean): IGBSwaggerPathMethod;
 begin
-  result := Self;
-  FIsPublic := Value;
+  Result := Self;
+  FIsPublic := AValue;
 end;
 
 function TGBSwaggerModelPathMethod.MethodType: TMethodType;
 begin
-  result := FMethodType;
+  Result := FMethodType;
 end;
 
-function TGBSwaggerModelPathMethod.MethodType(Value: TMethodType): IGBSwaggerPathMethod;
+function TGBSwaggerModelPathMethod.MethodType(AValue: TMethodType): IGBSwaggerPathMethod;
 begin
-  result := Self;
-  FMethodType := Value;
+  Result := Self;
+  FMethodType := AValue;
 end;
 
-class function TGBSwaggerModelPathMethod.New(Parent: IGBSwaggerPath): IGBSwaggerPathMethod;
+class function TGBSwaggerModelPathMethod.New(AParent: IGBSwaggerPath): IGBSwaggerPathMethod;
 begin
-  Result := Self.create(Parent);
+  Result := Self.Create(AParent);
 end;
 
 function TGBSwaggerModelPathMethod.OperationId: string;
 begin
-  result := FOperationId;
+  Result := FOperationId;
 end;
 
-function TGBSwaggerModelPathMethod.OperationId(Value: string): IGBSwaggerPathMethod;
+function TGBSwaggerModelPathMethod.OperationId(AValue: string): IGBSwaggerPathMethod;
 begin
   Result := Self;
-  FOperationId := Value;
+  FOperationId := AValue;
 end;
 
 function TGBSwaggerModelPathMethod.Parameters: TArray<IGBSwaggerParameter>;
 begin
-  result := FParameters.ToArray;
+  Result := FParameters.ToArray;
 end;
 
-function TGBSwaggerModelPathMethod.Produces: TArray<String>;
+function TGBSwaggerModelPathMethod.Produces: TArray<string>;
 begin
-  result := FProduces.ToArray;
-
-  if Length(result) = 0 then
-    result := FParent.&End.Produces;
+  Result := FProduces.ToArray;
+  if Length(Result) = 0 then
+    Result := FParent.&End.Produces;
 end;
 
 function TGBSwaggerModelPathMethod.Responses: TArray<IGBSwaggerPathResponse>;
 begin
-  result := FResponses.ToArray;
+  Result := FResponses.ToArray;
 end;
 
-function TGBSwaggerModelPathMethod.Securities: TArray<String>;
+function TGBSwaggerModelPathMethod.Securities: TArray<string>;
 begin
-  result := FSecurities.ToArray;
+  Result := FSecurities.ToArray;
 end;
 
-function TGBSwaggerModelPathMethod.Summary: String;
+function TGBSwaggerModelPathMethod.Summary: string;
 begin
   Result := FSummary;
 end;
 
-function TGBSwaggerModelPathMethod.Tags: TArray<String>;
+function TGBSwaggerModelPathMethod.Tags: TArray<string>;
 var
-  tagsPath: TArray<String>;
-  i       : Integer;
+  LTagsPath: TArray<string>;
+  I: Integer;
 begin
-  tagsPath := FParent.Tags;
-
-  for i := 0 to Pred(Length(tagsPath)) do
-    if not FTags.Contains(tagsPath[i]) then
-      FTags.Add(tagsPath[i]);
-
-  result := FTags.ToArray;
+  LTagsPath := FParent.Tags;
+  for I := 0 to Pred(Length(LTagsPath)) do
+    if not FTags.Contains(LTagsPath[I]) then
+      FTags.Add(LTagsPath[I]);
+  Result := FTags.ToArray;
 end;
 
-function TGBSwaggerModelPathMethod.Summary(Value: String): IGBSwaggerPathMethod;
+function TGBSwaggerModelPathMethod.Summary(AValue: string): IGBSwaggerPathMethod;
 begin
   Result := Self;
-  FSummary := Value;
+  FSummary := AValue;
 end;
 
 end.

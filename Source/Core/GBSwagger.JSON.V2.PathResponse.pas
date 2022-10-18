@@ -13,75 +13,73 @@ uses
   System.StrUtils,
   System.JSON;
 
-type TGBSwaggerJSONV2PathResponse = class(TInterfacedObject, IGBSwaggerModelJSON)
-
+type
+  TGBSwaggerJSONV2PathResponse = class(TInterfacedObject, IGBSwaggerModelJSON)
   private
     FSwaggerPathResponse: IGBSwaggerPathResponse;
 
     function JSONSchema: TJSONObject;
     function JSONHeaders: TJSONObject;
   public
-    constructor create(SwaggerPathResponse: IGBSwaggerPathResponse);
-    class function New(SwaggerPathResponse: IGBSwaggerPathResponse): IGBSwaggerModelJSON;
-
+    constructor Create(ASwaggerPathResponse: IGBSwaggerPathResponse);
+    class function New(ASwaggerPathResponse: IGBSwaggerPathResponse): IGBSwaggerModelJSON;
     function ToJSON: TJSONValue;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerJSONV2PathResponse }
 
-constructor TGBSwaggerJSONV2PathResponse.create(SwaggerPathResponse: IGBSwaggerPathResponse);
+constructor TGBSwaggerJSONV2PathResponse.Create(ASwaggerPathResponse: IGBSwaggerPathResponse);
 begin
-  FSwaggerPathResponse := SwaggerPathResponse;
+  FSwaggerPathResponse := ASwaggerPathResponse;
 end;
 
 function TGBSwaggerJSONV2PathResponse.JSONHeaders: TJSONObject;
 var
-  header  : IGBSwaggerHeader;
-  headers : TArray<IGBSwaggerHeader>;
+  LHeader: IGBSwaggerHeader;
+  LHeaders: TArray<IGBSwaggerHeader>;
 begin
-  result  := TJSONObject.Create;
-  headers := FSwaggerPathResponse.Headers;
-
-  if Length(headers) > 0 then
+  Result := TJSONObject.Create;
+  LHeaders := FSwaggerPathResponse.Headers;
+  if Length(LHeaders) > 0 then
   begin
-    for header in headers do
-      result.AddPair(header.Name, TGBSwaggerJSONV2Header.New(header).ToJSON);
+    for LHeader in LHeaders do
+      Result.AddPair(LHeader.Name, TGBSwaggerJSONV2Header.New(LHeader).ToJSON);
   end;
 end;
 
 function TGBSwaggerJSONV2PathResponse.JSONSchema: TJSONObject;
 var
-  schemaName: String;
+  LSchemaName: string;
 begin
-  schemaName := FSwaggerPathResponse.&End.&End.&End.SchemaName(FSwaggerPathResponse.Schema);
+  LSchemaName := FSwaggerPathResponse.&End.&End.&End.SchemaName(FSwaggerPathResponse.Schema);
   if FSwaggerPathResponse.IsArray then
-    result := TGBSwaggerModelJSONUtils.JSONSchemaArray(schemaName)
+    Result := TGBSwaggerModelJSONUtils.JSONSchemaArray(LSchemaName)
   else
-    result := TGBSwaggerModelJSONUtils.JSONSchemaObject(schemaName);
+    Result := TGBSwaggerModelJSONUtils.JSONSchemaObject(LSchemaName);
 end;
 
-class function TGBSwaggerJSONV2PathResponse.New(SwaggerPathResponse: IGBSwaggerPathResponse): IGBSwaggerModelJSON;
+class function TGBSwaggerJSONV2PathResponse.New(ASwaggerPathResponse: IGBSwaggerPathResponse): IGBSwaggerModelJSON;
 begin
-  result := Self.create(SwaggerPathResponse);
+  Result := Self.Create(ASwaggerPathResponse);
 end;
 
 function TGBSwaggerJSONV2PathResponse.ToJSON: TJSONValue;
 var
-  json: TJSONObject;
+  LJson: TJSONObject;
 begin
-  json := TJSONObject.Create
-              .AddPair('description', FSwaggerPathResponse.Description);
+  LJson := TJSONObject.Create
+    .AddPair('description', FSwaggerPathResponse.Description);
 
   if Assigned(FSwaggerPathResponse.Schema) then
-    json.AddPair('schema', JSONSchema)
+    LJson.AddPair('schema', JSONSchema)
   else
-    json.AddPair('schema', TJSONObject.Create
+    LJson.AddPair('schema', TJSONObject.Create
                             .AddPair('type', FSwaggerPathResponse.&Type));
 
-  json.AddPair('headers', JSONHeaders);
-  result := json;
+  LJson.AddPair('headers', JSONHeaders);
+  Result := LJson;
 end;
 
 end.

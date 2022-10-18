@@ -8,13 +8,13 @@ uses
   System.StrUtils,
   GBSwagger.Resources;
 
-function SwaggerDocument(AJsonPath: String): string; overload;
+function SwaggerDocument(AJsonPath: string): string; overload;
 
 implementation
 
-function SwaggerDocument(AJsonPath: String): string;
+function SwaggerDocument(AJsonPath: string): string;
 begin
-  result := GETSwagger_HTML(AJsonPath);
+  Result := GETSwagger_HTML(AJsonPath);
 end;
 
 end.

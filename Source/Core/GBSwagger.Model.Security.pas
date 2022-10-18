@@ -7,104 +7,86 @@ uses
   GBSwagger.Model.Interfaces,
   GBSwagger.Model.Types;
 
-type TGBSwaggerModelSecurity = class(TInterfacedObject, IGBSwaggerSecurity)
-
+type
+  TGBSwaggerModelSecurity = class(TInterfacedObject, IGBSwaggerSecurity)
   private
     [Weak]
     FParent: IGBSwagger;
     FType: TGBSwaggerSecurityType;
     FCallbacks: TList<TRouteCallback>;
-    FDescription: String;
-    FName: String;
+    FDescription: string;
+    FName: string;
     FIn: TGBSwaggerParamType;
     FFlow: TGBSwaggerSecurityFlow;
-    FAuthorizationURL: String;
-    FTokenURL: String;
-
+    FAuthorizationURL: string;
+    FTokenURL: string;
   protected
-    function &Type(Value: TGBSwaggerSecurityType): IGBSwaggerSecurity; overload;
-    function Description(Value: String): IGBSwaggerSecurity; overload;
-    function Name(Value: String): IGBSwaggerSecurity; overload;
-    function Flow(Value: TGBSwaggerSecurityFlow): IGBSwaggerSecurity; overload;
-    function &In(Value: TGBSwaggerParamType): IGBSwaggerSecurity; overload;
-    function AuthorizationURL(Value: String): IGBSwaggerSecurity; overload;
-    function TokenURL(Value: String): IGBSwaggerSecurity; overload;
-    function Callback(Value: TRouteCallback): IGBSwaggerSecurity; overload; deprecated 'Use AddCallback';
+    function &Type(AValue: TGBSwaggerSecurityType): IGBSwaggerSecurity; overload;
+    function Description(AValue: string): IGBSwaggerSecurity; overload;
+    function Name(AValue: string): IGBSwaggerSecurity; overload;
+    function Flow(AValue: TGBSwaggerSecurityFlow): IGBSwaggerSecurity; overload;
+    function &In(AValue: TGBSwaggerParamType): IGBSwaggerSecurity; overload;
+    function AuthorizationURL(AValue: string): IGBSwaggerSecurity; overload;
+    function TokenURL(AValue: string): IGBSwaggerSecurity; overload;
 
-    function AddCallback(Value: TRouteCallback): IGBSwaggerSecurity;
+    function AddCallback(AValue: TRouteCallback): IGBSwaggerSecurity;
     function Callbacks: TArray<TRouteCallback>;
 
     function &Type: TGBSwaggerSecurityType; overload;
-    function Description: String; overload;
-    function Name: String; overload;
+    function Description: string; overload;
+    function Name: string; overload;
     function &In: TGBSwaggerParamType; overload;
     function Flow: TGBSwaggerSecurityFlow; overload;
-    function AuthorizationURL: String; overload;
-    function TokenURL: String; overload;
-    function Callback: TRouteCallback; overload; deprecated 'Use Callbacks';
-
+    function AuthorizationURL: string; overload;
+    function TokenURL: string; overload;
     function &End: IGBSwagger;
-
   public
-    constructor create(Parent: IGBSwagger);
-    class function New(Parent: IGBSwagger): IGBSwaggerSecurity;
+    constructor Create(AParent: IGBSwagger);
+    class function New(AParent: IGBSwagger): IGBSwaggerSecurity;
     destructor Destroy; override;
-end;
+  end;
 
 implementation
 
 { TGBSwaggerModelSecurity }
 
-function TGBSwaggerModelSecurity.AddCallback(Value: TRouteCallback): IGBSwaggerSecurity;
+function TGBSwaggerModelSecurity.AddCallback(AValue: TRouteCallback): IGBSwaggerSecurity;
 begin
-  result := Self;
-  FCallbacks.Add(VAlue);
+  Result := Self;
+  FCallbacks.Add(AValue);
 end;
 
-function TGBSwaggerModelSecurity.AuthorizationURL: String;
+function TGBSwaggerModelSecurity.AuthorizationURL: string;
 begin
-  result := FAuthorizationURL;
-end;
-
-function TGBSwaggerModelSecurity.Callback: TRouteCallback;
-begin
-  Result := nil;
-  if FCallbacks.Count > 0 then
-    result := FCallbacks[0];
+  Result := FAuthorizationURL;
 end;
 
 function TGBSwaggerModelSecurity.Callbacks: TArray<TRouteCallback>;
 begin
-  result := FCallbacks.ToArray;
+  Result := FCallbacks.ToArray;
 end;
 
-function TGBSwaggerModelSecurity.Callback(Value: TRouteCallback): IGBSwaggerSecurity;
+function TGBSwaggerModelSecurity.AuthorizationURL(AValue: string): IGBSwaggerSecurity;
 begin
-  result := Self;
-  AddCallback(Value);
+  Result := Self;
+  FAuthorizationURL := AValue;
 end;
 
-function TGBSwaggerModelSecurity.AuthorizationURL(Value: String): IGBSwaggerSecurity;
+constructor TGBSwaggerModelSecurity.Create(AParent: IGBSwagger);
 begin
-  result := Self;
-  FAuthorizationURL := Value;
-end;
-
-constructor TGBSwaggerModelSecurity.create(Parent: IGBSwagger);
-begin
-  FParent := Parent;
+  FParent := AParent;
   FCallbacks := TList<TRouteCallback>.Create;
 end;
 
-function TGBSwaggerModelSecurity.Description: String;
+function TGBSwaggerModelSecurity.Description: string;
 begin
-  result := FDescription;
+  Result := FDescription;
 end;
 
-function TGBSwaggerModelSecurity.Description(Value: String): IGBSwaggerSecurity;
+function TGBSwaggerModelSecurity.Description(AValue: string): IGBSwaggerSecurity;
 begin
-  result := Self;
-  FDescription := Value;
+  Result := Self;
+  FDescription := AValue;
 end;
 
 destructor TGBSwaggerModelSecurity.Destroy;
@@ -115,67 +97,67 @@ end;
 
 function TGBSwaggerModelSecurity.&End: IGBSwagger;
 begin
-  result := FParent;
+  Result := FParent;
 end;
 
-function TGBSwaggerModelSecurity.Flow(Value: TGBSwaggerSecurityFlow): IGBSwaggerSecurity;
+function TGBSwaggerModelSecurity.Flow(AValue: TGBSwaggerSecurityFlow): IGBSwaggerSecurity;
 begin
-  result := Self;
-  FFlow  := Value;
+  Result := Self;
+  FFlow := AValue;
 end;
 
 function TGBSwaggerModelSecurity.Flow: TGBSwaggerSecurityFlow;
 begin
-  result := FFlow;
+  Result := FFlow;
 end;
 
-function TGBSwaggerModelSecurity.&In(Value: TGBSwaggerParamType): IGBSwaggerSecurity;
+function TGBSwaggerModelSecurity.&In(AValue: TGBSwaggerParamType): IGBSwaggerSecurity;
 begin
-  result := Self;
-  FIn := Value;
+  Result := Self;
+  FIn := AValue;
 end;
 
 function TGBSwaggerModelSecurity.&In: TGBSwaggerParamType;
 begin
-  result := FIn;
+  Result := FIn;
 end;
 
-function TGBSwaggerModelSecurity.Name(Value: String): IGBSwaggerSecurity;
-begin
-  result := Self;
-  FName  := Value;
-end;
-
-function TGBSwaggerModelSecurity.Name: String;
-begin
-  result := FName;
-end;
-
-class function TGBSwaggerModelSecurity.New(Parent: IGBSwagger): IGBSwaggerSecurity;
-begin
-  result := Self.create(Parent);
-end;
-
-function TGBSwaggerModelSecurity.TokenURL(Value: String): IGBSwaggerSecurity;
+function TGBSwaggerModelSecurity.Name(AValue: string): IGBSwaggerSecurity;
 begin
   Result := Self;
-  FTokenURL := Value;
+  FName := AValue;
 end;
 
-function TGBSwaggerModelSecurity.TokenURL: String;
+function TGBSwaggerModelSecurity.Name: string;
 begin
-  result := FTokenURL;
+  Result := FName;
 end;
 
-function TGBSwaggerModelSecurity.&Type(Value: TGBSwaggerSecurityType): IGBSwaggerSecurity;
+class function TGBSwaggerModelSecurity.New(AParent: IGBSwagger): IGBSwaggerSecurity;
 begin
-  FType := Value;
-  result := Self;
+  Result := Self.Create(AParent);
+end;
+
+function TGBSwaggerModelSecurity.TokenURL(AValue: string): IGBSwaggerSecurity;
+begin
+  Result := Self;
+  FTokenURL := AValue;
+end;
+
+function TGBSwaggerModelSecurity.TokenURL: string;
+begin
+  Result := FTokenURL;
+end;
+
+function TGBSwaggerModelSecurity.&Type(AValue: TGBSwaggerSecurityType): IGBSwaggerSecurity;
+begin
+  FType := AValue;
+  Result := Self;
 end;
 
 function TGBSwaggerModelSecurity.&Type: TGBSwaggerSecurityType;
 begin
-  result := FType;
+  Result := FType;
 end;
 
 end.

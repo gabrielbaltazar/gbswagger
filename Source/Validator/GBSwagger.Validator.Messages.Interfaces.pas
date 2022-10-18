@@ -14,7 +14,7 @@ type
     function MinimumLengthMessage: string;
     function MinimumValueMessage: string;
     function PositiveMessage: string;
-    function RequiredMessage: String;
+    function RequiredMessage: string;
   end;
 
 function GetValidatorMessage: IGBSwaggerValidatorMessages;
@@ -30,12 +30,10 @@ function GetValidatorMessage: IGBSwaggerValidatorMessages;
 var
   LLanguage: String;
 begin
-  result := TGBSwaggerValidatorMessagesEnUS.New;
-
+  Result := TGBSwaggerValidatorMessagesEnUS.New;
   LLanguage := Swagger.Config.Language.ToLower.Replace('-', EmptyStr);
   if LLanguage = 'ptbr' then
-    result := TGBSwaggerValidatorMessagesPtBR.New;
-
+    Result := TGBSwaggerValidatorMessagesPtBR.New;
 end;
 
 end.

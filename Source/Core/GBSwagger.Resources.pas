@@ -30,20 +30,20 @@ implementation
 
 function GETSwagger_HTML(AJSONPath: string): string;
 var
-  dm: TGBSwaggerResources;
+  LDM: TGBSwaggerResources;
 begin
-  dm := TGBSwaggerResources.Create(nil);
+  LDM := TGBSwaggerResources.Create(nil);
   try
-    Result := dm.swagger_html.HTMLDoc.Text;
-    result := Result.Replace('::SWAGGER_TITLE', Swagger.Info.Title)
-                    .Replace('::SWAGGER_JSON', AJSONPath)
-                    .Replace('<%=jsonurl%>', AJSONPath)
-                    .Replace('::SWAGGER_CSS', Swagger.Config.ResourcePath)
-                    .Replace('::SWAGGER_UI_BUNDLE_JS', Swagger.Config.ResourcePath)
-                    .Replace('::SWAGGER_UI_STANDALONE', Swagger.Config.ResourcePath)
-                    .Replace('::SWAGGER_DOC_EXPANSION', Swagger.Config.DocExpansion.toString);
+    Result := LDM.swagger_html.HTMLDoc.Text;
+    Result := Result.Replace('::SWAGGER_TITLE', Swagger.Info.Title)
+      .Replace('::SWAGGER_JSON', AJSONPath)
+      .Replace('<%=jsonurl%>', AJSONPath)
+      .Replace('::SWAGGER_CSS', Swagger.Config.ResourcePath)
+      .Replace('::SWAGGER_UI_BUNDLE_JS', Swagger.Config.ResourcePath)
+      .Replace('::SWAGGER_UI_STANDALONE', Swagger.Config.ResourcePath)
+      .Replace('::SWAGGER_DOC_EXPANSION', Swagger.Config.DocExpansion.ToString);
   finally
-    dm.Free;
+    LDM.Free;
   end;
 end;
 

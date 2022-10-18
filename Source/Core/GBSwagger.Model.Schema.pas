@@ -5,28 +5,25 @@ interface
 uses
   GBSwagger.Model.Interfaces;
 
-type TGBSwaggerModelSchema = class(TInterfacedObject, IGBSwaggerSchema)
-
+type
+  TGBSwaggerModelSchema = class(TInterfacedObject, IGBSwaggerSchema)
   private
     [Weak]
     FParent: IGBSwagger;
-    FName: String;
+    FName: string;
     FClassType: TClass;
-
   protected
-    function Name(Value: String): IGBSwaggerSchema; overload;
-    function ClassType(Value: TClass): IGBSwaggerSchema; overload;
+    function Name(AValue: string): IGBSwaggerSchema; overload;
+    function ClassType(AValue: TClass): IGBSwaggerSchema; overload;
 
-    function Name: String; overload;
+    function Name: string; overload;
     function ClassType: TClass; overload;
-
     function &End: IGBSwagger;
-
   public
-    constructor create(Parent: IGBSwagger);
-    class function New(Parent: IGBSwagger): IGBSwaggerSchema;
+    constructor Create(AParent: IGBSwagger);
+    class function New(AParent: IGBSwagger): IGBSwaggerSchema;
     destructor Destroy; override;
-end;
+  end;
 
 implementation
 
@@ -34,45 +31,44 @@ implementation
 
 function TGBSwaggerModelSchema.ClassType: TClass;
 begin
-  result := FClassType;
+  Result := FClassType;
 end;
 
-function TGBSwaggerModelSchema.ClassType(Value: TClass): IGBSwaggerSchema;
+function TGBSwaggerModelSchema.ClassType(AValue: TClass): IGBSwaggerSchema;
 begin
-  result := Self;
-  FClassType := Value;
+  Result := Self;
+  FClassType := AValue;
 end;
 
-constructor TGBSwaggerModelSchema.create(Parent: IGBSwagger);
+constructor TGBSwaggerModelSchema.Create(AParent: IGBSwagger);
 begin
-  FParent := Parent;
+  FParent := AParent;
 end;
 
 destructor TGBSwaggerModelSchema.Destroy;
 begin
-
   inherited;
 end;
 
-function TGBSwaggerModelSchema.Name(Value: String): IGBSwaggerSchema;
+function TGBSwaggerModelSchema.Name(AValue: string): IGBSwaggerSchema;
 begin
-  result := Self;
-  FName  := Value;
+  Result := Self;
+  FName := AValue;
 end;
 
-function TGBSwaggerModelSchema.Name: String;
+function TGBSwaggerModelSchema.Name: string;
 begin
-  result := FName;
+  Result := FName;
 end;
 
-class function TGBSwaggerModelSchema.New(Parent: IGBSwagger): IGBSwaggerSchema;
+class function TGBSwaggerModelSchema.New(AParent: IGBSwagger): IGBSwaggerSchema;
 begin
-  result := Self.create(Parent);
+  Result := Self.Create(AParent);
 end;
 
 function TGBSwaggerModelSchema.&End: IGBSwagger;
 begin
-  result := FParent;
+  Result := FParent;
 end;
 
 end.
