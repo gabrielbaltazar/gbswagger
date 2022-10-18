@@ -15,6 +15,7 @@ type TGBSwaggerModelConfig = class(TInterfacedObject, IGBSwaggerConfig)
     FDateFormat: string;
     FLanguage: String;
     FResourcePath: String;
+    FDocExpansion: TGBSwaggerConfigureDocExpansion;
     FClassPrefixes: TArray<String>;
 
   protected
@@ -32,6 +33,9 @@ type TGBSwaggerModelConfig = class(TInterfacedObject, IGBSwaggerConfig)
 
     function ResourcePath(AValue: string): IGBSwaggerConfig; overload;
     function ResourcePath: string; overload;
+
+    function DocExpansion(AValue: TGBSwaggerConfigureDocExpansion): IGBSwaggerConfig; overload;
+    function DocExpansion: TGBSwaggerConfigureDocExpansion; overload;
 
     function &End: IGBSwagger;
   public
@@ -90,12 +94,24 @@ begin
   FParent := Parent;
   FHTMLTitle := 'GBSwagger';
   FLanguage := 'en-US';
+  FDocExpansion := TGBSwaggerConfigureDocExpansion.gbList;
   FResourcePath := 'https://petstore.swagger.io';
 end;
 
 function TGBSwaggerModelConfig.DateFormat: string;
 begin
   result := FDateFormat;
+end;
+
+function TGBSwaggerModelConfig.DocExpansion: TGBSwaggerConfigureDocExpansion;
+begin
+  Result := FDocExpansion;
+end;
+
+function TGBSwaggerModelConfig.DocExpansion(AValue: TGBSwaggerConfigureDocExpansion): IGBSwaggerConfig;
+begin
+  Result := Self;
+  FDocExpansion := AValue;
 end;
 
 function TGBSwaggerModelConfig.DateFormat(Value: String): IGBSwaggerConfig;

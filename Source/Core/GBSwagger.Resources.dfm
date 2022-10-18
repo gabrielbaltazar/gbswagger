@@ -1,5 +1,4 @@
 object GBSwaggerResources: TGBSwaggerResources
-  OldCreateOrder = False
   Height = 246
   Width = 388
   object swagger_html: TPageProducer
@@ -52,6 +51,7 @@ object GBSwaggerResources: TGBSwaggerResources
       '      const ui = SwaggerUIBundle({'
       '        url: "::SWAGGER_JSON", '
       '        dom_id: '#39'#swagger-ui'#39','
+      '        docExpansion: '#39'::SWAGGER_DOC_EXPANSION'#39','
       '        deepLinking: true,'
       '        presets: ['
       '          SwaggerUIBundle.presets.apis,'

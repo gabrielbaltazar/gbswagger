@@ -16,6 +16,7 @@ type
   TGBSwaggerParamType = GBSwagger.Model.Types.TGBSwaggerParamType;
   TGBSwaggerSecurityType = GBSwagger.Model.Types.TGBSwaggerSecurityType;
   TGBSwaggerSecurityFlow = GBSwagger.Model.Types.TGBSwaggerSecurityFlow;
+  TGBSwaggerConfigureDocExpansion = GBSwagger.Model.Types.TGBSwaggerConfigureDocExpansion;
 
   IGBSwagger = interface;
   IGBSwaggerInfo = interface;
@@ -47,6 +48,9 @@ type
 
     function ResourcePath(AValue: string): IGBSwaggerConfig; overload;
     function ResourcePath: string; overload;
+
+    function DocExpansion(AValue: TGBSwaggerConfigureDocExpansion): IGBSwaggerConfig; overload;
+    function DocExpansion: TGBSwaggerConfigureDocExpansion; overload;
 
     function &End: IGBSwagger;
   end;
