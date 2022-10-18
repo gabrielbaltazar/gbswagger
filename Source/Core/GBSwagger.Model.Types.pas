@@ -21,6 +21,7 @@ type
   TGBSwaggerParamType   = (gbHeader, gbBody, gbQuery, gbPath, gbFormData);
   TGBSwaggerSecurityType = (gbBasic, gbApiKey, gbOAuth2);
   TGBSwaggerSecurityFlow = (gbImplicit, gbPassword, gbApplication, gbAccessCode);
+  TGBSwaggerConfigureDocExpansion = (gbNone, gbList, gbFull);
 
   TGBSwaggerHTTPStatus = (
     gbContinue,
@@ -121,6 +122,11 @@ type
   public
     function httpCode: Integer;
     function description: string;
+  end;
+
+  TGBSwaggerConfigureDocExpansionHelper = record helper for TGBSwaggerConfigureDocExpansion
+  public
+    function toString: String;
   end;
 
 implementation
@@ -338,6 +344,17 @@ begin
     gbNotExtended                     : result := 510;
     gbNetworkAuthenticationRequired   : result := 511;
     gbNetworkConnectTimeoutError      : result := 599;
+  end;
+end;
+
+{ TGBSwaggerConfigureDocExpansionHelper }
+
+function TGBSwaggerConfigureDocExpansionHelper.toString: String;
+begin
+  case Self of
+    gbNone: Result := 'none';
+    gbList: Result := 'list';
+    gbFull: Result := 'full';
   end;
 end;
 

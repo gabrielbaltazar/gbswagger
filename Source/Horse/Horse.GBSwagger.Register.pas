@@ -112,9 +112,9 @@ var
 begin
   endpoint := AMethod.GetSwagEndPoint;
   path := GetPathMethod(AClass, endpoint);
-  if not endpoint.isPublic then
+  {if not endpoint.isPublic then
     for i := 0 to Pred(Length(Swagger.Securities)) do
-      THorse.AddCallbacks(Swagger.Securities[i].Callbacks);
+      THorse.AddCallbacks(Swagger.Securities[i].Callbacks);}
 
   if endpoint is SwagGET then
     THorse.Get(path, HorseCallback(AClass, AMethod))
