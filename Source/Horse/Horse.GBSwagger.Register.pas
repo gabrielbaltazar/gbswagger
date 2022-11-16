@@ -100,13 +100,13 @@ class procedure THorseGBSwaggerRegister.RegisterMethod(AClass: TClass; AMethod: 
 var
   LEndpoint: SwagEndPoint;
   LPath: string;
-//  I: Integer;
+  I: Integer;
 begin
   LEndpoint := AMethod.GetSwagEndPoint;
   LPath := GetPathMethod(AClass, LEndpoint);
-  {if not endpoint.isPublic then
+  if not LEndpoint.isPublic then
     for i := 0 to Pred(Length(Swagger.Securities)) do
-      THorse.AddCallbacks(Swagger.Securities[i].Callbacks);}
+      THorse.AddCallbacks(Swagger.Securities[i].Callbacks);
 
   if LEndpoint is SwagGET then
     THorse.Get(LPath, HorseCallback(AClass, AMethod))
