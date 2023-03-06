@@ -14,11 +14,11 @@ uses
 
 procedure SwaggerConfig;
 var
-  jwtConfig: THorseJWTConfig;
+  jwtConfig: IHorseJWTConfig;
 begin
   jwtConfig := THorseJWTConfig.New;
-  jwtConfig.IsRequireAudience := False;
-  jwtConfig.ExpectedAudience := ['Teste Client'];
+  jwtConfig.IsRequireAudience(False)
+    .ExpectedAudience(['Teste Client']);
 
   Swagger
     .Register
@@ -35,7 +35,7 @@ begin
     .&End
     .BasePath('v1')
     .AddBearerSecurity
-      .Callback(HorseJWT('MY-PASSWORD', jwtConfig));
+      .AddCallback(HorseJWT('MY-PASSWORD', jwtConfig));
 end;
 
 begin

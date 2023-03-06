@@ -4,16 +4,16 @@
 	"installedModules": {
 		"github.com/hashload/horse": {
 			"name": "horse",
-			"version": "3.0.0",
-			"hash": "195e14c9c225f81a8c69d18b5118c149",
+			"version": "3.0.2",
+			"hash": "929cb417c573af469c997a7e1fda5dbb",
 			"artifacts": {},
 			"failed": false,
 			"changed": false
 		},
 		"github.com/hashload/horse-basic-auth": {
 			"name": "horse-basic-auth",
-			"version": "1.2.0",
-			"hash": "dbd8a867f7eb043d057531c6a2e26c0d",
+			"version": "1.2.2",
+			"hash": "9457005815e08f71de80eea02a2d572a",
 			"artifacts": {},
 			"failed": false,
 			"changed": false

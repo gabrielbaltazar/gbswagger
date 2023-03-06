@@ -35,7 +35,7 @@ begin
 
   THorse
     .Use(CORS)
-    .Use(HorseSwagger);
+    .Use(HorseSwagger());
 
   SwaggerConfig;
   THorseGBSwaggerRegister.RegisterPath(TUserController);

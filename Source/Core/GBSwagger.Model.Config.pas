@@ -15,6 +15,7 @@ type
     FDateFormat: string;
     FLanguage: string;
     FResourcePath: string;
+    FHTMLContentType: string;
     FDocExpansion: TGBSwaggerConfigureDocExpansion;
     FClassPrefixes: TArray<string>;
   protected
@@ -35,11 +36,15 @@ type
 
     function DocExpansion(AValue: TGBSwaggerConfigureDocExpansion): IGBSwaggerConfig; overload;
     function DocExpansion: TGBSwaggerConfigureDocExpansion; overload;
+
+    function HTMLContentType(AValue: string): IGBSwaggerConfig; overload;
+    function HTMLContentType: string; overload;
+
     function &End: IGBSwagger;
   public
     class function New(AParent: IGBSwagger): IGBSwaggerConfig;
     constructor Create(AParent: IGBSwagger);
-end;
+  end;
 
 implementation
 
@@ -55,6 +60,17 @@ end;
 function TGBSwaggerModelConfig.&End: IGBSwagger;
 begin
   Result := FParent;
+end;
+
+function TGBSwaggerModelConfig.HTMLContentType(AValue: string): IGBSwaggerConfig;
+begin
+  Result := Self;
+  FHTMLContentType := AValue;
+end;
+
+function TGBSwaggerModelConfig.HTMLContentType: string;
+begin
+  Result := FHTMLContentType;
 end;
 
 function TGBSwaggerModelConfig.Language: string;
@@ -93,6 +109,9 @@ begin
   FLanguage := 'en-US';
   FDocExpansion := TGBSwaggerConfigureDocExpansion.gbList;
   FResourcePath := 'https://petstore.swagger.io';
+{$IF CompilerVersion <= 30.0}
+  FHTMLContentType := 'text/html; charset=UTF-8';
+{$ENDIF}
 end;
 
 function TGBSwaggerModelConfig.DateFormat: string;
