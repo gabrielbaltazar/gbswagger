@@ -52,6 +52,9 @@ type
     function DocExpansion(AValue: TGBSwaggerConfigureDocExpansion): IGBSwaggerConfig; overload;
     function DocExpansion: TGBSwaggerConfigureDocExpansion; overload;
 
+    function HTMLContentType(AValue: string): IGBSwaggerConfig; overload;
+    function HTMLContentType: string; overload;
+
     function &End: IGBSwagger;
   end;
 

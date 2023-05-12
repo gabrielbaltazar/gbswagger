@@ -13,22 +13,19 @@ uses
   PetStore.Order in 'PetStore.Order.pas',
   PetStore.User in 'PetStore.User.pas';
 
-var
-  API: THorse;
 
 begin
   ReportMemoryLeaksOnShutdown := True;
-  API := THorse.Create(9000);
 
-  API.Use(HorseSwagger); // Access http://localhost:9000/swagger/doc/html
+  THorse.Use(HorseSwagger); // Access http://localhost:9000/swagger/doc/html
 
   // Swagger Document defined in PetStore.Order, PetStore.Pet, PetStore.User
 
-  API.Get('pet/{petId}/uploadImage', procedure (Req: THorseRequest; Resp: THorseResponse; Next: TProc)begin end);
-  API.Post('pet', procedure (Req: THorseRequest; Resp: THorseResponse; Next: TProc)begin end);
+  THorse.Get('pet/{petId}/uploadImage', procedure (Req: THorseRequest; Resp: THorseResponse; Next: TProc)begin end);
+  THorse.Post('pet', procedure (Req: THorseRequest; Resp: THorseResponse; Next: TProc)begin end);
 
-  API.Get('store/order', procedure (Req: THorseRequest; Resp: THorseResponse; Next: TProc)begin end);
+  THorse.Get('store/order', procedure (Req: THorseRequest; Resp: THorseResponse; Next: TProc)begin end);
 
-  API.Start;
+  THorse.Listen(9000);
 
 end.

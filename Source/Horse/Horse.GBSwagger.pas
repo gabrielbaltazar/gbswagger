@@ -89,7 +89,8 @@ begin
     LPathJSON := LBasePath + LPathJSON;
     HTMLSwagger := SwaggerDocument(LPathJSON);
   end;
-  AResponse.Send(HTMLSwagger);
+  AResponse.ContentType(Swagger.Config.HTMLContentType)
+    .Send(HTMLSwagger);
 end;
 
 procedure SwaggerJSON(ARequest: THorseRequest; AResponse: THorseResponse; ANext: TProc);

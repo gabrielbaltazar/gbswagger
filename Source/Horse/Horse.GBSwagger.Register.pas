@@ -20,6 +20,7 @@ type
     class function GetPathMethod(AClass: TClass; AEndPoint: SwagEndPoint): string;
     class procedure RegisterMethods(AClass: TClass; APath: SwagPath);
     class procedure RegisterMethod(AClass: TClass; AMethod: TRttiMethod);
+    class procedure RegisterMethodAuth(AClass: TClass; AMethod: TRttiMethod);
   public
     class procedure RegisterPath(AClass: TClass); override;
   end;
@@ -105,8 +106,7 @@ begin
   LEndpoint := AMethod.GetSwagEndPoint;
   LPath := GetPathMethod(AClass, LEndpoint);
   if not LEndpoint.isPublic then
-    for i := 0 to Pred(Length(Swagger.Securities)) do
-      THorse.AddCallbacks(Swagger.Securities[i].Callbacks);
+    RegisterMethodAuth(AClass, AMethod);
 
   if LEndpoint is SwagGET then
     THorse.Get(LPath, HorseCallback(AClass, AMethod))
@@ -123,7 +123,38 @@ begin
   if LEndpoint is SwagPATCH then
     THorse.Patch(LPath, HorseCallback(AClass, AMethod))
   else
-    raise ENotImplemented.CreateFmt('Verbo http não implementado.', []);
+    raise ENotImplemented.CreateFmt('HTTP Verb not implemented.', []);
+end;
+
+class procedure THorseGBSwaggerRegister.RegisterMethodAuth(AClass: TClass; AMethod: TRttiMethod);
+var
+  LSecurity: IGBSwaggerSecurity;
+  LIsBasic: Boolean;
+  LIsBearer: Boolean;
+begin
+  LIsBasic := AMethod.IsAuthBasic;
+  LIsBearer := AMethod.IsAuthBearer;
+
+  if (Length(Swagger.Securities) > 1) and
+    ((not LIsBasic) and (not LIsBearer)) then
+    THorse.AddCallbacks(Swagger.Securities[0].Callbacks)
+  else
+  for LSecurity in Swagger.Securities do
+  begin
+    if LIsBasic then
+    begin
+      if LSecurity.&Type = gbBasic then
+        THorse.AddCallbacks(LSecurity.Callbacks);
+    end
+    else
+    if LIsBearer then
+    begin
+      if LSecurity.&Type = gbApiKey then
+        THorse.AddCallbacks(LSecurity.Callbacks);
+    end
+    else
+      THorse.AddCallbacks(LSecurity.Callbacks);
+  end;
 end;
 
 class procedure THorseGBSwaggerRegister.RegisterMethods(AClass: TClass; APath: SwagPath);

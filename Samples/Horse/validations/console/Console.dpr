@@ -33,7 +33,7 @@ begin
     .&End
     .BasePath('v1')
     .AddBasicSecurity
-      .Callback(
+      .AddCallback(
         HorseBasicAuthentication(function(const AUsername, APassword: string): Boolean
           begin
             result := AUsername = 'teste';
