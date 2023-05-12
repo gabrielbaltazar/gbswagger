@@ -87,6 +87,8 @@ type
 
   TGBSwaggerMethodHelper = class helper for TRttiMethod
   public
+    function IsAuthBasic: Boolean;
+    function IsAuthBearer: Boolean;
     function GetSwagEndPoint: SwagEndPoint;
     function GetSwagParamPath: TArray<SwagParamPath>;
     function GetSwagParamHeader: TArray<SwagParamHeader>;
@@ -880,6 +882,30 @@ begin
       SetLength(Result, Length(Result) + 1);
       Result[Length(Result) - 1] := SwagResponse( GetAttributes[I] );
     end;
+  end;
+end;
+
+function TGBSwaggerMethodHelper.IsAuthBasic: Boolean;
+var
+  LAttribute: TCustomAttribute;
+begin
+  Result := False;
+  for LAttribute in GetAttributes do
+  begin
+    if LAttribute.ClassNameIs(SwagSecurityBasic.ClassName) then
+      Exit(True);
+  end;
+end;
+
+function TGBSwaggerMethodHelper.IsAuthBearer: Boolean;
+var
+  LAttribute: TCustomAttribute;
+begin
+  Result := False;
+  for LAttribute in GetAttributes do
+  begin
+    if LAttribute.ClassNameIs(SwagSecurityBearer.ClassName) then
+      Exit(True);
   end;
 end;
 
