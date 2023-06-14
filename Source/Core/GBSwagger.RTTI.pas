@@ -23,10 +23,9 @@ type
   private
     FContext: TRttiContext;
 
-    constructor CreatePrivate;
+    constructor Create;
   public
     class function GetInstance: IGBSwaggerRTTI;
-    constructor Create;
     destructor Destroy; override;
 
     function GetType(AClass: TClass): TRttiType;
@@ -132,11 +131,7 @@ implementation
 
 constructor TGBSwaggerRTTI.Create;
 begin
-  raise Exception.Create('Use the GetInstance Construtor.');
-end;
-
-constructor TGBSwaggerRTTI.CreatePrivate;
-begin
+  inherited;
   FContext := TRttiContext.Create;
 end;
 
@@ -154,7 +149,7 @@ end;
 class function TGBSwaggerRTTI.GetInstance: IGBSwaggerRTTI;
 begin
   if not Assigned(FInstance) then
-    FInstance := TGBSwaggerRTTI.CreatePrivate;
+    FInstance := TGBSwaggerRTTI.Create;
   Result := FInstance;
 end;
 
@@ -910,4 +905,3 @@ begin
 end;
 
 end.
-

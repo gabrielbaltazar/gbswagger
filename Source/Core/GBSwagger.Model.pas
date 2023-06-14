@@ -53,7 +53,7 @@ type TGBSwaggerModel = class(TInterfacedObject, IGBSwagger)
     procedure RegisterDefaultResponses;
 
     function containSchema(ClassType: TClass): Boolean;
-  	constructor createPrivate;
+  	constructor Create;
 
   protected
     function Version(Value: String): IGBSwagger; overload;
@@ -94,7 +94,6 @@ type TGBSwaggerModel = class(TInterfacedObject, IGBSwagger)
 
     function &End: IGBSwagger;
   public
-    constructor create;
     class function GetInstance: IGBSwagger;
     destructor  Destroy; override;
 
@@ -251,11 +250,6 @@ begin
   end;
 end;
 
-constructor TGBSwaggerModel.create;
-begin
-  raise Exception.Create('Utilize o GetInstance.');
-end;
-
 procedure TGBSwaggerModel.createConfig;
 begin
   FConfig := TGBSwaggerModelConfig.New(Self);
@@ -272,8 +266,9 @@ begin
   FPaths := TDictionary<String,IGBSwaggerPath>.Create;
 end;
 
-constructor TGBSwaggerModel.createPrivate;
+constructor TGBSwaggerModel.Create;
 begin
+  inherited;
   FVersion := '2.0';
   createConfig;
   createProduces;
@@ -352,7 +347,7 @@ end;
 class function TGBSwaggerModel.GetInstance: IGBSwagger;
 begin
   if not Assigned(FInstance) then
-  	FInstance := Self.createPrivate;
+  	FInstance := Self.Create;
   result := FInstance;
 end;
 
@@ -460,3 +455,4 @@ begin
 end;
 
 end.
+
