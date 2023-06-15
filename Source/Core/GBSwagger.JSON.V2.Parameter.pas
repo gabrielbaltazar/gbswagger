@@ -100,6 +100,8 @@ begin
         LJSON.AddPair('schema', TJSONObject.Create.AddPair('type', LSchema))
       else
         LJSON.AddPair('type', LSchema);
+
+      LJSON.AddPair('format', FSwaggerParameter.Format);
     end;
 
   Result := LJSON;

@@ -210,6 +210,7 @@ type
     function Name(AValue: string): IGBSwaggerParameter; overload;
     function Description(AValue: string): IGBSwaggerParameter; overload;
     function Schema(AValue: string): IGBSwaggerParameter; overload;
+    function Schema(AValue: string; AFormat: String): IGBSwaggerParameter; overload;
     function Schema(AValue: TClass): IGBSwaggerParameter; overload;
     function Required(AValue: Boolean): IGBSwaggerParameter; overload;
     function IsArray(AValue: Boolean): IGBSwaggerParameter; overload;
@@ -226,6 +227,7 @@ type
     function EnumValues: TArray<Variant>; overload;
 
     function SchemaType: string;
+    function Format: String;
     function &End: IGBSwaggerPathMethod;
   end;
 
