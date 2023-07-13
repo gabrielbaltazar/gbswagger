@@ -12,6 +12,16 @@ uses
 const
   SWAG_STRING = 'string';
   SWAG_INTEGER = 'integer';
+  SWAG_INTEGER_FORMAT_INT32 = 'int32';
+  SWAG_INTEGER_FORMAT_INT64 = 'int64';
+  SWAG_NUMBER_FORMAT_FLOAT = 'float';
+  SWAG_NUMBER_FORMAT_DOUBLE = 'double';
+  SWAG_STRING_FORMAT_BYTE = 'byte';
+  SWAG_STRING_FORMAT_BINARY = 'binary';
+  SWAG_STRING_FORMAT_DATE = 'date';
+  SWAG_STRING_FORMAT_DATETIME = 'date-time';
+  SWAG_STRING_FORMAT_PASSWORD = 'password';
+
 
 type
   TRouteCallback = {$IFNDEF DSNAP} Horse.THorseCallback {$ELSE} TObject {$ENDIF};
