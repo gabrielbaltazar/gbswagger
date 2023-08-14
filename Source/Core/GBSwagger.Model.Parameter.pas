@@ -20,6 +20,7 @@ type
     FDescription: string;
     FSchemaStr: string;
     FSchema: TClass;
+    FFormat: String;
     FRequired: Boolean;
     FIsArray: Boolean;
     FEnumValues: TArray<Variant>;
@@ -28,6 +29,7 @@ type
     function Name(AValue: string): IGBSwaggerParameter; overload;
     function Description(AValue: string): IGBSwaggerParameter; overload;
     function Schema(AValue: string): IGBSwaggerParameter; overload;
+    function Schema(AValue: string; AFormat: String): IGBSwaggerParameter; overload;
     function Schema(AValue: TClass): IGBSwaggerParameter; overload;
     function Required(AValue: Boolean): IGBSwaggerParameter; overload;
     function IsArray(AValue: Boolean): IGBSwaggerParameter; overload;
@@ -43,6 +45,7 @@ type
     function IsEnum: Boolean;
     function EnumValues: TArray<Variant>; overload;
     function SchemaType: string;
+    function Format: String;
     function &End: IGBSwaggerPathMethod;
   public
     constructor Create(AParent: IGBSwaggerPathMethod);
@@ -83,6 +86,11 @@ end;
 function TGBSwaggerModelParameter.EnumValues: TArray<Variant>;
 begin
   Result := FEnumValues;
+end;
+
+function TGBSwaggerModelParameter.Format: String;
+begin
+  Result := FFormat;
 end;
 
 function TGBSwaggerModelParameter.EnumValues(AValue: TArray<Variant>): IGBSwaggerParameter;
@@ -152,8 +160,15 @@ end;
 
 function TGBSwaggerModelParameter.Schema(AValue: string): IGBSwaggerParameter;
 begin
+  Result := Schema(AValue, '');
+end;
+
+function TGBSwaggerModelParameter.Schema(AValue,
+  AFormat: String): IGBSwaggerParameter;
+begin
   Result := Self;
   FSchemaStr := AValue;
+  FFormat := AFormat;
 end;
 
 function TGBSwaggerModelParameter.Schema(AValue: TClass): IGBSwaggerParameter;
@@ -163,6 +178,7 @@ begin
   if not Name.IsEmpty then
     FParent.&End.&End.AddModel(AValue);
 end;
+
 
 function TGBSwaggerModelParameter.Schema: TClass;
 begin
