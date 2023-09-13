@@ -74,6 +74,8 @@ end;
 function TGBSwaggerJSONV2Schema.JSONProperty(AProperty: TRttiProperty): TJSONObject;
 var
   LAttSwagNumber: SwagNumber;
+  LAttSwagString: SwagString;
+  LAttSwagPositive: SwagPositive;
 begin
   Result := TJSONObject.Create
     .AddPair('type', AProperty.SwagType)
@@ -91,7 +93,24 @@ begin
     begin
       Result.AddPair('minimum', TJSONNumber.Create(LAttSwagNumber.Minimum))
         .AddPair('maximum', TJSONNumber.Create(LAttSwagNumber.Maximum));
+
+      if LAttSwagNumber.DefaultValue <> 0 then
+        Result.AddPair('default', TJSONNumber.Create(LAttSwagNumber.DefaultValue))
     end;
+  end;
+
+  if AProperty.IsBoolean then
+  begin
+    LAttSwagPositive := AProperty.GetSwagPositive;
+    if Assigned(LAttSwagPositive) and (LAttSwagPositive.DefaultValue <> True) then
+      Result.AddPair('default', TJSONBool.Create(LAttSwagPositive.DefaultValue))
+  end;
+
+  if AProperty.IsString then
+  begin
+    LAttSwagString := AProperty.GetSwagString;
+    if Assigned(LAttSwagString) and (LAttSwagString.DefaultValue <> '') then
+      Result.AddPair('default', TJSONString.Create(LAttSwagString.DefaultValue))
   end;
 
   if AProperty.IsDateTime then
