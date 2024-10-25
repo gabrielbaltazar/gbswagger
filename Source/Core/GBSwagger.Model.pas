@@ -18,56 +18,55 @@ uses
   System.Generics.Collections,
   Web.HTTPApp;
 
-type TGBSwaggerModel = class(TInterfacedObject, IGBSwagger)
-
+type
+  TGBSwaggerModel = class(TInterfacedObject, IGBSwagger)
   private
-    class var
-      FInstance: IGBSwagger;
+    class var FInstance: IGBSwagger;
 
+  	constructor CreatePrivate;
+  private
     FInfo: IGBSwaggerInfo;
     FConfig: IGBSwaggerConfig;
     FTags: TList<IGBSwaggerTag>;
-    FConsumes: TList<String>;
-    FProduces: TList<String>;
+    FConsumes: TList<string>;
+    FProduces: TList<string>;
     FProtocols: TList<TGBSwaggerProtocol>;
-    FSchemas: TDictionary<String,IGBSwaggerSchema>;
-    FPaths: TDictionary<String,IGBSwaggerPath>;
-    FSecurities: TDictionary<String,IGBSwaggerSecurity>;
+    FSchemas: TDictionary<string,IGBSwaggerSchema>;
+    FPaths: TDictionary<string,IGBSwaggerPath>;
+    FSecurities: TDictionary<string,IGBSwaggerSecurity>;
     FRegister: IGBSwaggerRegister;
     FVersion: string;
-    FHost: String;
-    FBasePath: String;
+    FHost: string;
+    FBasePath: string;
 
-    function AddSchemaObjectReference(Schemas: TArray<TClass>): IGBSwagger;
+    function AddSchemaObjectReference(ASchemas: TArray<TClass>): IGBSwagger;
 
-    procedure createConfig;
-    procedure createProduces;
-    procedure createConsumes;
-    procedure createProtocols;
-    procedure createTags;
-    procedure createPaths;
-    procedure createSchemas;
-    procedure createRegister;
-    procedure createSecurities;
+    procedure CreateConfig;
+    procedure CreateProduces;
+    procedure CreateConsumes;
+    procedure CreateProtocols;
+    procedure CreateTags;
+    procedure CreatePaths;
+    procedure CreateSchemas;
+    procedure CreateRegistry;
+    procedure CreateSecurities;
 
     procedure RegisterDefaultResponses;
 
-    function containSchema(ClassType: TClass): Boolean;
-  	constructor createPrivate;
-
+    function ContainSchema(AClassType: TClass): Boolean;
   protected
-    function Version(Value: String): IGBSwagger; overload;
-    function Host(Value: String): IGBSwagger; overload;
-    function BasePath(Value: String): IGBSwagger; overload;
+    function Version(AValue: string): IGBSwagger; overload;
+    function Host(AValue: string): IGBSwagger; overload;
+    function BasePath(AValue: string): IGBSwagger; overload;
 
     function Version: string; overload;
-    function Host: String; overload;
-    function BasePath: String; overload;
+    function Host: string; overload;
+    function BasePath: string; overload;
 
-    function Path(Name: String): IGBSwaggerPath;
+    function Path(AName: string): IGBSwaggerPath;
 
-    function Consumes: TArray<String>;
-    function Produces: TArray<String>;
+    function Consumes: TArray<string>;
+    function Produces: TArray<string>;
     function Protocols: TArray<TGBSwaggerProtocol>;
     function Schemas: TArray<IGBSwaggerSchema>;
     function Paths: TArray<IGBSwaggerPath>;
@@ -76,29 +75,28 @@ type TGBSwaggerModel = class(TInterfacedObject, IGBSwagger)
     function Info: IGBSwaggerInfo;
     function Config: IGBSwaggerConfig;
 
-    function AddConsumes(Value: TGBSwaggerContentType): IGBSwagger; overload;
-    function AddConsumes(Value: String): IGBSwagger; overload;
-    function AddProduces(Value: String): IGBSwagger; overload;
-    function AddProduces(Value: TGBSwaggerContentType): IGBSwagger; overload;
-    function AddProtocol(Value: TGBSwaggerProtocol)   : IGBSwagger;
+    function AddConsumes(AValue: TGBSwaggerContentType): IGBSwagger; overload;
+    function AddConsumes(AValue: string): IGBSwagger; overload;
+    function AddProduces(AValue: string): IGBSwagger; overload;
+    function AddProduces(AValue: TGBSwaggerContentType): IGBSwagger; overload;
+    function AddProtocol(AValue: TGBSwaggerProtocol)   : IGBSwagger;
 
-    function AddSecurity(Description: String): IGBSwaggerSecurity;
+    function AddSecurity(ADescription: string): IGBSwaggerSecurity;
     function AddBearerSecurity: IGBSwaggerSecurity;
     function AddBasicSecurity: IGBSwaggerSecurity;
 
     function AddTag: IGBSwaggerTag;
-    function AddModel(ClassType: TClass): IGBSwagger; overload;
-    function SchemaName(ClassType: TClass): string;
+    function AddModel(AClassType: TClass): IGBSwagger; overload;
+    function SchemaName(AClassType: TClass): string;
 
     function &Register: IGBSwaggerRegister;
 
     function &End: IGBSwagger;
   public
-    constructor create;
+    constructor Create;
     class function GetInstance: IGBSwagger;
-    destructor  Destroy; override;
-
-end;
+    destructor Destroy; override;
+  end;
 
 implementation
 
@@ -107,216 +105,213 @@ implementation
 uses
   GBSwagger.Register;
 
-function TGBSwaggerModel.BasePath(Value: String): IGBSwagger;
+function TGBSwaggerModel.BasePath(AValue: string): IGBSwagger;
 begin
-  result := Self;
-  FBasePath := Value;
-
+  Result := Self;
+  FBasePath := AValue;
   if not FBasePath.StartsWith('/') then
     FBasePath := '/' + FBasePath;
 end;
 
 function TGBSwaggerModel.&End: IGBSwagger;
 begin
-  result := Self;
+  Result := Self;
 end;
 
 function TGBSwaggerModel.AddBasicSecurity: IGBSwaggerSecurity;
 begin
-  result := AddSecurity('Basic')
-              .&Type(gbBasic)
-              .Name('Authorization')
-              .&In(gbHeader)
+  Result := AddSecurity('Basic')
+    .&Type(gbBasic)
+    .Name('Authorization')
+    .&In(gbHeader);
 end;
 
 function TGBSwaggerModel.AddBearerSecurity: IGBSwaggerSecurity;
 begin
-  result := AddSecurity('Bearer')
-              .&Type(gbApiKey)
-              .Name('Authorization')
-              .&In(gbHeader)
+  Result := AddSecurity('Bearer')
+    .&Type(gbApiKey)
+    .Name('Authorization')
+    .&In(gbHeader);
 end;
 
-function TGBSwaggerModel.AddConsumes(Value: String): IGBSwagger;
+function TGBSwaggerModel.AddConsumes(AValue: string): IGBSwagger;
 begin
-  result := Self;
-  if not FConsumes.Contains(Value) then
-    FConsumes.Add(Value);
+  Result := Self;
+  if not FConsumes.Contains(AValue) then
+    FConsumes.Add(AValue);
 end;
 
-function TGBSwaggerModel.AddConsumes(Value: TGBSwaggerContentType): IGBSwagger;
+function TGBSwaggerModel.AddConsumes(AValue: TGBSwaggerContentType): IGBSwagger;
 begin
-  result := Self;
-  AddConsumes(Value.toString);
+  Result := Self;
+  AddConsumes(AValue.ToString);
 end;
 
-function TGBSwaggerModel.AddProduces(Value: TGBSwaggerContentType): IGBSwagger;
+function TGBSwaggerModel.AddProduces(AValue: TGBSwaggerContentType): IGBSwagger;
 begin
-  result := Self;
-  AddProduces(Value.toString);
+  Result := Self;
+  AddProduces(AValue.ToString);
 end;
 
-function TGBSwaggerModel.AddProduces(Value: String): IGBSwagger;
+function TGBSwaggerModel.AddProduces(AValue: string): IGBSwagger;
 begin
-  result := Self;
-  if not FProduces.Contains(Value) then
-    FProduces.Add(Value);
+  Result := Self;
+  if not FProduces.Contains(AValue) then
+    FProduces.Add(AValue);
 end;
 
-function TGBSwaggerModel.AddProtocol(Value: TGBSwaggerProtocol): IGBSwagger;
+function TGBSwaggerModel.AddProtocol(AValue: TGBSwaggerProtocol): IGBSwagger;
 begin
-  result := Self;
-  if not FProtocols.Contains(Value) then
-    FProtocols.Add(Value);
+  Result := Self;
+  if not FProtocols.Contains(AValue) then
+    FProtocols.Add(AValue);
 end;
 
-function TGBSwaggerModel.AddModel(ClassType: TClass): IGBSwagger;
+function TGBSwaggerModel.AddModel(AClassType: TClass): IGBSwagger;
 var
-  schema: IGBSwaggerSchema;
-  name  : string;
+  LSchema: IGBSwaggerSchema;
+  LName: string;
 begin
   Result := Self;
   try
-    if containSchema(ClassType) then
+    if ContainSchema(AClassType) then
       Exit;
 
-    name := ClassType.SwagDescription(Self);
+    LName := AClassType.SwagDescription(Self);
+    LSchema := TGBSwaggerModelSchema.New(Self)
+      .Name(LName)
+      .ClassType(AClassType);
 
-    schema := TGBSwaggerModelSchema.New(Self)
-                .Name(name)
-                .ClassType(ClassType);
-
-    if not FSchemas.ContainsKey(name) then
+    if not FSchemas.ContainsKey(LName) then
     begin
-      FSchemas.Add(name, schema);
-      AddSchemaObjectReference(ClassType.GetObjectProperties);
+      FSchemas.Add(LName, LSchema);
+      AddSchemaObjectReference(AClassType.GetObjectProperties);
     end;
   except
-    on e: Exception do
+    on E: Exception do
     begin
-      e.Message := Format('Error on Add Model %s: %s.', [ClassType.ClassName, e.Message] );
+      E.Message := Format('Error on Add Model %s: %s.', [AClassType.ClassName, E.Message]);
       raise;
     end;
   end;
 end;
 
-function TGBSwaggerModel.AddSchemaObjectReference(Schemas: TArray<TClass>): IGBSwagger;
+function TGBSwaggerModel.AddSchemaObjectReference(ASchemas: TArray<TClass>): IGBSwagger;
 var
-  i : Integer;
+  I: Integer;
 begin
-  result := Self;
-  for i := 0 to Pred(Length( Schemas)) do
-    AddModel(Schemas[i]);
+  Result := Self;
+  for I := 0 to Pred(Length(ASchemas)) do
+    AddModel(ASchemas[I]);
 end;
 
-function TGBSwaggerModel.AddSecurity(Description: String): IGBSwaggerSecurity;
+function TGBSwaggerModel.AddSecurity(ADescription: string): IGBSwaggerSecurity;
 begin
-  if FSecurities.ContainsKey(Description) then
-    Exit(FSecurities.Items[Description]);
+  if FSecurities.ContainsKey(ADescription) then
+    Exit(FSecurities.Items[ADescription]);
 
-  result := TGBSwaggerModelSecurity.New(Self).Description(Description).&In(gbHeader);
-  FSecurities.Add(Description, result);
+  Result := TGBSwaggerModelSecurity.New(Self).Description(ADescription).&In(gbHeader);
+  FSecurities.Add(ADescription, Result);
 end;
 
 function TGBSwaggerModel.AddTag: IGBSwaggerTag;
 begin
-  result := TGBSwaggerModelTag.New(Self);
-  FTags.Add(result);
+  Result := TGBSwaggerModelTag.New(Self);
+  FTags.Add(Result);
 end;
 
-function TGBSwaggerModel.BasePath: String;
+function TGBSwaggerModel.BasePath: string;
 begin
-  result := FBasePath;
+  Result := FBasePath;
 end;
 
 function TGBSwaggerModel.Config: IGBSwaggerConfig;
 begin
-  result := FConfig;
+  Result := FConfig;
 end;
 
-function TGBSwaggerModel.Consumes: TArray<String>;
+function TGBSwaggerModel.Consumes: TArray<string>;
 begin
-  result := FConsumes.ToArray;
+  Result := FConsumes.ToArray;
 end;
 
-function TGBSwaggerModel.containSchema(ClassType: TClass): Boolean;
+function TGBSwaggerModel.ContainSchema(AClassType: TClass): Boolean;
 var
-  schema: IGBSwaggerSchema;
+  LSchema: IGBSwaggerSchema;
 begin
-  result := False;
-  for schema in FSchemas.Values do
+  Result := False;
+  for LSchema in FSchemas.Values do
   begin
-    if schema.ClassType.ClassNameIs(ClassType.ClassName) then
+    if LSchema.ClassType.ClassNameIs(AClassType.ClassName) then
       Exit(True);
   end;
 end;
 
-constructor TGBSwaggerModel.create;
+constructor TGBSwaggerModel.Create;
 begin
-  raise Exception.Create('Utilize o GetInstance.');
+  raise Exception.Create('Use the GetInstance.');
 end;
 
-procedure TGBSwaggerModel.createConfig;
+procedure TGBSwaggerModel.CreateConfig;
 begin
-  FConfig := TGBSwaggerModelConfig.New(Self);
+  FConfig := TGBSwaggerModelConfig.GetInstance(Self);
 end;
 
-procedure TGBSwaggerModel.createConsumes;
+procedure TGBSwaggerModel.CreateConsumes;
 begin
-  FConsumes := TList<String>.Create;
-  FConsumes.Add(gbAppJSON.toString);
+  FConsumes := TList<string>.Create;
+  FConsumes.Add(gbAppJSON.tostring);
 end;
 
-procedure TGBSwaggerModel.createPaths;
+procedure TGBSwaggerModel.CreatePaths;
 begin
-  FPaths := TDictionary<String,IGBSwaggerPath>.Create;
+  FPaths := TDictionary<string,IGBSwaggerPath>.Create;
 end;
 
-constructor TGBSwaggerModel.createPrivate;
+constructor TGBSwaggerModel.CreatePrivate;
 begin
   FVersion := '2.0';
-  createConfig;
-  createProduces;
-  createConsumes;
-  createProtocols;
-  createTags;
-  createSchemas;
-  createPaths;
-  createRegister;
-  createSecurities;
-
+  CreateConfig;
+  CreateProduces;
+  CreateConsumes;
+  CreateProtocols;
+  CreateTags;
+  CreateSchemas;
+  CreatePaths;
+  CreateRegistry;
+  CreateSecurities;
   RegisterDefaultResponses;
 end;
 
-procedure TGBSwaggerModel.createProduces;
+procedure TGBSwaggerModel.CreateProduces;
 begin
-  FProduces := TList<String>.Create;
-  FProduces.Add(gbAppJSON.toString);
+  FProduces := TList<string>.Create;
+  FProduces.Add(gbAppJSON.ToString);
 end;
 
-procedure TGBSwaggerModel.createProtocols;
+procedure TGBSwaggerModel.CreateProtocols;
 begin
   FProtocols := TList<TGBSwaggerProtocol>.Create;
 end;
 
-procedure TGBSwaggerModel.createRegister;
+procedure TGBSwaggerModel.CreateRegistry;
 begin
   FRegister := TGBSwaggerRegister.New(Self);
 end;
 
-procedure TGBSwaggerModel.createSchemas;
+procedure TGBSwaggerModel.CreateSchemas;
 begin
-  FSchemas := TDictionary<String, IGBSwaggerSchema>.create;
+  FSchemas := TDictionary<string, IGBSwaggerSchema>.Create;
 end;
 
-procedure TGBSwaggerModel.createSecurities;
+procedure TGBSwaggerModel.CreateSecurities;
 begin
-  FSecurities := TDictionary<String,IGBSwaggerSecurity>.Create;
+  FSecurities := TDictionary<string,IGBSwaggerSecurity>.Create;
 end;
 
-procedure TGBSwaggerModel.createTags;
+procedure TGBSwaggerModel.CreateTags;
 begin
-  FTags := TList<IGBSwaggerTag>.create;
+  FTags := TList<IGBSwaggerTag>.Create;
 end;
 
 destructor TGBSwaggerModel.Destroy;
@@ -331,132 +326,128 @@ begin
   inherited;
 end;
 
-function TGBSwaggerModel.Host: String;
+function TGBSwaggerModel.Host: string;
 begin
-  result := FHost;
+  Result := FHost;
 end;
 
-function TGBSwaggerModel.Host(Value: String): IGBSwagger;
+function TGBSwaggerModel.Host(AValue: string): IGBSwagger;
 begin
-  result := Self;
-  FHost  := Value;
+  Result := Self;
+  FHost := AValue;
 end;
 
 function TGBSwaggerModel.Info: IGBSwaggerInfo;
 begin
   if not Assigned(FInfo) then
     FInfo := TGBSwaggerModelInfo.New(Self);
-  result := FInfo;
+  Result := FInfo;
 end;
 
 class function TGBSwaggerModel.GetInstance: IGBSwagger;
 begin
   if not Assigned(FInstance) then
-  	FInstance := Self.createPrivate;
-  result := FInstance;
+  	FInstance := Self.CreatePrivate;
+  Result := FInstance;
 end;
 
-function TGBSwaggerModel.Path(Name: String): IGBSwaggerPath;
+function TGBSwaggerModel.Path(AName: string): IGBSwaggerPath;
 begin
-  if FPaths.ContainsKey(Name) then
-    Exit(FPaths.Items[Name]);
+  if FPaths.ContainsKey(AName) then
+    Exit(FPaths.Items[AName]);
 
-  result := TGBSwaggerModelPath.New(Self).Name(Name);
-  FPaths.Add(Name, result);
+  Result := TGBSwaggerModelPath.New(Self).Name(AName);
+  FPaths.Add(AName, Result);
 end;
 
 function TGBSwaggerModel.Paths: TArray<IGBSwaggerPath>;
 var
-  key: String;
-  i  : Integer;
+  LKey: string;
+  I: Integer;
 begin
-  i := 0;
-
-  for key in FPaths.Keys do
+  I := 0;
+  for LKey in FPaths.Keys do
   begin
-    SetLength(Result, i + 1);
-    Result[i] := FPaths.Items[key];
-    Inc(i);
+    SetLength(Result, I + 1);
+    Result[I] := FPaths.Items[LKey];
+    Inc(I);
   end;
-
 end;
 
-function TGBSwaggerModel.Produces: TArray<String>;
+function TGBSwaggerModel.Produces: TArray<string>;
 begin
   Result := FProduces.ToArray;
 end;
 
 function TGBSwaggerModel.Protocols: TArray<TGBSwaggerProtocol>;
 begin
-  result := FProtocols.ToArray;
+  Result := FProtocols.ToArray;
 end;
 
 function TGBSwaggerModel.Register: IGBSwaggerRegister;
 begin
-  result := Self.FRegister;
+  Result := Self.FRegister;
 end;
 
 procedure TGBSwaggerModel.RegisterDefaultResponses;
 var
-  enumName: string;
-  enumValue: Integer;
-  httpStatus: TGBSwaggerHTTPStatus;
+  LEnumName: string;
+  LEnumValue: Integer;
+  LHttpStatus: TGBSwaggerHTTPStatus;
 begin
-  for httpStatus := Low(TGBSwaggerHTTPStatus) to High(TGBSwaggerHTTPStatus) do
+  for LHttpStatus := Low(TGBSwaggerHTTPStatus) to High(TGBSwaggerHTTPStatus) do
   begin
-    enumValue := httpStatus.httpCode;
-    enumName  := httpStatus.description;
-
-    Self.Register.Response(enumValue).Description(httpStatus.description);
+    LEnumValue := LHttpStatus.httpCode;
+    LEnumName := LHttpStatus.description;
+    Self.Register.Response(LEnumValue).Description(LHttpStatus.Description);
   end;
 end;
 
-function TGBSwaggerModel.SchemaName(ClassType: TClass): string;
+function TGBSwaggerModel.SchemaName(AClassType: TClass): string;
 var
-  &class: IGBSwaggerSchema;
+  LClass: IGBSwaggerSchema;
 begin
-  if ClassType = nil then
+  if AClassType = nil then
     Exit(EmptyStr);
 
-  for &class in FSchemas.Values do
+  for LClass in FSchemas.Values do
   begin
-    if &class.ClassType.ClassNameIs(ClassType.ClassName) then
-      Exit(&class.Name);
+    if LClass.ClassType.ClassNameIs(AClassType.ClassName) then
+      Exit(LClass.Name);
   end;
 end;
 
 function TGBSwaggerModel.Schemas: TArray<IGBSwaggerSchema>;
 var
-  key: string;
+  LKey: string;
 begin
-
-  for key in FSchemas.Keys do
+  for LKey in FSchemas.Keys do
   begin
     SetLength(Result, Length(Result) + 1);
-    Result[Length(result) - 1] := FSchemas.Items[key];
+    Result[Length(Result) - 1] := FSchemas.Items[LKey];
   end;
 end;
 
 function TGBSwaggerModel.Securities: TArray<IGBSwaggerSecurity>;
 var
-  key: string;
+  LKey: string;
 begin
-  for key in FSecurities.Keys do
+  for LKey in FSecurities.Keys do
   begin
     SetLength(Result, Length(Result) + 1);
-    Result[Length(result) - 1] := FSecurities.Items[key];
+    Result[Length(Result) - 1] := FSecurities.Items[LKey];
   end;
 end;
 
 function TGBSwaggerModel.Version: string;
 begin
-  result := FVersion;
+  Result := FVersion;
 end;
 
-function TGBSwaggerModel.Version(Value: String): IGBSwagger;
+function TGBSwaggerModel.Version(AValue: string): IGBSwagger;
 begin
-  result := Self;
-  FVersion := Value;
+  Result := Self;
+  FVersion := AValue;
 end;
 
 end.

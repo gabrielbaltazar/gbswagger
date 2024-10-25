@@ -3,9 +3,9 @@ unit GBSwagger.Model.Types;
 interface
 
 uses
-  {$IFNDEF DSNAP}
+{$IFNDEF DSNAP}
   Horse,
-  {$ENDIF}
+{$ENDIF}
   System.SysUtils,
   Web.HTTPApp;
 
@@ -15,6 +15,8 @@ const
 
 type
   TRouteCallback = {$IFNDEF DSNAP} Horse.THorseCallback {$ELSE} TObject {$ENDIF};
+
+  TCaseDefinition = (cdNone, cdLower, cdUpper, cdLowerCamelCase);
 
   TGBSwaggerContentType = (gbAppJSON, gbAppXML, gbTextHtml, gbPlainText,
     gbMultiPartFormData, gbAppOctetStream);

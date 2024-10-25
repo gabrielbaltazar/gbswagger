@@ -19,6 +19,9 @@ uses
 procedure SwaggerConfig;
 begin
   Swagger
+    .Config
+      .CaseDefinition(TCaseDefinition.cdLowerCamelCase)
+    .&End
     .Register
       .SchemaOnError(TAPIError)
     .&End

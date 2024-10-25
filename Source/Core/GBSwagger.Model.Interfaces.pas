@@ -34,6 +34,9 @@ type
 
   IGBSwaggerConfig = interface
     ['{8C8E5F41-02CF-4FC2-BBF9-7E5C0A4FF607}']
+    function CaseDefinition(AValue: TCaseDefinition): IGBSwaggerConfig; overload;
+    function CaseDefinition: TCaseDefinition; overload;
+
     function DateFormat(AValue: string): IGBSwaggerConfig; overload;
     function DateFormat: string; overload;
 

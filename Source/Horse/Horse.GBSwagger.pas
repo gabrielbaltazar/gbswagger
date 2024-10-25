@@ -23,6 +23,7 @@ const
   PATH_JSON = '/swagger/doc/json';
 
 type
+  TCaseDefinition = GBSwagger.Model.Types.TCaseDefinition;
   TGBSwaggerContentType = GBSwagger.Model.Types.TGBSwaggerContentType;
   TGBSwaggerProtocol = GBSwagger.Model.Types.TGBSwaggerProtocol;
   TGBSwaggerParamType = GBSwagger.Model.Types.TGBSwaggerParamType;

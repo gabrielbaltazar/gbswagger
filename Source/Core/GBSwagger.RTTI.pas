@@ -3,11 +3,14 @@ unit GBSwagger.RTTI;
 interface
 
 uses
+  System.JSON.Types,
   System.Rtti,
   System.SysUtils,
   System.TypInfo,
+  GBSwagger.Model.Config,
   GBSwagger.Model.Interfaces,
   GBSwagger.Model.Attributes,
+  GBSwagger.Model.Types,
   GBSwagger.Path.Attributes;
 
 type
@@ -510,14 +513,45 @@ end;
 function TGBSwaggerRTTIPropertyHelper.SwagName: string;
 var
   LSwaggerProp: SwagProp;
+  I: Integer;
+  LField: TArray<Char>;
+  LJSONName: JsonNameAttribute;
 begin
-  Result := EmptyStr;
+  Result := Name;
   LSwaggerProp := Self.GetAttribute<SwagProp>;
+  LJSONName := GetAttribute<JsonNameAttribute>;
+  if Assigned(LJSONName) then
+    Exit(LJSONName.Value);
   if Assigned(LSwaggerProp) then
-    Result := LSwaggerProp.name;
+    Result := LSwaggerProp.Name;
 
-  if Result.Trim.IsEmpty then
-    Result := Name;
+  case TGBSwaggerModelConfig.GetInstance(nil).CaseDefinition of
+    cdLower: Result := Result.ToLower;
+    cdUpper: Result := Result.ToUpper;
+
+    cdLowerCamelCase:
+      begin
+        Result := EmptyStr;
+        LField := Self.Name.ToCharArray;
+        I := Low(LField);
+        while I <= High(LField) do
+        begin
+          if I = 0 then
+            Result := Result + LowerCase(LField[I])
+          else
+          if (LField[I] = '_') then
+          begin
+            Inc(I);
+            Result := Result + UpperCase(LField[I]);
+          end
+          else
+            Result := Result + LField[I];
+          Inc(I);
+        end;
+        if Result.IsEmpty then
+          Result := Self.Name;
+      end;
+  end;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.SwagType: string;

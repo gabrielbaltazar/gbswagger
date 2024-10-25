@@ -153,7 +153,7 @@ begin
       ProcessOptions(TJSOnObject(LPair.JsonValue));
       if LPair.JsonValue.ToString.Equals('{}') then
       begin
-        AJsonObject.RemovePair(LPair.JsonString.Value).DisposeOf;
+        AJsonObject.RemovePair(LPair.JsonString.Value).Free;
         Continue;
       end;
     end
@@ -174,7 +174,7 @@ begin
     begin
       if (LPair.JsonValue.value = '') or (LPair.JsonValue.ToJSON = '0') then
       begin
-        AJsonObject.RemovePair(LPair.JsonString.Value).DisposeOf;
+        AJsonObject.RemovePair(LPair.JsonString.Value).Free;
       end;
     end;
   end;

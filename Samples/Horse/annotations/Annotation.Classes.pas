@@ -8,31 +8,31 @@ uses
 type
   TUser = class
   private
-    Fid: Double;
-    Fname: String;
-    FlastName: string;
-    FbirthdayDate: TDateTime;
-    FlastUpdate: TDateTime;
+    FId: Double;
+    FName: string;
+    FLastName: string;
+    FBirthdayDate: TDateTime;
+    FLastUpdate: TDateTime;
   public
     [SwagProp('user id', True)]
-    property id: Double read Fid write Fid;
+    property Id: Double read FId write FId;
 
     [SwagProp('User Description', True)]
-    property name: String read Fname write Fname;
+    property Name: string read FName write FName;
 
     [SwagString(100)]
-    property lastName: string read FlastName write FlastName;
-    property birthdayDate: TDateTime read FbirthdayDate write FbirthdayDate;
+    property LastName: string read FLastName write FLastName;
+    property BirthdayDate: TDateTime read FBirthdayDate write FBirthdayDate;
 
     [SwagIgnore]
-    property lastUpdate: TDateTime read FlastUpdate write FlastUpdate;
+    property LastUpdate: TDateTime read FLastUpdate write FLastUpdate;
   end;
 
   TAPIError = class
   private
-    Ferror: string;
+    FError: string;
   public
-    property error: string read Ferror write Ferror;
+    property Error: string read FError write FError;
   end;
 
 implementation

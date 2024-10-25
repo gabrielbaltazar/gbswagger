@@ -101,7 +101,6 @@ class procedure THorseGBSwaggerRegister.RegisterMethod(AClass: TClass; AMethod: 
 var
   LEndpoint: SwagEndPoint;
   LPath: string;
-  I: Integer;
 begin
   LEndpoint := AMethod.GetSwagEndPoint;
   LPath := GetPathMethod(AClass, LEndpoint);
