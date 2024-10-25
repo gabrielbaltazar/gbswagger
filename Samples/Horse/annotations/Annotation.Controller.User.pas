@@ -93,9 +93,13 @@ var
   LUser: TUser;
 begin
   LUser := TUser.Create;
-  LUser.Id := 1;
-  SwaggerValidator.Validate(LUser);
-  FResponse.Send(FRequest.Body).Status(201);
+  try
+    LUser.Id := 1;
+    SwaggerValidator.Validate(LUser);
+    FResponse.Send(FRequest.Body).Status(201);
+  finally
+    LUser.Free;
+  end;
 end;
 
 end.
