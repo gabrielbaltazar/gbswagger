@@ -15,8 +15,10 @@ type
   private
     FRequest: THorseRequest;
     FResponse: THorseResponse;
-
   public
+    constructor Create(AReq: THorseRequest; ARes: THorseResponse);
+    destructor Destroy; override;
+
     [SwagGET('List Users', True)]
     [SwagParamQuery('id', 'user id')]
     [SwagResponse(200, TUser, 'Users data', True)]
@@ -48,19 +50,16 @@ type
     [SwagResponse(400)]
     [SwagResponse(404)]
     procedure DeleteUser;
-
-    constructor create(Req: THorseRequest; Res: THorseResponse);
-    destructor Destroy; override;
-end;
+  end;
 
 implementation
 
 { TUserController }
 
-constructor TUserController.create(Req: THorseRequest; Res: THorseResponse);
+constructor TUserController.Create(AReq: THorseRequest; ARes: THorseResponse);
 begin
-  FRequest := Req;
-  FResponse:= Res;
+  FRequest := AReq;
+  FResponse:= ARes;
 end;
 
 procedure TUserController.DeleteUser;
@@ -90,8 +89,17 @@ begin
 end;
 
 procedure TUserController.InsertUser;
+var
+  LUser: TUser;
 begin
-  FResponse.Send(FRequest.Body).Status(201);
+  LUser := TUser.Create;
+  try
+    LUser.Id := 1;
+    SwaggerValidator.Validate(LUser);
+    FResponse.Send(FRequest.Body).Status(201);
+  finally
+    LUser.Free;
+  end;
 end;
 
 end.

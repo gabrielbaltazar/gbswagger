@@ -133,7 +133,7 @@ begin
   if AProperty.IsObject then
   begin
     Result.AddPair(JSONPropertyPairObject(AProperty));
-    Result.RemovePair('type').DisposeOf;
+    Result.RemovePair('type').Free;
     Exit;
   end;
 end;

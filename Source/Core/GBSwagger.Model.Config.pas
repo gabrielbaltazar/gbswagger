@@ -3,10 +3,16 @@ unit GBSwagger.Model.Config;
 interface
 
 uses
+  System.SysUtils,
+  GBSwagger.Model.Types,
   GBSwagger.Model.Interfaces;
 
 type
   TGBSwaggerModelConfig = class(TInterfacedObject, IGBSwaggerConfig)
+  private
+    class var FInstance: IGBSwaggerConfig;
+
+    constructor CreatePrivate(AParent: IGBSwagger);
   private
     [Weak]
     FParent: IGBSwagger;
@@ -18,7 +24,11 @@ type
     FHTMLContentType: string;
     FDocExpansion: TGBSwaggerConfigureDocExpansion;
     FClassPrefixes: TArray<string>;
+    FCaseDefinition: TCaseDefinition;
   protected
+    function CaseDefinition(AValue: TCaseDefinition): IGBSwaggerConfig; overload;
+    function CaseDefinition: TCaseDefinition; overload;
+
     function DateFormat(AValue: string): IGBSwaggerConfig; overload;
     function DateFormat: string; overload;
 
@@ -42,7 +52,7 @@ type
 
     function &End: IGBSwagger;
   public
-    class function New(AParent: IGBSwagger): IGBSwaggerConfig;
+    class function GetInstance(AParent: IGBSwagger): IGBSwaggerConfig;
     constructor Create(AParent: IGBSwagger);
   end;
 
@@ -95,6 +105,17 @@ begin
   FModuleName := AValue;
 end;
 
+function TGBSwaggerModelConfig.CaseDefinition: TCaseDefinition;
+begin
+  Result := FCaseDefinition;
+end;
+
+function TGBSwaggerModelConfig.CaseDefinition(AValue: TCaseDefinition): IGBSwaggerConfig;
+begin
+  Result := Self;
+  FCaseDefinition := AValue;
+end;
+
 function TGBSwaggerModelConfig.ClassPrefixes: TArray<string>;
 begin
   Result := FClassPrefixes;
@@ -104,6 +125,12 @@ end;
 
 constructor TGBSwaggerModelConfig.Create(AParent: IGBSwagger);
 begin
+  raise Exception.Create('Use the GetInstance.');
+end;
+
+constructor TGBSwaggerModelConfig.CreatePrivate(AParent: IGBSwagger);
+begin
+  FCaseDefinition := cdNone;
   FParent := AParent;
   FHTMLTitle := 'GBSwagger';
   FLanguage := 'en-US';
@@ -136,9 +163,11 @@ begin
   FDateFormat := AValue;
 end;
 
-class function TGBSwaggerModelConfig.New(AParent: IGBSwagger): IGBSwaggerConfig;
+class function TGBSwaggerModelConfig.GetInstance(AParent: IGBSwagger): IGBSwaggerConfig;
 begin
-  Result := Self.Create(AParent);
+  if not Assigned(FInstance) then
+    FInstance := TGBSwaggerModelConfig.CreatePrivate(AParent);
+  Result := FInstance;
 end;
 
 function TGBSwaggerModelConfig.ResourcePath: string;
