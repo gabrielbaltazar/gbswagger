@@ -75,6 +75,8 @@ type
     function ListTypeClass: TClass;
 
     function GetSwagNumber: SwagNumber;
+    function GetSwagString: SwagString;
+    function GetSwagPositive: SwagPositive;
 
     function SwagName: string;
     function SwagType: string;
@@ -260,6 +262,16 @@ end;
 function TGBSwaggerRTTIPropertyHelper.GetSwagNumber: SwagNumber;
 begin
   Result := GetAttribute<SwagNumber>;
+end;
+
+function TGBSwaggerRTTIPropertyHelper.GetSwagPositive: SwagPositive;
+begin
+  Result := GetAttribute<SwagPositive>;
+end;
+
+function TGBSwaggerRTTIPropertyHelper.GetSwagString: SwagString;
+begin
+  Result := GetAttribute<SwagString>;
 end;
 
 function TGBSwaggerRTTIPropertyHelper.IsArray: Boolean;

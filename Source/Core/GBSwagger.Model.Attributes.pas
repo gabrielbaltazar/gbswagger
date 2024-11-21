@@ -69,25 +69,36 @@ type
   private
     FMaxLength: Integer;
     FMinLength: Integer;
+    FDefaultValue: string;
   public
-    constructor Create(AMaxLength: Integer; AMinLength: Integer = 0); overload;
+    constructor Create(AMaxLength: Integer; AMinLength: Integer = 0; ADefaultValue: string = ''); overload;
+    constructor Create(ADefaultValue: string; AMaxLength: Integer; AMinLength: Integer = 0); overload;
 
     property MinLength: Integer read FMinLength;
     property MaxLength: Integer read FMaxLength;
+    property DefaultValue: string read FDefaultValue;
   end;
 
   SwagNumber = class(TCustomAttribute)
   private
     FMinimum: Double;
     FMaximum: Double;
+    FDefaultValue: Double;
   public
-    constructor Create(AMinimum: Double; AMaximum: Double = 0); overload;
+    constructor Create(AMinimum: Double; AMaximum: Double = 0; ADefaultValue: Double = 0); overload;
 
     property Minimum: Double read FMinimum write FMinimum;
     property Maximum: Double read FMaximum write FMaximum;
+    property DefaultValue: Double read FDefaultValue write FDefaultValue;
   end;
 
   SwagPositive = class(TCustomAttribute)
+  private
+    FDefaultValue: Boolean;
+  public
+    constructor Create(ADefaultValue: Boolean = True); overload;
+
+    property DefaultValue: Boolean read FDefaultValue;
   end;
 
   SwagDate = class(TCustomAttribute)
@@ -109,18 +120,27 @@ end;
 
 { SwagNumber }
 
-constructor SwagNumber.Create(AMinimum: Double; AMaximum: Double = 0);
+constructor SwagNumber.Create(AMinimum: Double; AMaximum: Double = 0; ADefaultValue: Double = 0);
 begin
   FMinimum := AMinimum;
   FMaximum := AMaximum;
+  FDefaultValue := ADefaultValue;
 end;
 
 { SwagString }
 
-constructor SwagString.Create(AMaxLength: Integer; AMinLength: Integer = 0);
+constructor SwagString.Create(AMaxLength: Integer; AMinLength: Integer = 0; ADefaultValue: string = '');
 begin
   FMinLength := AMinLength;
   FMaxLength := AMaxLength;
+  FDefaultValue := ADefaultValue;
+end;
+
+constructor SwagString.Create(ADefaultValue: string; AMaxLength: Integer; AMinLength: Integer = 0);
+begin
+  FMinLength := AMinLength;
+  FMaxLength := AMaxLength;
+  FDefaultValue := ADefaultValue;
 end;
 
 { SwagDate }
@@ -168,6 +188,13 @@ end;
 
 constructor SwagIgnore.Create;
 begin
+end;
+
+{ SwagPositive }
+
+constructor SwagPositive.Create(ADefaultValue: Boolean = True);
+begin
+  FDefaultValue := ADefaultValue;
 end;
 
 end.
