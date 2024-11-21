@@ -3,9 +3,20 @@ unit GBSwagger.Model.Attributes;
 interface
 
 uses
+{$IF CompilerVersion >= 36.0}
+  System.JSON.Types,
+{$ELSE}
+  Rest.Json.Types,
+{$ENDIF}
   System.SysUtils;
 
 type
+{$IF CompilerVersion >= 36.0}
+  JsonNameAttribute = System.JSON.Types.JsonNameAttribute;
+{$ELSE}
+  JsonNameAttribute = Rest.Json.Types.JsonNameAttribute;
+{$ENDIF}
+
   SwagClass = class(TCustomAttribute)
   private
     FDescription: string;

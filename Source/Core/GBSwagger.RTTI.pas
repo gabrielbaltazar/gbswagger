@@ -3,7 +3,6 @@ unit GBSwagger.RTTI;
 interface
 
 uses
-  System.JSON.Types,
   System.Rtti,
   System.SysUtils,
   System.TypInfo,
@@ -521,7 +520,11 @@ begin
   LSwaggerProp := Self.GetAttribute<SwagProp>;
   LJSONName := GetAttribute<JsonNameAttribute>;
   if Assigned(LJSONName) then
+{$IF CompilerVersion >= 36.0}
     Exit(LJSONName.Value);
+{$ELSE}
+    Exit(LJSONName.Name);
+{$ENDIF}
   if Assigned(LSwaggerProp) then
     Result := LSwaggerProp.Name;
 
