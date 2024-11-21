@@ -9,6 +9,15 @@ uses
 const
   SWAG_STRING = GBSwagger.Model.Types.SWAG_STRING;
   SWAG_INTEGER = GBSwagger.Model.Types.SWAG_INTEGER;
+  SWAG_INTEGER_FORMAT_INT32 = GBSwagger.Model.Types.SWAG_INTEGER_FORMAT_INT32;
+  SWAG_INTEGER_FORMAT_INT64 = GBSwagger.Model.Types.SWAG_INTEGER_FORMAT_INT64;
+  SWAG_NUMBER_FORMAT_FLOAT = GBSwagger.Model.Types.SWAG_NUMBER_FORMAT_FLOAT;
+  SWAG_NUMBER_FORMAT_DOUBLE = GBSwagger.Model.Types.SWAG_NUMBER_FORMAT_DOUBLE;
+  SWAG_STRING_FORMAT_BYTE = GBSwagger.Model.Types.SWAG_STRING_FORMAT_BYTE;
+  SWAG_STRING_FORMAT_BINARY = GBSwagger.Model.Types.SWAG_STRING_FORMAT_BINARY;
+  SWAG_STRING_FORMAT_DATE = GBSwagger.Model.Types.SWAG_STRING_FORMAT_DATE;
+  SWAG_STRING_FORMAT_DATETIME = GBSwagger.Model.Types.SWAG_STRING_FORMAT_DATETIME;
+  SWAG_STRING_FORMAT_PASSWORD = GBSwagger.Model.Types.SWAG_STRING_FORMAT_PASSWORD;
 
 type
   TGBSwaggerContentType = GBSwagger.Model.Types.TGBSwaggerContentType;
@@ -213,6 +222,7 @@ type
     function Name(AValue: string): IGBSwaggerParameter; overload;
     function Description(AValue: string): IGBSwaggerParameter; overload;
     function Schema(AValue: string): IGBSwaggerParameter; overload;
+    function Schema(AValue: string; AFormat: String): IGBSwaggerParameter; overload;
     function Schema(AValue: TClass): IGBSwaggerParameter; overload;
     function Required(AValue: Boolean): IGBSwaggerParameter; overload;
     function IsArray(AValue: Boolean): IGBSwaggerParameter; overload;
@@ -229,6 +239,7 @@ type
     function EnumValues: TArray<Variant>; overload;
 
     function SchemaType: string;
+    function Format: String;
     function &End: IGBSwaggerPathMethod;
   end;
 
